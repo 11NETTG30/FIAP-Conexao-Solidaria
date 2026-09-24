@@ -1,0 +1,6 @@
+@FCG.API_HostAddress = http://localhost:5082
+
+GET {{FCG.API_HostAddress}}/Usuario/Teste
+Accept: application/json
+
+###
