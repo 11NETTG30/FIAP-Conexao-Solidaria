@@ -15,14 +15,17 @@ COPY src/ src/
 RUN dotnet publish src/FCG.API/FCG.API.csproj -c Release -o /app/publish --no-restore
 
 # Estágio usado só pelo serviço "migrate" do docker-compose: aplica as
-# migrations do EF Core contra o Postgres antes da API subir.
+# migrations do EF Core contra o Postgres antes da API subir. Com mais de um
+# DbContext o "database update" exige --context, então roda um por módulo.
 FROM build AS migrate
 COPY .config/dotnet-tools.json .config/dotnet-tools.json
 RUN dotnet tool restore
-ENTRYPOINT ["dotnet", "tool", "run", "dotnet-ef", "database", "update", \
-    "--project", "src/FCG.Infrastructure/FCG.Infrastructure.csproj", \
-    "--startup-project", "src/FCG.API/FCG.API.csproj", \
-    "--configuration", "Release"]
+ENV MIGRATION_CONTEXTS="IdentidadeDbContext CampanhaDbContext"
+ENTRYPOINT ["/bin/sh", "-c", "set -e; for context in $MIGRATION_CONTEXTS; do \
+    dotnet tool run dotnet-ef database update --context $context \
+    --project src/FCG.Infrastructure/FCG.Infrastructure.csproj \
+    --startup-project src/FCG.API/FCG.API.csproj \
+    --configuration Release; done"]
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble AS final
 WORKDIR /app
