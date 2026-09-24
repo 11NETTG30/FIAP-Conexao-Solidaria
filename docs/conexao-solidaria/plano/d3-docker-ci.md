@@ -31,19 +31,46 @@ imagens:
 
 ## Andamento
 
-- [ ] `Dockerfile` multi-stage para `FCG.API`
-- [ ] `Dockerfile` multi-stage para `FCG.Worker`
-- [ ] Adicionar os dois serviços ao `docker-compose.yml` (junto com
-      Postgres, PgAdmin e RabbitMQ já existentes/adicionados em D2), para
-      teste local de ponta a ponta
+- [x] `Dockerfile` multi-stage para `FCG.API` (raiz do repo) — estágios
+      `build` → `migrate` (aplica `dotnet ef database update` antes da API
+      subir) → `final` (runtime `aspnet`, porta 8080)
+- [ ] `Dockerfile` multi-stage para `FCG.Worker` — bloqueado: o projeto
+      `FCG.Worker` ainda não existe (depende de D2)
+- [x] Adicionar o serviço `api` (+ `migrate`) ao `docker-compose.yml`, junto
+      com o Postgres já existente, para teste local de ponta a ponta —
+      RabbitMQ/`doacoes-worker` ficam para quando D2 entrar
 - [ ] Workflow `.github/workflows/docker-build.yml`: build + push das duas
       imagens para GitHub Container Registry a cada push na branch principal
 - [ ] Confirmar que o pipeline roda os testes (`dotnet test`) antes do build
       da imagem
 
+## Notas de implementação
+
+- Validado localmente (build + `docker compose up`: postgres → migrate →
+  api) em 2026-09-24: cadastro, login e rota protegida (`GET /api/conta`)
+  respondendo corretamente, com a claim de role já saindo `Doador`/`GestorONG`
+  (confirma o rename da d0 ponta a ponta).
+- `.config/dotnet-tools.json` criado (`dotnet-ef` como tool local) — o
+  estágio `migrate` do Dockerfile depende dele para aplicar migrations sem
+  exigir o SDK do EF instalado globalmente no host de deploy.
+- Achado durante o teste: `dotnet ef database update` builda em `Debug` por
+  padrão; como só publicamos artefatos em `Release`, isso quebrava a
+  resolução de recursos (`MSB3552`). Corrigido passando
+  `--configuration Release` no `ENTRYPOINT` do estágio `migrate`.
+- Connection string e `JwtSettings:Secret` são injetados via variáveis de
+  ambiente no `docker-compose.yml` (não dependem dos valores hardcoded em
+  `appsettings.json`) — ver `.env.example` (`JWT_SECRET`).
+- `ASPNETCORE_ENVIRONMENT=Development` por padrão no serviço `api` só para
+  manter Swagger/Scalar acessíveis nesse estágio do projeto; revisar antes
+  de qualquer deploy que se pretenda "de produção" de verdade.
+
 ## Pendências / dúvidas
 
-Nenhuma no momento.
+- O `docker-compose.yml` tem uma inconsistência pré-existente (não
+  introduzida por esta demanda): o serviço `pgadmin` lê `PGADMIN_EMAIL` /
+  `PGADMIN_PASSWORD`, mas o `.env.example` define
+  `PGADMIN_DEFAULT_EMAIL` / `PGADMIN_DEFAULT_PASSWORD` — pgadmin sobe sem
+  credenciais até alguém corrigir um dos dois lados.
 
 ## Arquivos de apoio
 
