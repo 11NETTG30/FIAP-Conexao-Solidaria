@@ -1,0 +1,12 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.idea/
+.git/
+.github/
+docs/
+edital/
+tests/
+k8s/
+*.md

@@ -57,8 +57,11 @@ namespace FCG.Infrastructure.Identidade.Security
                 new(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
             ];
 
-            if (usuario.Perfil == PerfilUsuario.Administrador)
-                claims.Add(new Claim(ClaimTypes.Role, RoleNames.Admin));
+            string role = usuario.Perfil == PerfilUsuario.GestorONG
+                ? RoleNames.GestorONG
+                : RoleNames.Doador;
+
+            claims.Add(new Claim(ClaimTypes.Role, role));
         
             return claims;
         }

@@ -2,6 +2,7 @@ namespace FCG.Infrastructure.Identidade.Security
 {
     public static class RoleNames
     {
-        public const string Admin = "admin";
+        public const string GestorONG = "GestorONG";
+        public const string Doador = "Doador";
     }
 }
