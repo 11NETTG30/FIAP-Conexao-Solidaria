@@ -1,4 +1,5 @@
 using System.Globalization;
+using FCG.Application.Campanhas.UseCases;
 using FCG.Application.Identidade.UseCases;
 using FCG.Application.Identidade.Validators;
 using FluentValidation;
@@ -27,6 +28,10 @@ public static class DependencyInjectionApplication
             services.AddScoped<ObterUsuarioPorIdUseCase>();
             services.AddScoped<RefreshTokenUseCase>();
             services.AddScoped<TornarUsuarioAdministradorUseCase>();
+
+            services.AddScoped<CriarCampanhaUseCase>();
+            services.AddScoped<EditarCampanhaUseCase>();
+            services.AddScoped<ListarCampanhasAtivasUseCase>();
         }
 
         private void AddFluentValidation()

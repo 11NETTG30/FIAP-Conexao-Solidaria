@@ -1,6 +1,7 @@
 using DotNetEnv;
 using FCG.API.Configurations;
 using FCG.API.Middlewares;
+using FCG.Infrastructure.Campanhas.Persistence;
 using FCG.Infrastructure.Configurations;
 using FCG.Infrastructure.Identidade.Configurations;
 using FCG.Infrastructure.Identidade.Persistence;
@@ -31,6 +32,7 @@ if (builder.Configuration.GetValue<bool>("RUN_MIGRATIONS_ON_STARTUP"))
 {
     using IServiceScope migrationScope = app.Services.CreateScope();
     migrationScope.ServiceProvider.GetRequiredService<IdentidadeDbContext>().Database.Migrate();
+    migrationScope.ServiceProvider.GetRequiredService<CampanhaDbContext>().Database.Migrate();
 }
 
 if (app.Environment.IsDevelopment())

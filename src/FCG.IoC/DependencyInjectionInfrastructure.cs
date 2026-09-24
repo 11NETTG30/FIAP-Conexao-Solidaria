@@ -1,8 +1,10 @@
 using FCG.Application.Identidade.Security;
 using FCG.Application.Shared;
+using FCG.Domain.Campanhas.Repositories;
 using FCG.Domain.Identidade.Repositories;
 using FCG.Domain.Identidade.Security;
 using FCG.Domain.Shared.Abstractions;
+using FCG.Infrastructure.Campanhas.Persistence.Repositories;
 using FCG.Infrastructure.Identidade.Configurations;
 using FCG.Infrastructure.Identidade.Persistence.Repositories;
 using FCG.Infrastructure.Identidade.Security;
@@ -36,6 +38,7 @@ public static class DependencyInjectionInfrastructure
         {
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<ICampanhaRepository, CampanhaRepository>();
         }
         
         
