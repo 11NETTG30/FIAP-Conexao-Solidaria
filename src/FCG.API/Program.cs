@@ -12,24 +12,6 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 Env.Load();
 builder.Configuration.AddEnvironmentVariables();
 
-// Hosts que provisionam o Postgres pra gente (ex.: Render Blueprint) expõem
-// host/porta/usuário/senha como variáveis separadas (PGHOST, PGPORT, ...),
-// não como ConnectionStrings__DefaultConnection direto. Quando PGHOST existir,
-// monta a connection string a partir delas — tem prioridade sobre o valor de
-// appsettings.json, que existe só como fallback pra dev local sem docker.
-string? pgHost = builder.Configuration["PGHOST"];
-
-if (!string.IsNullOrWhiteSpace(pgHost))
-{
-    string pgPort = builder.Configuration["PGPORT"] ?? "5432";
-    string pgDatabase = builder.Configuration["PGDATABASE"] ?? "";
-    string pgUser = builder.Configuration["PGUSER"] ?? "";
-    string pgPassword = builder.Configuration["PGPASSWORD"] ?? "";
-
-    builder.Configuration["ConnectionStrings:DefaultConnection"] =
-        $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword}";
-}
-
 builder.AddLoggingConfiguration();
 builder.Services.AddControllersConfiguration();
 builder.Services.AddDocumentation();
