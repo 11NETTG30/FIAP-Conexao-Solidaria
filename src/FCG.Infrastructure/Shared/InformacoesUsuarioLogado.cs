@@ -10,9 +10,8 @@ public sealed class InformacoesUsuarioLogado : IInformacoesUsuarioLogado
 {
     public Guid Id { get; }
     public string Email { get; }
-    public bool Administrador { get; set; }
+    public bool GestorONG { get; set; }
 
-    
     public InformacoesUsuarioLogado
     (
         IHttpContextAccessor httpContextAccessor
@@ -25,6 +24,6 @@ public sealed class InformacoesUsuarioLogado : IInformacoesUsuarioLogado
 
         Id = Guid.Parse(user.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         Email = user.FindFirst(ClaimTypes.Email)!.Value;
-        Administrador = user.IsInRole(RoleNames.Admin);
+        GestorONG = user.IsInRole(RoleNames.GestorONG);
     }
 }

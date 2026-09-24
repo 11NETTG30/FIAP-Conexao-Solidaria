@@ -85,7 +85,7 @@ namespace FCG.BDDTests.Identidade.RefreshToken
 					"Gabriel",
 					new Email("gabriel@email.com"),
 					new SenhaHash(new string('A', SenhaHash.TAMANHO_ESPERADO_SENHA_HASH)),
-					PerfilUsuario.Usuario
+					PerfilUsuario.Doador
 				));
 		}
 

@@ -22,7 +22,7 @@ public sealed class TornarUsuarioAdministradorUseCase
         Usuario usuario = await _usuarioRepository.ObterPorIdTracking(id)
             ?? throw new ValidationException("Usuário não encontrado");
 
-        usuario.SetPerfil(PerfilUsuario.Administrador);
+        usuario.SetPerfil(PerfilUsuario.GestorONG);
         
         await _usuarioRepository.UnitOfWork.Commit();
     }

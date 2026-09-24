@@ -30,7 +30,7 @@ public sealed class CriarUsuarioUseCase
         SenhaTextoPuro senhaTextoPuro = new(request.Senha, request.ConfirmacaoSenha);
         SenhaHash senhaHash = _senhaHasher.GerarHash(senhaTextoPuro);
 
-        Usuario usuario = new(request.Nome, email, senhaHash, PerfilUsuario.Usuario);
+        Usuario usuario = new(request.Nome, email, senhaHash, PerfilUsuario.Doador);
 
         bool emailExiste = await _usuarioRepository.VerificarExistenciaEmail(usuario.Email.Valor);
         

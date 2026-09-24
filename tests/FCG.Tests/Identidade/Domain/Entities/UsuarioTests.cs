@@ -17,7 +17,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var perfil = PerfilUsuario.Usuario;
+            var perfil = PerfilUsuario.Doador;
 
             // Act
             var usuario = new Usuario(NomeValido, email, senhaHash, perfil);
@@ -42,7 +42,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var perfil = PerfilUsuario.Usuario;
+            var perfil = PerfilUsuario.Doador;
 
             // Act
             var acao = () => new Usuario(nomeInvalido, email, senhaHash, perfil);
@@ -60,7 +60,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var perfil = PerfilUsuario.Usuario;
+            var perfil = PerfilUsuario.Doador;
 
             if (nome.Length < 2)
             {
@@ -86,7 +86,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             var nomeGrande = new string('A', 101);
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var perfil = PerfilUsuario.Usuario;
+            var perfil = PerfilUsuario.Doador;
 
             // Act
             var acao = () => new Usuario(nomeGrande, email, senhaHash, perfil);
@@ -104,7 +104,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var perfil = PerfilUsuario.Usuario;
+            var perfil = PerfilUsuario.Doador;
 
             // Act
             var usuario = new Usuario(nomeComEspacos, email, senhaHash, perfil);
@@ -119,7 +119,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Usuario);
+            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
             var novoNome = "Maria Santos";
 
             // Act
@@ -138,7 +138,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var perfil = PerfilUsuario.Usuario;
+            var perfil = PerfilUsuario.Doador;
 
             // Act
             var acao = () => new Usuario(NomeValido, null!, senhaHash, perfil);
@@ -154,7 +154,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Usuario);
+            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
             var novoEmail = new Email("novo.email@fcg.com.br");
 
             // Act
@@ -173,7 +173,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
-            var perfil = PerfilUsuario.Usuario;
+            var perfil = PerfilUsuario.Doador;
 
             // Act
             var acao = () => new Usuario(NomeValido, email, null!, perfil);
@@ -189,7 +189,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Usuario);
+            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
             var novaSenhaHash = new SenhaHash("NovaSenhaHash123==./abc1231231231231231231231231231231231231231234567");
 
             // Act
@@ -220,8 +220,8 @@ namespace FCG.Tests.Identidade.Domain.Entities
         }
 
         [Theory]
-        [InlineData(PerfilUsuario.Usuario)]
-        [InlineData(PerfilUsuario.Administrador)]
+        [InlineData(PerfilUsuario.Doador)]
+        [InlineData(PerfilUsuario.GestorONG)]
         public void SetPerfil_DeveDefinirPerfil_QuandoPerfilValido(PerfilUsuario perfil)
         {
             // Arrange
@@ -241,13 +241,13 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Usuario);
+            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
 
             // Act
-            usuario.SetPerfil(PerfilUsuario.Administrador);
+            usuario.SetPerfil(PerfilUsuario.GestorONG);
 
             // Assert
-            Assert.Equal(PerfilUsuario.Administrador, usuario.Perfil);
+            Assert.Equal(PerfilUsuario.GestorONG, usuario.Perfil);
         }
 
         #endregion
@@ -260,7 +260,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Usuario);
+            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
 
             // Act
             usuario.SetAtivo(true);
@@ -275,7 +275,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Usuario);
+            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
 
             // Act
             usuario.SetAtivo(false);
@@ -294,7 +294,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             // Arrange
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Usuario);
+            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
 
             // Act
             var resultado = usuario.ToString();
@@ -318,7 +318,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             var senhaHash = new SenhaHash(SenhaHashValida);
 
             // Act
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Usuario);
+            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
 
             // Assert
             Assert.Empty(usuario.RefreshTokens);

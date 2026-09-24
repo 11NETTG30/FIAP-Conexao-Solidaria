@@ -125,7 +125,7 @@ public sealed class LoginSteps
 			"Gabriel",
 			new Email(email),
 			new SenhaHash(new string('A', SenhaHash.TAMANHO_ESPERADO_SENHA_HASH)),
-			PerfilUsuario.Usuario
+			PerfilUsuario.Doador
 		);
 	}
 }

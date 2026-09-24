@@ -8,7 +8,7 @@ namespace FCG.API.Controllers;
 
 [ApiController]
 [Route("api/usuarios")]
-[Authorize(Roles = RoleNames.Admin)]
+[Authorize(Roles = RoleNames.GestorONG)]
 public class UsuarioController : ControllerBase
 {
     private readonly  AtivarUsuarioUseCase _ativarUsuarioUseCase;

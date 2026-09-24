@@ -87,7 +87,7 @@ de qualquer demanda filha.
 
 ## Andamento
 
-- [ ] d0 — Base: rename de roles, scaffolding de pastas dos módulos novos
+- [x] d0 — Base: rename de roles, scaffolding de pastas dos módulos novos
 - [ ] d1 — Módulo Campanha
 - [ ] d2 — Módulo Doação + Worker + RabbitMQ
 - [ ] d3 — Dockerfile + CI (build de imagem)
