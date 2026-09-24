@@ -66,11 +66,11 @@ imagens:
 
 ## Pendências / dúvidas
 
-- O `docker-compose.yml` tem uma inconsistência pré-existente (não
-  introduzida por esta demanda): o serviço `pgadmin` lê `PGADMIN_EMAIL` /
-  `PGADMIN_PASSWORD`, mas o `.env.example` define
-  `PGADMIN_DEFAULT_EMAIL` / `PGADMIN_DEFAULT_PASSWORD` — pgadmin sobe sem
-  credenciais até alguém corrigir um dos dois lados.
+Nenhuma no momento. (O mismatch `PGADMIN_EMAIL`/`PGADMIN_PASSWORD` vs
+`PGADMIN_DEFAULT_EMAIL`/`PGADMIN_DEFAULT_PASSWORD` no `docker-compose.yml`,
+registrado aqui antes, foi corrigido — `pgadmin` agora lê as mesmas
+variáveis documentadas em `.env.example`. Achado de forma independente
+também durante o E2E aprofundado no Render, o que confirmou o mismatch.)
 
 ## Arquivos de apoio
 
