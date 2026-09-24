@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:18.1
-    container_name: fcg-postgres
+    container_name: conexao-solidaria-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -12,7 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql
       - ./scripts:/docker-entrypoint-initdb.d
     networks:
-      - fcg-network
+      - conexao-solidaria-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
@@ -21,7 +21,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:latest
-    container_name: fcg-pgadmin
+    container_name: conexao-solidaria-pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
@@ -30,7 +30,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - fcg-network
+      - conexao-solidaria-network
     volumes:
       - pgadmin_data:/var/lib/pgadmin
 
@@ -39,14 +39,14 @@ services:
       context: .
       dockerfile: Dockerfile
       target: migrate
-    container_name: fcg-migrate
+    container_name: conexao-solidaria-migrate
     environment:
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
     depends_on:
       postgres:
         condition: service_healthy
     networks:
-      - fcg-network
+      - conexao-solidaria-network
     restart: "no"
 
   api:
@@ -54,20 +54,20 @@ services:
       context: .
       dockerfile: Dockerfile
       target: final
-    container_name: fcg-api
+    container_name: conexao-solidaria-api
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
       JwtSettings__Secret: ${JWT_SECRET}
-      JwtSettings__Issuer: FCG.API
-      JwtSettings__Audience: FCG.Client
+      JwtSettings__Issuer: ConexaoSolidaria.API
+      JwtSettings__Audience: ConexaoSolidaria.Client
     ports:
       - "8080:8080"
     depends_on:
       migrate:
         condition: service_completed_successfully
     networks:
-      - fcg-network
+      - conexao-solidaria-network
 
 volumes:
   postgres_data:
@@ -76,5 +76,5 @@ volumes:
     driver: local
 
 networks:
-  fcg-network:
+  conexao-solidaria-network:
     driver: bridge

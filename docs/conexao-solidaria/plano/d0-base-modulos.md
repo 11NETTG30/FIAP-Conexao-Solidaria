@@ -55,9 +55,11 @@ roles em seus `[Authorize]`.
   administrador) passaram a referenciar `RoleNames.GestorONG` /
   `PerfilUsuario.GestorONG` — mantive os nomes de classe/endpoint como estão,
   já que a demanda não pediu renomear esses símbolos, só o enum e as roles.
-- A migration de seed (`admin@fcg.com.br`, perfil `2`) não precisou de
-  mudança: já grava o valor numérico do enum, que continua `2` para
-  `GestorONG`.
+- A migration de seed (perfil `2`) não precisou de mudança nesta demanda: já
+  grava o valor numérico do enum, que continua `2` para `GestorONG`. O e-mail
+  do seed (`admin@fcg.com.br` → `admin@conexaosolidaria.com.br`) foi ajustado
+  depois, numa auditoria de identidade separada (resíduos do boilerplate
+  `fiap-cloud-games`), registrada em `visao-geral.md`.
 
 ## Pendências / dúvidas
 

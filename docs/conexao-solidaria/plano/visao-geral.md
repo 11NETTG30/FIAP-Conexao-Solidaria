@@ -90,6 +90,17 @@ de qualquer demanda filha.
   e `gaabrielalex/fcg-users` atualizadas para `11NETTG30/fiap-cloud-games` e
   `11NETTG30/fcg-users` em todo o repositório, já que agora dá pra referenciar os
   repositórios originais direto em vez dos forks pessoais.
+- 2026-09-24 — Auditoria de identidade do projeto antigo (boilerplate
+  `fiap-cloud-games`, plataforma de jogos): corrigidos README (reescrito do
+  zero), metadados do Swagger/OpenAPI, `JwtSettings:Issuer`/`Audience`
+  (`FCG.API`/`FCG.Client` → `ConexaoSolidaria.API`/`ConexaoSolidaria.Client`
+  em `appsettings.json`, `.env.example`, `docker-compose.yml` e `render.yaml`),
+  e-mail do usuário admin de seed (`admin@fcg.com.br` →
+  `admin@conexaosolidaria.com.br`), e nomes de container/rede do
+  `docker-compose.yml` (`fcg-*` → `conexao-solidaria-*`). Namespaces `FCG.*`,
+  nome da solução (`FiapCloudGames.slnx`) e o usuário do Postgres em
+  `render.yaml` (`fcgadmin`) **não** foram tocados — mudança maior, decisão do
+  Gabriel, ver ressalvas na sessão que fez esta auditoria.
 
 ## Andamento
 
