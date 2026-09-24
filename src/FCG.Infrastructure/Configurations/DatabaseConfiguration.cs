@@ -12,10 +12,10 @@ public static class DatabaseConfiguration
     {
         public void AddDatabase(IConfiguration configuration)
         {
-            string? connectionString = configuration.GetConnectionString("DefaultConnection");
-            
+            string connectionString = ResolveConnectionString(configuration);
+
             services.AddSingleton<AuditoriaSaveChangesInterceptor>();
-            services.AddDatabasePostgreSQL<IdentidadeDbContext>(connectionString!, IdentidadeDbContext.SCHEMA);
+            services.AddDatabasePostgreSQL<IdentidadeDbContext>(connectionString, IdentidadeDbContext.SCHEMA);
         }
 
         private void AddDatabasePostgreSQL<T>(string connectionString, string schema) where T : DbContext
@@ -28,6 +28,26 @@ public static class DatabaseConfiguration
                     })
                     .AddInterceptors(serviceProvider.GetRequiredService<AuditoriaSaveChangesInterceptor>())
             );
-        } 
+        }
+    }
+
+    // Alguns hosts (ex.: Render) não deixam compor uma connection string única no
+    // provisionamento — só expõem host/porta/usuário/senha como variáveis soltas,
+    // seguindo a convenção padrão do libpq (PGHOST, PGPORT, PGDATABASE, PGUSER,
+    // PGPASSWORD). Quando PGHOST existir, monta a connection string a partir delas;
+    // senão, usa ConnectionStrings:DefaultConnection normalmente (dev local, compose).
+    private static string ResolveConnectionString(IConfiguration configuration)
+    {
+        string? pgHost = configuration["PGHOST"];
+
+        if (string.IsNullOrWhiteSpace(pgHost))
+            return configuration.GetConnectionString("DefaultConnection")!;
+
+        string pgPort = configuration["PGPORT"] ?? "5432";
+        string pgDatabase = configuration["PGDATABASE"] ?? "";
+        string pgUser = configuration["PGUSER"] ?? "";
+        string pgPassword = configuration["PGPASSWORD"] ?? "";
+
+        return $"Host={pgHost};Port={pgPort};Database={pgDatabase};Username={pgUser};Password={pgPassword}";
     }
 }
