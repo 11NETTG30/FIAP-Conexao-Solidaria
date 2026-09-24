@@ -34,9 +34,8 @@ O edital completo do hackathon está em `edital/HACKATHON_11NETT.pdf`.
 ## Origem do código
 
 Copiado (sem o histórico de commits) de
-`github.com/gaabrielalex/fiap-cloud-games` — fork de
 `11NETTG30/fiap-cloud-games`, o boilerplate Clean Architecture + DDD da
 Fase 1 do grupo. Peças prontas reaproveitáveis (Argon2id, RefreshToken
 rotativo, RabbitMQ/MassTransit) estão em
-`github.com/gaabrielalex/fcg-users` (fork), citadas nas demandas onde se
-aplicam — ambos públicos, dá para consultar diretamente por URL.
+`11NETTG30/fcg-users`, citadas nas demandas onde se aplicam — ambos
+públicos, dá para consultar diretamente por URL.
