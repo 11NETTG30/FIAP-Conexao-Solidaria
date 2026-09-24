@@ -78,12 +78,18 @@ de qualquer demanda filha.
 - 2026-09-24 — Divisão de trabalho: Campanha (d1) com o Saulo, Doação +
   Worker + RabbitMQ (d2) com o Gabriel, em paralelo assim que a base (d0)
   subir.
-- 2026-09-24 — Repositório criado: `github.com/gaabrielalex/FIAP-Conexao-Solidaria`
-  (privado). Populado a partir do fork `github.com/gaabrielalex/fiap-cloud-games`,
+- 2026-09-24 — Repositório criado: `github.com/11NETTG30/FIAP-Conexao-Solidaria`
+  (privado). Populado a partir do fork `github.com/11NETTG30/fiap-cloud-games`,
   **sem** o histórico de commits da Fase 1 (squash num único commit raiz,
   para não misturar mensagens/datas de outro desafio na avaliação deste).
-  Os forks `fiap-cloud-games` e `fcg-users` (ambos públicos) continuam
+  Os repositórios `fiap-cloud-games` e `fcg-users` (ambos públicos) continuam
   existindo só como referência de leitura, não são o repositório de trabalho.
+- 2026-09-24 — Repositório transferido de `gaabrielalex/FIAP-Conexao-Solidaria`
+  (conta pessoal) para `11NETTG30/FIAP-Conexao-Solidaria` (organização) — mesmo
+  histórico de commits, só mudou o dono. Referências a `gaabrielalex/fiap-cloud-games`
+  e `gaabrielalex/fcg-users` atualizadas para `11NETTG30/fiap-cloud-games` e
+  `11NETTG30/fcg-users` em todo o repositório, já que agora dá pra referenciar os
+  repositórios originais direto em vez dos forks pessoais.
 
 ## Andamento
 
