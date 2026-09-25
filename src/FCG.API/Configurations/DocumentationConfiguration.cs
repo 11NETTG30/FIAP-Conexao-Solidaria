@@ -61,6 +61,10 @@ public static class DocumentationConfiguration
 
                     **Contextos:**
                     - Identidade
+                    - Campanhas
+
+                    **Datas:** trafegam em UTC (ISO 8601). Datas enviadas sem fuso
+                    (ex.: `2026-12-31T23:59:59`) são interpretadas como UTC.
                     """,
                 Contact = new OpenApiContact
                 {

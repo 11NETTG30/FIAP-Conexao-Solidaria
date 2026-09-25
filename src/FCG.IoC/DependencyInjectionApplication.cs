@@ -40,8 +40,10 @@ public static class DependencyInjectionApplication
             services.AddFluentValidationClientsideAdapters();
             services.AddFluentValidationAutoValidation();
             
-            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("pt-Br");
+            // A cultura precisa ser definida depois de trocar o LanguageManager —
+            // na ordem inversa ela se perdia e as mensagens saíam em inglês
             ValidatorOptions.Global.LanguageManager = new CustomLanguageManager();
+            ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo("pt-BR");
         }
     }
     private class CustomLanguageManager : LanguageManager

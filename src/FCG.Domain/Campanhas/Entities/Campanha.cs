@@ -34,14 +34,11 @@ public sealed class Campanha : Entity, IAggregateRoot, IAuditavel
         SetMetaFinanceira(metaFinanceira);
         SetStatus(StatusCampanha.Ativa);
 
-        if (DataFim < DateTime.UtcNow)
-            throw new ValidationException("Data de término da campanha não pode estar no passado");
-
         ValorArrecadado = 0;
     }
 
     // EF Core
-    private Campanha(){}
+    private Campanha() { }
 
     public void SetTitulo(string titulo)
     {
@@ -74,6 +71,9 @@ public sealed class Campanha : Entity, IAggregateRoot, IAuditavel
         dataInicio = ParaUtc(dataInicio);
         dataFim = ParaUtc(dataFim);
 
+        if (dataFim < DateTime.UtcNow)
+            throw new ValidationException("Data de término da campanha não pode estar no passado");
+
         if (dataFim <= dataInicio)
             throw new ValidationException("Data de término deve ser posterior à data de início");
 
@@ -86,6 +86,11 @@ public sealed class Campanha : Entity, IAggregateRoot, IAuditavel
         if (metaFinanceira <= 0)
             throw new ValidationException("Meta financeira deve ser maior que zero");
 
+        // A coluna é numeric(18,2): sem essa checagem o Postgres arredondaria
+        // em silêncio (10.555 viraria 10.56)
+        if (decimal.Round(metaFinanceira, 2) != metaFinanceira)
+            throw new ValidationException("Meta financeira deve ter no máximo 2 casas decimais");
+
         MetaFinanceira = metaFinanceira;
     }
 
@@ -95,6 +100,14 @@ public sealed class Campanha : Entity, IAggregateRoot, IAuditavel
             throw new ValidationException("Status da campanha é inválido, valor não definido");
 
         Status = status;
+    }
+
+    // Concluida e Cancelada são estados finais: a campanha não volta a ser
+    // Ativa nem tem os dados alterados depois de encerrada
+    public void GarantirQuePodeSerEditada()
+    {
+        if (Status != StatusCampanha.Ativa)
+            throw new ValidationException("Campanha concluída ou cancelada não pode ser editada");
     }
 
     // O Postgres (timestamp with time zone) só aceita DateTime em UTC — datas

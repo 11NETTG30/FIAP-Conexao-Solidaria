@@ -16,11 +16,16 @@ public sealed class CampanhaRepository : ICampanhaRepository
         _dbContext = dbContext;
     }
 
+    // Ativa e dentro do período: campanha agendada (DataInicio futura) só aparece
+    // quando começa, e vencida (DataFim passada) sai mesmo sem o gestor ter
+    // concluído — o worker de doações filtra só a DataFim
     public async Task<List<Campanha>> ListarAtivas()
     {
+        DateTime agora = DateTime.UtcNow;
+
         return await _dbContext.Campanhas
             .AsNoTracking()
-            .Where(c => c.Status == StatusCampanha.Ativa)
+            .Where(c => c.Status == StatusCampanha.Ativa && c.DataInicio <= agora && c.DataFim >= agora)
             .OrderBy(c => c.DataFim)
             .ToListAsync();
     }

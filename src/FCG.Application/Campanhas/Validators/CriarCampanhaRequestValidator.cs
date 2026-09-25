@@ -24,6 +24,7 @@ public sealed class CriarCampanhaRequestValidator : AbstractValidator<CriarCampa
             .WithMessage("'Data Fim' deve ser posterior à data de início.");
 
         RuleFor(request => request.MetaFinanceira)
-            .GreaterThan(0);
+            .GreaterThan(0)
+            .PrecisionScale(18, 2, true);
     }
 }

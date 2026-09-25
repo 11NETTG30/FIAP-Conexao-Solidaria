@@ -68,7 +68,9 @@ doação:
 begin;
   update campanha.campanhas
     set valor_arrecadado = valor_arrecadado + :valor
-    where id = :idCampanha and status = 'Ativa';
+    where id = :idCampanha
+      and status = 'Ativa'
+      and data_fim >= now(); -- campanha vencida não recebe doação (mesmo filtro do painel)
   update doacao.doacoes
     set status = 'Confirmada'
     where id = :idDoacao;
