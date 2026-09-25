@@ -101,6 +101,16 @@ de qualquer demanda filha.
   nome da solução (`FiapCloudGames.slnx`) e o usuário do Postgres em
   `render.yaml` (`fcgadmin`) **não** foram tocados — mudança maior, decisão do
   Gabriel, ver ressalvas na sessão que fez esta auditoria.
+- 2026-09-25 — Segunda varredura por termos residuais (`game`/`games`/`cloud`/
+  `FCG`) fora de `tests/`. Corrigidos mais dois resíduos de baixo risco:
+  `newrelic.config` (`<name>FiapCloudGames</name>` → `ConexaoSolidaria`) e
+  `FCG.API.http` (request de exemplo apontava pra `/Usuario/Teste`, endpoint
+  que não existe mais — trocado por `POST /api/auth/login` com o admin de
+  seed). Decisão explícita do Gabriel: **adiar** o rename dos namespaces
+  `FCG.*`/`FiapCloudGames.slnx` e o `user: fcgadmin` do `render.yaml` — D2
+  (Doação + Worker) está em andamento em paralelo e mexer nisso agora geraria
+  conflito de merge; revisitar depois que `tests/FCG.Tests`/`tests/FCG.BDDTests`
+  forem removidos e o grosso das demandas estiver mergeado.
 
 ## Andamento
 
@@ -116,6 +126,11 @@ de qualquer demanda filha.
 
 - Confirmar com o grupo se cache Redis de campanhas entra (era "se sobrar
   tempo" — não é bloqueante para nenhuma demanda abaixo).
+- `../ARQUITETURA.md` (seção "Estrutura de pastas") referencia
+  `implementacao/fcg-monolito/IMPLEMENTACAO.md`, arquivo que não existe no
+  repositório — link quebrado, encontrado na varredura de 2026-09-25;
+  precisa de alguém que saiba qual era o conteúdo/destino pretendido para
+  corrigir.
 
 ## Arquivos de apoio
 
