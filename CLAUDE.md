@@ -30,6 +30,9 @@ O edital completo do hackathon está em `edital/HACKATHON_11NETT.pdf`.
 - Ao retomar qualquer demanda, ler o `.md` dela em `docs/conexao-solidaria/plano/`
   antes de mexer em código, e atualizar o checklist "Andamento" dela ao
   longo do trabalho — não criar arquivos de anotação soltos para isso
+- Depois de mudanças na API de Identidade, antes de abrir PR: rodar
+  `bash e2e/smoke-test.sh` (smoke test E2E via docker-compose, ver
+  `e2e/README.md`)
 
 ## Origem do código
 

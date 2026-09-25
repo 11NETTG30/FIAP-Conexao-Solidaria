@@ -3,6 +3,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 WORKDIR /src
 
+# CA extra opcional (ex.: proxy de egress de um sandbox de build) — a pasta
+# normalmente está vazia e essa etapa não faz nada nesse caso.
+# Ver docker/certs/README.md.
+COPY docker/certs/ /usr/local/share/ca-certificates/extra/
+RUN update-ca-certificates
+
 COPY ConexaoSolidaria.slnx ./
 COPY src/ConexaoSolidaria.API/ConexaoSolidaria.API.csproj src/ConexaoSolidaria.API/
 COPY src/ConexaoSolidaria.Application/ConexaoSolidaria.Application.csproj src/ConexaoSolidaria.Application/
