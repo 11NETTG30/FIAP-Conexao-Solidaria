@@ -104,8 +104,9 @@ No console do Gerenciador de Pacotes, selecione o projeto padrão (ex: `src\FCG.
 # Criar uma nova migration
 Add-Migration InitialIdentidade -Context IdentidadeDbContext -OutputDir Identidade/Persistence/Migrations
 
-# Aplicar as alterações no banco de dados
-Update-Database
+# Aplicar as alterações no banco de dados (um comando por módulo)
+Update-Database -Context IdentidadeDbContext
+Update-Database -Context CampanhaDbContext
 ```
 
 ### 5. Execução inicial da Aplicação
@@ -115,7 +116,8 @@ Update-Database
 docker-compose up -d
 
 # Aplicar as alterações no banco de dados, no Console do Gerenciador de Pacotes
-Update-Database
+Update-Database -Context IdentidadeDbContext
+Update-Database -Context CampanhaDbContext
 ```
 
 Rodar a API (FCG.API)
@@ -129,6 +131,12 @@ Acesse: https://localhost:5001/swagger
 	"senha": "Admin@123"
 }
 ```
+
+## 🕒 Datas na API
+
+Todas as datas trafegam em **UTC** (ISO 8601). Uma data enviada sem fuso — ex.:
+`2026-12-31T23:59:59` — é interpretada como UTC, ou seja, 20:59 no horário de
+Brasília. Para indicar o horário local, envie o fuso: `2026-12-31T23:59:59-03:00`.
 
 ## 📊 Acessar PgAdmin
 

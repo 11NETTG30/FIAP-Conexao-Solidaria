@@ -124,6 +124,53 @@ public class CampanhaTests
         Assert.Equal("Status da campanha é inválido, valor não definido", ex.Message);
     }
 
+    [Theory]
+    [InlineData(10.555)]
+    [InlineData(0.001)]
+    public void AoCriarCampanhaComMetaFinanceiraComMaisDeDuasCasasDecimaisDeveLancarExcecao(decimal meta)
+    {
+        ValidationException ex = Assert.Throws<ValidationException>(() =>
+            new Campanha(TituloValido, DescricaoValida, DataInicioValida, DataFimValida, meta));
+
+        Assert.Equal("Meta financeira deve ter no máximo 2 casas decimais", ex.Message);
+    }
+
+    // Literais decimal (e não double do InlineData) para os zeros à direita
+    // chegarem de fato ao teste
+    public static TheoryData<decimal> MetasComAteDuasCasasDecimais => [10m, 10.5m, 10.55m, 10.500m];
+
+    [Theory]
+    [MemberData(nameof(MetasComAteDuasCasasDecimais))]
+    public void AoCriarCampanhaComMetaFinanceiraComAteDuasCasasDecimaisDeveAceitar(decimal meta)
+    {
+        Campanha campanha = new(TituloValido, DescricaoValida, DataInicioValida, DataFimValida, meta);
+
+        Assert.Equal(meta, campanha.MetaFinanceira);
+    }
+
+    [Fact]
+    public void AoVerificarEdicaoDeCampanhaAtivaNaoDeveLancarExcecao()
+    {
+        Campanha campanha = CriarCampanhaValida();
+
+        Exception? ex = Record.Exception(campanha.GarantirQuePodeSerEditada);
+
+        Assert.Null(ex);
+    }
+
+    [Theory]
+    [InlineData(StatusCampanha.Concluida)]
+    [InlineData(StatusCampanha.Cancelada)]
+    public void AoVerificarEdicaoDeCampanhaEncerradaDeveLancarExcecao(StatusCampanha status)
+    {
+        Campanha campanha = CriarCampanhaValida();
+        campanha.SetStatus(status);
+
+        ValidationException ex = Assert.Throws<ValidationException>(campanha.GarantirQuePodeSerEditada);
+
+        Assert.Equal("Campanha concluída ou cancelada não pode ser editada", ex.Message);
+    }
+
     [Fact]
     public void AoEditarMetaFinanceiraParaZeroDeveLancarExcecao()
     {

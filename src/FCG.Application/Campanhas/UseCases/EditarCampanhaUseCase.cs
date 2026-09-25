@@ -20,7 +20,9 @@ public sealed class EditarCampanhaUseCase
     public async Task Executar(Guid id, EditarCampanhaRequest request)
     {
         Campanha campanha = await _campanhaRepository.ObterPorIdTracking(id)
-            ?? throw new ValidationException("Campanha não existe");
+            ?? throw new NotFoundException("Campanha não encontrada");
+
+        campanha.GarantirQuePodeSerEditada();
 
         if (request.Titulo is not null)
             campanha.SetTitulo(request.Titulo);

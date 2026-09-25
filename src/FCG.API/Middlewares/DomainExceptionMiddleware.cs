@@ -33,6 +33,14 @@ public class DomainExceptionMiddleware
                 "Erro de validação",
                 validationException.Message);
         }
+        catch (NotFoundException notFoundException)
+        {
+            await GerarProblemDetails(
+                context,
+                StatusCodes.Status404NotFound,
+                "Não encontrado",
+                notFoundException.Message);
+        }
         catch (ConflictException conflictException)
         {
             await GerarProblemDetails(

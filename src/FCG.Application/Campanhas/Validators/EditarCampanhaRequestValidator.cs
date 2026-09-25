@@ -25,6 +25,7 @@ public sealed class EditarCampanhaRequestValidator : AbstractValidator<EditarCam
 
         RuleFor(request => request.MetaFinanceira)
             .GreaterThan(0)
+            .PrecisionScale(18, 2, true)
             .When(request => request.MetaFinanceira is not null);
 
         RuleFor(request => request.Status)
