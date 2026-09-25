@@ -34,14 +34,11 @@ public sealed class Campanha : Entity, IAggregateRoot, IAuditavel
         SetMetaFinanceira(metaFinanceira);
         SetStatus(StatusCampanha.Ativa);
 
-        if (DataFim < DateTime.UtcNow)
-            throw new ValidationException("Data de término da campanha não pode estar no passado");
-
         ValorArrecadado = 0;
     }
 
     // EF Core
-    private Campanha(){}
+    private Campanha() { }
 
     public void SetTitulo(string titulo)
     {
@@ -73,6 +70,9 @@ public sealed class Campanha : Entity, IAggregateRoot, IAuditavel
     {
         dataInicio = ParaUtc(dataInicio);
         dataFim = ParaUtc(dataFim);
+
+        if (dataFim < DateTime.UtcNow)
+            throw new ValidationException("Data de término da campanha não pode estar no passado");
 
         if (dataFim <= dataInicio)
             throw new ValidationException("Data de término deve ser posterior à data de início");

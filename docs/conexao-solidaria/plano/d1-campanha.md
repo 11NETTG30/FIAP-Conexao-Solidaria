@@ -111,6 +111,18 @@ que Campanha não tem uma lista de Doações dentro dela.
   - **`POST /campanhas`** responde `201` com `{ "id": "..." }` (não mais o
     GUID puro). Painel segue ordenado por `DataFim` (as que terminam antes
     primeiro).
+- 2026-09-25 — Rodada 2 da revisão (escopo reduzido de propósito: o foco do
+  projeto é demonstrar a arquitetura, não esgotar regra de negócio):
+  - **Painel só mostra campanha que já começou**: filtro completo é
+    `status = 'Ativa' and data_inicio <= agora and data_fim >= agora`.
+    Criação continua aceitando `DataInicio` no futuro (campanha agendada).
+  - **Edição não pode mover `DataFim` para o passado**: a checagem saiu do
+    construtor e foi para `SetPeriodo`, valendo na criação e na edição
+    (mesma mensagem). Para encerrar, o caminho é `status: Concluida`.
+  - **Não entra**: o worker **não** filtra `data_inicio` (só `data_fim`) —
+    campanha agendada fica fora do painel, mas uma doação com o id dela
+    seria aceita; e não há trava para mover a `DataInicio` de campanha já
+    iniciada para o futuro. Ambos aceitos como fora do escopo.
 - 2026-09-25 — Achado na revisão: o README mandava `Update-Database` sem
   `-Context`, que falha desde que existem dois DbContexts — corrigido para
   um comando por contexto.
@@ -147,19 +159,19 @@ que Campanha não tem uma lista de Doações dentro dela.
       teste ponta a ponta local com 23 cenários OK (inclui 404, estados
       finais, campanha vencida fora do painel, mensagens em pt-BR, `{ id }`
       no POST)
+- [x] Rodada 2 da revisão: painel filtra `DataInicio <= agora`; edição não
+      move `DataFim` para o passado — `FCG.Tests` 106 passando, ponta a
+      ponta com 28 cenários OK
 
 ## Pendências / dúvidas
 
-- **Rodada 2 da revisão (em aberto, dependem das decisões acima)**:
-  - A edição pode mover `DataFim` para o passado? Hoje pode (a regra de
-    "DataFim no passado" é só na criação) — com o filtro por data, isso
-    tira a campanha do painel sem mudar o status.
-  - Campanha com `DataInicio` no futuro deve aparecer no painel e receber
-    doação antes de começar? Hoje aparece e recebe.
+- ~~Rodada 2 da revisão~~ — resolvida, ver Decisões de 2026-09-25.
 - **Alinhar com o Gabriel (D2)** — decisões desta demanda que tocam o
   worker/módulo Doação:
   - Worker precisa filtrar `data_fim >= now()` além de `status = 'Ativa'`
-    (SQL de referência já atualizado em `ARQUITETURA.md`)
+    (SQL de referência já atualizado em `ARQUITETURA.md`). **Não** precisa
+    filtrar `data_inicio` (decidido fora do escopo, apesar de o painel
+    filtrar)
   - `ValorDoacao` com o mesmo tipo do `valor_arrecadado`: `numeric(18,2)`,
     rejeitando mais de 2 casas decimais
   - `NotFoundException` (→ 404) disponível no Shared para o

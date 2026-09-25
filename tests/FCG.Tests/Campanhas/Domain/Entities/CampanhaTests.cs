@@ -172,6 +172,28 @@ public class CampanhaTests
     }
 
     [Fact]
+    public void AoEditarPeriodoComDataFimNoPassadoDeveLancarExcecao()
+    {
+        Campanha campanha = CriarCampanhaValida();
+
+        ValidationException ex = Assert.Throws<ValidationException>(() =>
+            campanha.SetPeriodo(DateTime.UtcNow.AddDays(-10), DateTime.UtcNow.AddDays(-1)));
+
+        Assert.Equal("Data de término da campanha não pode estar no passado", ex.Message);
+        Assert.Equal(DataFimValida, campanha.DataFim);
+    }
+
+    [Fact]
+    public void AoCriarCampanhaComDataInicioNoFuturoDeveAceitar()
+    {
+        DateTime dataInicio = DateTime.UtcNow.AddDays(5);
+
+        Campanha campanha = new(TituloValido, DescricaoValida, dataInicio, DataFimValida, MetaValida);
+
+        Assert.Equal(dataInicio, campanha.DataInicio);
+    }
+
+    [Fact]
     public void AoEditarMetaFinanceiraParaZeroDeveLancarExcecao()
     {
         Campanha campanha = CriarCampanhaValida();
