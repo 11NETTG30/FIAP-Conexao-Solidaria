@@ -20,7 +20,7 @@ dos pods ou contagem de requisições HTTP)."
 
 ## Andamento
 
-- [ ] Endpoint `/health` na `FCG.API` (`Microsoft.Extensions.Diagnostics.HealthChecks`,
+- [ ] Endpoint `/health` na `ConexaoSolidaria.API` (`Microsoft.Extensions.Diagnostics.HealthChecks`,
       checando Postgres e RabbitMQ)
 - [ ] Endpoint `/metrics` (Prometheus format — `prometheus-net.AspNetCore`
       ou equivalente)

@@ -14,8 +14,8 @@ Herda tudo de `visao-geral.md` e de
 `../CONTEXTO-TECNICO.md` — **ler os dois antes de
 começar**, especialmente a seção "Padrão de módulo — Identidade como
 referência" do segundo. Não reinventar estrutura: espelhar
-`src/FCG.Domain/Identidade`, `src/FCG.Application/Identidade`,
-`src/FCG.Infrastructure/Identidade`.
+`src/ConexaoSolidaria.Domain/Identidade`, `src/ConexaoSolidaria.Application/Identidade`,
+`src/ConexaoSolidaria.Infrastructure/Identidade`.
 
 ## Contexto
 
@@ -49,10 +49,10 @@ que Campanha não tem uma lista de Doações dentro dela.
   redução de meta/antecipação de data quando já há `ValorArrecadado`
   (estava no PDF antigo), paginação do `GET /campanhas`, cache Redis.
 - 2026-09-24 — Namespace/pasta do módulo no **plural** (`Campanhas`), com a
-  entidade no singular (`Campanha`). Com namespace `FCG.*.Campanha` e classe
+  entidade no singular (`Campanha`). Com namespace `ConexaoSolidaria.*.Campanha` e classe
   `Campanha`, o C# resolve o nome para o namespace antes da classe (erro
   CS0118) em qualquer arquivo fora de `Entities`. **O módulo Doação vai bater
-  no mesmo problema** (`FCG.*.Doacao` + classe `Doacao`) — sugestão para a
+  no mesmo problema** (`ConexaoSolidaria.*.Doacao` + classe `Doacao`) — sugestão para a
   D2: usar `Doacoes`.
 - 2026-09-24 — `Status` gravado como **texto** (`'Ativa'`, `'Concluida'`,
   `'Cancelada'`), não como int — para o worker filtrar com

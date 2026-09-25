@@ -61,7 +61,7 @@ cp .env.example .env
 # Edite o .env com suas credenciais
 ```
 
-### 2. Configurar Variáveis de Ambiente do projeto (src\FCG.API)
+### 2. Configurar Variáveis de Ambiente do projeto (src\ConexaoSolidaria.API)
 
 ```bash
 # Copie o arquivo de exemplo
@@ -97,7 +97,7 @@ wsl dos2unix scripts/init-database.sh
 
 ### 4. Aplicar Migrations
 
-No console do Gerenciador de Pacotes, selecione o projeto padrão (ex: `src\FCG.Infrastructure`) e execute os comandos:
+No console do Gerenciador de Pacotes, selecione o projeto padrão (ex: `src\ConexaoSolidaria.Infrastructure`) e execute os comandos:
 
 ```powershell
 # Criar uma nova migration
@@ -119,7 +119,7 @@ Update-Database -Context IdentidadeDbContext
 Update-Database -Context CampanhaDbContext
 ```
 
-Rodar a API (FCG.API)
+Rodar a API (ConexaoSolidaria.API)
 
 Acesse: https://localhost:5001/swagger
 

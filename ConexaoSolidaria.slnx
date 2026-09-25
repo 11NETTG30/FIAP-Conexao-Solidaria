@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ConexaoSolidaria.API/ConexaoSolidaria.API.csproj" />
+    <Project Path="src/ConexaoSolidaria.Application/ConexaoSolidaria.Application.csproj" />
+    <Project Path="src/ConexaoSolidaria.Domain/ConexaoSolidaria.Domain.csproj" />
+    <Project Path="src/ConexaoSolidaria.Infrastructure/ConexaoSolidaria.Infrastructure.csproj" />
+    <Project Path="src/ConexaoSolidaria.IoC/ConexaoSolidaria.IoC.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ConexaoSolidaria.Tests/ConexaoSolidaria.Tests.csproj" />
+  </Folder>
+</Solution>

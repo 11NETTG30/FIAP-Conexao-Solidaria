@@ -3,16 +3,16 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 WORKDIR /src
 
-COPY FiapCloudGames.slnx ./
-COPY src/FCG.API/FCG.API.csproj src/FCG.API/
-COPY src/FCG.Application/FCG.Application.csproj src/FCG.Application/
-COPY src/FCG.Domain/FCG.Domain.csproj src/FCG.Domain/
-COPY src/FCG.Infrastructure/FCG.Infrastructure.csproj src/FCG.Infrastructure/
-COPY src/FCG.IoC/FCG.IoC.csproj src/FCG.IoC/
-RUN dotnet restore src/FCG.API/FCG.API.csproj
+COPY ConexaoSolidaria.slnx ./
+COPY src/ConexaoSolidaria.API/ConexaoSolidaria.API.csproj src/ConexaoSolidaria.API/
+COPY src/ConexaoSolidaria.Application/ConexaoSolidaria.Application.csproj src/ConexaoSolidaria.Application/
+COPY src/ConexaoSolidaria.Domain/ConexaoSolidaria.Domain.csproj src/ConexaoSolidaria.Domain/
+COPY src/ConexaoSolidaria.Infrastructure/ConexaoSolidaria.Infrastructure.csproj src/ConexaoSolidaria.Infrastructure/
+COPY src/ConexaoSolidaria.IoC/ConexaoSolidaria.IoC.csproj src/ConexaoSolidaria.IoC/
+RUN dotnet restore src/ConexaoSolidaria.API/ConexaoSolidaria.API.csproj
 
 COPY src/ src/
-RUN dotnet publish src/FCG.API/FCG.API.csproj -c Release -o /app/publish --no-restore
+RUN dotnet publish src/ConexaoSolidaria.API/ConexaoSolidaria.API.csproj -c Release -o /app/publish --no-restore
 
 # Estágio usado só pelo serviço "migrate" do docker-compose: aplica as
 # migrations do EF Core contra o Postgres antes da API subir. Com mais de um
@@ -23,8 +23,8 @@ RUN dotnet tool restore
 ENV MIGRATION_CONTEXTS="IdentidadeDbContext CampanhaDbContext"
 ENTRYPOINT ["/bin/sh", "-c", "set -e; for context in $MIGRATION_CONTEXTS; do \
     dotnet tool run dotnet-ef database update --context $context \
-    --project src/FCG.Infrastructure/FCG.Infrastructure.csproj \
-    --startup-project src/FCG.API/FCG.API.csproj \
+    --project src/ConexaoSolidaria.Infrastructure/ConexaoSolidaria.Infrastructure.csproj \
+    --startup-project src/ConexaoSolidaria.API/ConexaoSolidaria.API.csproj \
     --configuration Release; done"]
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble AS final
@@ -34,4 +34,4 @@ COPY --from=build /app/publish .
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
-ENTRYPOINT ["dotnet", "FCG.API.dll"]
+ENTRYPOINT ["dotnet", "ConexaoSolidaria.API.dll"]

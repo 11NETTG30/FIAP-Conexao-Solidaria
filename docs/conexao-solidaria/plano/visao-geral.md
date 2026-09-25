@@ -120,6 +120,17 @@ de qualquer demanda filha.
   de exemplo `@fcg.com.br` que sobraram em `UsuarioTests.cs` (agora
   `@conexaosolidaria.com.br`) — `tests/FCG.Tests` continua no repositório,
   então passou a valer a mesma limpeza de identidade do resto do código.
+- 2026-09-25 — Rename dos namespaces `FCG.*` → `ConexaoSolidaria.*` (item que
+  vinha represado desde a auditoria de identidade): pastas, `.csproj` e
+  `.slnx` renomeados via `git mv` (`FiapCloudGames.slnx` →
+  `ConexaoSolidaria.slnx`), `namespace`/`using` de todo o código-fonte
+  atualizados, `Dockerfile` ajustado. Atualizadas também as referências vivas
+  em `ARQUITETURA.md`, `CONTEXTO-TECNICO.md`, `README.md` e nos planos
+  `d1`–`d5` (inclusive `ConexaoSolidaria.Worker`, ainda não criado, na
+  demanda D2) — checklists "Andamento" já fechados (`d0`, e os registros de
+  contagem de teste em `d1`) mantidos como estavam, por serem registro
+  histórico do nome válido na época. `render.yaml` (`user: fcgadmin`)
+  continua de fora — não fazia parte deste item.
 
 ## Andamento
 
