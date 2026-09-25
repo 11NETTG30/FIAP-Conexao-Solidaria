@@ -25,6 +25,8 @@ builder.Services.AddDependencies();
 
 WebApplication app = builder.Build();
 
+app.UseForwardedHeadersConfiguration();
+
 // Hosts sem um passo de deploy separado para migrations (ex.: Render, Railway)
 // aplicam as migrations pendentes aqui, atrás de uma flag — em dev local e no
 // docker-compose isso é feito pelo serviço "migrate" antes da API subir.
