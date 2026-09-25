@@ -98,11 +98,17 @@ que Campanha não tem uma lista de Doações dentro dela.
 - [x] Testes unitários das regras de validação (nomenclatura `Ao...`, sem
       underline) — `FCG.Tests` 95 passando, `FCG.BDDTests` 10 passando
 - [x] Migration inicial do schema `campanha`
-- [ ] Teste ponta a ponta local (docker-compose: migrate + login admin +
-      POST/PUT/GET) — pendente, Docker Desktop estava parado
+- [x] Teste ponta a ponta local (docker-compose: migrate + login admin +
+      POST/PUT/GET) — 2026-09-24, 27 cenários OK: migrate aplica as duas
+      migrations (uma por contexto); 401 sem token, 403 para `Doador`;
+      DataFim no passado / meta 0 / DataFim < DataInicio → 400; painel só
+      com Ativas e só os 4 campos; PUT parcial altera só o campo enviado;
+      PUT não sobrescreve `valor_arrecadado` incrementado por SQL (simulando
+      o worker); status aceito por nome e por número; cancelada some do
+      painel
 - [x] Commit + push na branch `feature/d1-campanha` — divergências do texto
       original (prefixo `api/` nas rotas, `Id` no `GET`, pasta `Campanhas`)
-      aceitas pelo grupo; PR para a branch principal ainda não aberto
+      aceitas pelo grupo; PR #5 mergeado na `main`
 
 ## Pendências / dúvidas
 
