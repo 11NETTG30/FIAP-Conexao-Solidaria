@@ -1,0 +1,6 @@
+# Scripts rodados dentro de containers Linux (ex.: docker-entrypoint-initdb.d
+# do Postgres, que executa o shebang diretamente) precisam de quebra de linha
+# LF. Sem isso, o Git for Windows converte para CRLF no checkout
+# (core.autocrlf=true, padrão da instalação) e o shebang quebra com
+# "cannot execute: required file not found".
+*.sh text eol=lf
