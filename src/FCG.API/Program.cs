@@ -6,6 +6,7 @@ using FCG.Infrastructure.Configurations;
 using FCG.Infrastructure.Identidade.Configurations;
 using FCG.Infrastructure.Identidade.Persistence;
 using FCG.IoC;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,18 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddDependencies();
 
 WebApplication app = builder.Build();
+
+// Render (e hosts similares) terminam o TLS na borda e repassam a requisição
+// como HTTP puro pro container — sem isso, Request.Scheme fica "http" mesmo
+// em produção e vaza pra geração de URL do Swagger/OpenAPI, quebrando o
+// "Try it out" por mixed content/CORS de esquema.
+ForwardedHeadersOptions forwardedHeadersOptions = new()
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+};
+forwardedHeadersOptions.KnownIPNetworks.Clear();
+forwardedHeadersOptions.KnownProxies.Clear();
+app.UseForwardedHeaders(forwardedHeadersOptions);
 
 // Hosts sem um passo de deploy separado para migrations (ex.: Render, Railway)
 // aplicam as migrations pendentes aqui, atrás de uma flag — em dev local e no
