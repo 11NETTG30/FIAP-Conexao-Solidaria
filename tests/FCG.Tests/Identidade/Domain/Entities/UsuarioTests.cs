@@ -8,7 +8,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
     public class UsuarioTests
     {
         private const string NomeValido = "João Silva";
-        private const string EmailValido = "joao.silva@fcg.com.br";
+        private const string EmailValido = "joao.silva@conexaosolidaria.com.br";
         private const string SenhaHashValida = "qicmeEIFx8xP5qg0bDWjSw==.3FN7adyhH5S4RwAjj1RfM3Kzt4m2YNeuscD6QTxxSN8=";
 
         [Fact]
@@ -155,7 +155,7 @@ namespace FCG.Tests.Identidade.Domain.Entities
             var email = new Email(EmailValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
             var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
-            var novoEmail = new Email("novo.email@fcg.com.br");
+            var novoEmail = new Email("novo.email@conexaosolidaria.com.br");
 
             // Act
             usuario.SetEmail(novoEmail);
