@@ -49,7 +49,6 @@ Mais detalhes sobre o desenho da solução em
 | Monitoramento            | New Relic (.NET Agent)                                              |
 | Testes Unitários         | xUnit                                                               |
 | Testes de Mutação        | Stryker.NET                                                         |
-| BDD                      | Reqnroll, NUnit, Moq                                                |
 
 ## 🚀 Setup Inicial
 

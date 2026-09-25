@@ -7,7 +7,6 @@
     <Project Path="src/FCG.IoC/FCG.IoC.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/FCG.BDDTests/FCG.BDDTests.csproj" Id="b3802dca-4c9e-40af-8c7d-b2eb5b401d2b" />
     <Project Path="tests/FCG.Tests/FCG.Tests.csproj" />
   </Folder>
 </Solution>

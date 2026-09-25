@@ -109,8 +109,17 @@ de qualquer demanda filha.
   seed). Decisão explícita do Gabriel: **adiar** o rename dos namespaces
   `FCG.*`/`FiapCloudGames.slnx` e o `user: fcgadmin` do `render.yaml` — D2
   (Doação + Worker) está em andamento em paralelo e mexer nisso agora geraria
-  conflito de merge; revisitar depois que `tests/FCG.Tests`/`tests/FCG.BDDTests`
-  forem removidos e o grosso das demandas estiver mergeado.
+  conflito de merge; revisitar depois que `tests/FCG.Tests` também sair (ou
+  quando o grosso das demandas estiver mergeado, o que vier primeiro).
+- 2026-09-25 — Gabriel removeu `tests/FCG.BDDTests` inteiro direto no `main`
+  (decidiu manter só `FCG.Tests`/xUnit — ajuda no desenvolvimento assistido
+  por IA). Esse commit não atualizou o `FiapCloudGames.slnx`, que ficou
+  referenciando o projeto apagado; corrigido (tirada a entrada do BDD do
+  `.slnx`), junto com as menções a BDD/Reqnroll/NUnit em `README.md` e
+  `CONTEXTO-TECNICO.md` (tabela de stack e diagrama de pastas) e os e-mails
+  de exemplo `@fcg.com.br` que sobraram em `UsuarioTests.cs` (agora
+  `@conexaosolidaria.com.br`) — `tests/FCG.Tests` continua no repositório,
+  então passou a valer a mesma limpeza de identidade do resto do código.
 
 ## Andamento
 

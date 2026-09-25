@@ -21,7 +21,6 @@ incompatível com a arquitetura atual, que não tem gateway).
 | Hash de senha | Argon2id (19 MiB, 2 iterações, paralelismo 1) — `Konscious.Security.Cryptography.Argon2` |
 | Testes unitários | xUnit |
 | Testes de mutação | Stryker.NET |
-| BDD | Reqnroll + NUnit + Moq |
 | Mensageria | RabbitMQ + MassTransit — **ainda não configurado**, entra na demanda d2 |
 
 ## Estrutura (Clean Architecture, 5 projetos na solução)
@@ -35,7 +34,6 @@ src/
 └── FCG.IoC/              ← composição de dependências (extension methods)
 
 tests/
-├── FCG.BDDTests/
 └── FCG.Tests/
 ```
 
