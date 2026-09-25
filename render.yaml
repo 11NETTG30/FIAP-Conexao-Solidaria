@@ -17,9 +17,9 @@ services:
       - key: RUN_MIGRATIONS_ON_STARTUP
         value: "true"
       - key: JwtSettings__Issuer
-        value: FCG.API
+        value: ConexaoSolidaria.API
       - key: JwtSettings__Audience
-        value: FCG.Client
+        value: ConexaoSolidaria.Client
       - key: JwtSettings__Secret
         generateValue: true
       - key: PGHOST

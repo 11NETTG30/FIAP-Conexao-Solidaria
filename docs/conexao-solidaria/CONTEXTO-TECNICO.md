@@ -103,10 +103,9 @@ docker-compose up -d
 Connection string em `src/FCG.API/appsettings.json` /
 `appsettings.Development.json` (`ConnectionStrings:DefaultConnection`). O
 `.env.example` na raiz e em `src/FCG.API/` definem as credenciais do
-`docker-compose` — confira que o nome do banco bate entre os dois arquivos
-antes de rodar (houve inconsistência entre `fcg_plataforma_jogos` e
-`fiap_cloud_games` na versão copiada da Fase 1; o valor do `.env` é o que
-prevalece em runtime).
+`docker-compose` — ambos usam `conexao_solidaria` como nome do banco (a
+versão copiada da Fase 1 tinha uma inconsistência entre `fcg_plataforma_jogos`
+e `fiap_cloud_games`, já corrigida).
 
 ## Convenções
 
@@ -115,5 +114,5 @@ prevalece em runtime).
   ex. `AoCriarCampanhaComDataFimNoPassadoDeveLancarExcecao`
 - SQL (quando houver stored procedure ou script fora do EF Core): palavras-
   chave em minúsculo, uma cláusula por linha, sem `select *`
-- Login admin de teste (seed): `admin@fcg.com.br` / `Admin@123` — válido
-  também para `GestorONG` depois do rename de perfil
+- Login admin de teste (seed): `admin@conexaosolidaria.com.br` / `Admin@123`
+  — válido também para `GestorONG` depois do rename de perfil

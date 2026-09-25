@@ -1,23 +1,35 @@
-# FIAP Cloud Games (FCG)
+# Conexão Solidária
 
 ## 📚 Sobre o Projeto
 
-Este repositório faz parte do **Tech Challenge da Pós-Graduação em Arquitetura de Sistemas .NET da FIAP**, **Turma 11NETT – Grupo 30**.
+Este repositório implementa o MVP da plataforma **Conexão Solidária**,
+desenvolvido como Hackathon da Pós-Graduação em Arquitetura de Sistemas
+.NET da FIAP, **Turma 11NETT – Grupo 30**.
 
-O objetivo do projeto é a construção de uma **plataforma de games educacionais**, chamada **FIAP Cloud Games (FCG)**, voltada para o aprendizado e prática de conceitos de tecnologia, utilizando boas práticas de arquitetura de software.
+A Conexão Solidária é uma plataforma de gestão de doações para ONGs:
+permite que uma organização cadastre e gerencie campanhas de arrecadação,
+que doadores se cadastrem e contribuam com essas campanhas, e expõe um
+painel de transparência público com o andamento de cada campanha.
 
 ---
 
-## 🎯 Objetivos do Tech Challenge
+## 🎯 Objetivos do Hackathon
 
 Os principais objetivos deste projeto são:
 
-- Desenvolver uma **API backend** para uma plataforma de games educacionais
-- Implementar **casos de uso reais**, como cadastro e autenticação de usuários
-- Utilizar **JWT** para autenticação e autorização
-- Persistir dados utilizando **Entity Framework Core**
-- Documentar a API com **Swagger**
-- Implementar **testes unitários**
+- Autenticação e autorização via **JWT**, com dois perfis: `GestorONG`
+  (gerencia campanhas) e `Doador` (contribui com campanhas)
+- Gestão de **campanhas de arrecadação** (criação/edição, restrita a
+  `GestorONG`) e cadastro público de **doadores**
+- Painel de transparência público (campanhas ativas e valor arrecadado)
+- Processamento assíncrono de doações via mensageria, sem atualização
+  direta do valor arrecadado na mesma requisição da intenção de doação
+- Persistência com **Entity Framework Core**
+- Documentação da API com **Swagger/OpenAPI**
+- Testes unitários e de mutação
+
+Mais detalhes sobre o desenho da solução em
+`docs/conexao-solidaria/ARQUITETURA.md`.
 
 ---
 
@@ -78,7 +90,7 @@ docker-compose down
 docker-compose down -v
 
 # Acessar o PostgreSQL
-docker exec -it fcg-postgres psql -U fcgadmin -d fcg_plataforma_jogos
+docker exec -it conexao-solidaria-postgres psql -U conexaosolidaria -d conexao_solidaria
 
 # Caso dê erro para subir o container postgres, rode o seguinte comando no terminal:
 wsl dos2unix scripts/init-database.sh
@@ -113,7 +125,7 @@ Acesse: https://localhost:5001/swagger
 ## Dados do administrador para login:
 ```json
 {
-	"email": "admin@fcg.com.br",
+	"email": "admin@conexaosolidaria.com.br",
 	"senha": "Admin@123"
 }
 ```

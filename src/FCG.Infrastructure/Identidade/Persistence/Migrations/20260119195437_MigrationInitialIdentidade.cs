@@ -42,7 +42,7 @@ namespace FCG.Infrastructure.Identidade.Persistence.Migrations
                 {
                     Guid.Parse("0ea5d907-6ce6-4167-b165-8aa42b023ee4"),
                     "admin",
-                    "admin@fcg.com.br",
+                    "admin@conexaosolidaria.com.br",
                     "51Ba401eUC++k5ajm5FYMg==./7iHSwbLGxojHXfSFJHdaaOJyIk4D8nk/yA6mfuJgXE=",
                     2,
                     true,

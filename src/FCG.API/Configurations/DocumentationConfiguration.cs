@@ -28,8 +28,8 @@ public static class DocumentationConfiguration
 
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("/openapi/v1.json", "FCG API v1");
-                options.DocumentTitle = "FCG - Documentação da API";
+                options.SwaggerEndpoint("/openapi/v1.json", "Conexão Solidária API v1");
+                options.DocumentTitle = "Conexão Solidária - Documentação da API";
                 options.DefaultModelsExpandDepth(2);
                 options.DisplayRequestDuration();
             });
@@ -52,10 +52,12 @@ public static class DocumentationConfiguration
         {
             document.Info = new OpenApiInfo
             {
-                Title = "FCG - Plataforma de Jogos",
+                Title = "Conexão Solidária - API",
                 Version = "v1",
                 Description = """
-                    API Backend para plataforma de jogos desenvolvida como projeto de pós-graduação em Arquitetura de Sistemas .NET.
+                    API Backend da plataforma Conexão Solidária — gestão de doadores e campanhas
+                    de arrecadação para ONGs, desenvolvida como Hackathon da Pós-Graduação em
+                    Arquitetura de Sistemas .NET (FIAP, Turma 11NETT — Grupo 30).
 
                     **Contextos:**
                     - Identidade
@@ -63,7 +65,7 @@ public static class DocumentationConfiguration
                 Contact = new OpenApiContact
                 {
                     Name = "11NETTG30",
-                    Url = new Uri("https://github.com/11NETTG30/fiap-cloud-games")
+                    Url = new Uri("https://github.com/11NETTG30/FIAP-Conexao-Solidaria")
                 }
             };
             
