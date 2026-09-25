@@ -36,7 +36,7 @@ Regras extraídas do edital e da arquitetura combinada:
 - **RabbitMQ + MassTransit**: o repositório ainda não tem nenhum dos dois
   configurados — adicionar pacotes, configurar no `Program.cs`, subir um
   serviço `rabbitmq` no `docker-compose.yml`
-- **Projeto `FCG.Worker`** (novo, Worker Service .NET, adicionado à
+- **Projeto `ConexaoSolidaria.Worker`** (novo, Worker Service .NET, adicionado à
   solution): consome `DoacaoRecebidaEvent` e, numa única transação Postgres
   cobrindo os schemas `campanha` e `doacao` (ver SQL de exemplo em
   `../ARQUITETURA.md`):
@@ -65,7 +65,7 @@ entradas de 2026-09-20 sobre banco único e fila)
       (consumer)
 - [ ] Caso de uso `RegistrarIntencaoDoacaoUseCase` (publica o evento)
 - [ ] `DoacaoController` com os 2 endpoints
-- [ ] Criar projeto `FCG.Worker` na solution
+- [ ] Criar projeto `ConexaoSolidaria.Worker` na solution
 - [ ] Consumer `DoacaoRecebidaEventConsumer` com a transação cross-schema +
       idempotência
 - [ ] Registrar `DoacaoDbContext` em `DatabaseConfiguration.cs` e o
