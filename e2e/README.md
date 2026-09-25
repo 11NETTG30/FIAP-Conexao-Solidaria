@@ -38,6 +38,12 @@ o remove ao final — não mexe num `.env` de desenvolvimento que já exista.
 O script termina com `PASS=N FAIL=0` e código de saída `0` quando tudo
 passa; qualquer `FAIL` faz o script sair com código diferente de zero.
 
+Rodando atrás de um proxy de build que reassina TLS (ex.: sandbox de
+execução remota do Claude Code), o script detecta o CA bundle local do
+proxy e injeta em `docker/certs/` antes do `docker compose build`, para o
+`dotnet restore` dentro do container confiar nele — sem nenhuma ação
+manual. Ver `docker/certs/README.md`.
+
 ## Quando rodar
 
 Depois de mudanças na API de Identidade (controllers, use cases,

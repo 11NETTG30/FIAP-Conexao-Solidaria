@@ -13,6 +13,9 @@ FAIL=0
 declare -a RESULTS
 EMAIL="doador.e2e.$(date +%s)@teste.com"
 ENV_CRIADO=0
+CERTS_DIR="$REPO_ROOT/docker/certs"
+CA_SANDBOX="/root/.ccr/ca-bundle.crt"
+CA_COPIADO=0
 
 check() {
   local name="$1" expected="$2" actual="$3"
@@ -42,6 +45,10 @@ cleanup() {
   if [ "$ENV_CRIADO" = "1" ]; then
     rm -f "$REPO_ROOT/.env"
     note ".env temporário (gerado por este script) removido ao final"
+  fi
+  if [ "$CA_COPIADO" = "1" ]; then
+    rm -f "$CERTS_DIR/sandbox-proxy.crt"
+    note "CA extra do sandbox removida de docker/certs/ ao final"
   fi
 }
 trap cleanup EXIT
@@ -87,8 +94,17 @@ if [ "$status" != "healthy" ]; then
   echo "Postgres não ficou healthy a tempo. Abortando." >&2
   exit 1
 fi
+if [ -f "$CA_SANDBOX" ]; then
+  cp "$CA_SANDBOX" "$CERTS_DIR/sandbox-proxy.crt"
+  CA_COPIADO=1
+  note "CA do proxy de egress do sandbox detectada e injetada em docker/certs/ para o build (ver docker/certs/README.md)"
+fi
+
 echo "== Compilando imagens migrate/api =="
-docker compose build migrate api
+if ! docker compose build migrate api; then
+  echo "Build das imagens migrate/api falhou. Veja o log do docker compose build acima." >&2
+  exit 1
+fi
 docker compose up migrate
 docker compose up -d api
 sleep 4

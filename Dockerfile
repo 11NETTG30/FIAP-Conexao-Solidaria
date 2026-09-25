@@ -3,6 +3,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 WORKDIR /src
 
+# CA extra opcional (ex.: proxy de egress de um sandbox de build) — a pasta
+# normalmente está vazia e essa etapa não faz nada nesse caso.
+# Ver docker/certs/README.md.
+COPY docker/certs/ /usr/local/share/ca-certificates/extra/
+RUN update-ca-certificates
+
 COPY FiapCloudGames.slnx ./
 COPY src/FCG.API/FCG.API.csproj src/FCG.API/
 COPY src/FCG.Application/FCG.Application.csproj src/FCG.Application/
