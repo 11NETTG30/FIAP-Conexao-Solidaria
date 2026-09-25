@@ -26,16 +26,16 @@ deploy automatizado no Kubernetes é opcional, mas a geração da imagem no CI
 Dois processos deployáveis (ver `../ARQUITETURA.md`) → duas
 imagens:
 
-- `fcg-api` (a partir de `src/FCG.API`)
-- `doacoes-worker` (a partir de `src/FCG.Worker`)
+- `conexao-solidaria-api` (a partir de `src/ConexaoSolidaria.API`)
+- `doacoes-worker` (a partir de `src/ConexaoSolidaria.Worker`)
 
 ## Andamento
 
-- [x] `Dockerfile` multi-stage para `FCG.API` (raiz do repo) — estágios
+- [x] `Dockerfile` multi-stage para `ConexaoSolidaria.API` (raiz do repo) — estágios
       `build` → `migrate` (aplica `dotnet ef database update` antes da API
       subir) → `final` (runtime `aspnet`, porta 8080)
-- [ ] `Dockerfile` multi-stage para `FCG.Worker` — bloqueado: o projeto
-      `FCG.Worker` ainda não existe (depende de D2)
+- [ ] `Dockerfile` multi-stage para `ConexaoSolidaria.Worker` — bloqueado: o projeto
+      `ConexaoSolidaria.Worker` ainda não existe (depende de D2)
 - [x] Adicionar o serviço `api` (+ `migrate`) ao `docker-compose.yml`, junto
       com o Postgres já existente, para teste local de ponta a ponta —
       RabbitMQ/`doacoes-worker` ficam para quando D2 entrar

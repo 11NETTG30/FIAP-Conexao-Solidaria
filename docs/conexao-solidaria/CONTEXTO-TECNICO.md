@@ -27,22 +27,22 @@ incompatível com a arquitetura atual, que não tem gateway).
 
 ```
 src/
-├── FCG.API/            ← Controllers, Program.cs, Middlewares, Configurations
-├── FCG.Application/     ← DTOs, UseCases, Validators (FluentValidation não usado ainda — ver nota)
-├── FCG.Domain/          ← Entidades, Value Objects, interfaces de repositório
-├── FCG.Infrastructure/  ← EF Core, JWT, Argon2id, DbContexts
-└── FCG.IoC/              ← composição de dependências (extension methods)
+├── ConexaoSolidaria.API/            ← Controllers, Program.cs, Middlewares, Configurations
+├── ConexaoSolidaria.Application/     ← DTOs, UseCases, Validators (FluentValidation não usado ainda — ver nota)
+├── ConexaoSolidaria.Domain/          ← Entidades, Value Objects, interfaces de repositório
+├── ConexaoSolidaria.Infrastructure/  ← EF Core, JWT, Argon2id, DbContexts
+└── ConexaoSolidaria.IoC/              ← composição de dependências (extension methods)
 
 tests/
-└── FCG.Tests/
+└── ConexaoSolidaria.Tests/
 ```
 
 Cada camada tem subpastas por **módulo de negócio** — hoje só `Identidade`
 existe; `Campanha` e `Doacao` entram como pastas novas, no mesmo nível:
 
 ```
-src/FCG.Domain/Identidade/{Entities, Enums, Repositories, Security, ValueObjects}
-src/FCG.Domain/Shared/Abstractions/{Entity, IAggregateRoot, IRepository, ValueObject, ...}
+src/ConexaoSolidaria.Domain/Identidade/{Entities, Enums, Repositories, Security, ValueObjects}
+src/ConexaoSolidaria.Domain/Shared/Abstractions/{Entity, IAggregateRoot, IRepository, ValueObject, ...}
 ```
 
 `Shared/` contém as abstrações cross-módulo (`Entity`, `IAggregateRoot`,
@@ -64,10 +64,10 @@ Ao implementar `Campanha` ou `Doacao`, seguir exatamente esta forma (é o que
    para o `IEntityTypeConfiguration<T>` de cada entidade;
    `Persistence/Repositories/` implementando as interfaces do Domain
 4. **Registro**: novo `DbContext` entra em
-   `FCG.Infrastructure/Configurations/DatabaseConfiguration.cs`, chamando o
+   `ConexaoSolidaria.Infrastructure/Configurations/DatabaseConfiguration.cs`, chamando o
    método genérico `AddDatabasePostgreSQL<T>(connectionString, schema)` que
    já existe ali; repositórios entram em
-   `FCG.IoC/DependencyInjectionInfrastructure.cs`, método `AddRepositories()`
+   `ConexaoSolidaria.IoC/DependencyInjectionInfrastructure.cs`, método `AddRepositories()`
 
 ## Autenticação — estado atual e o que muda
 
@@ -89,7 +89,7 @@ claims:
 - Nenhum pipeline de CI (`.github/workflows` não existe)
 - Nenhum manifest de Kubernetes
 - RabbitMQ/MassTransit — zero referência no código ou nos pacotes
-- Projeto `FCG.Worker` — não existe, é um projeto novo a criar
+- Projeto `ConexaoSolidaria.Worker` — não existe, é um projeto novo a criar
 
 ## Banco de dados local
 
@@ -98,9 +98,9 @@ docker-compose up -d
 # cria fcg-postgres (Postgres 18) e fcg-pgadmin
 ```
 
-Connection string em `src/FCG.API/appsettings.json` /
+Connection string em `src/ConexaoSolidaria.API/appsettings.json` /
 `appsettings.Development.json` (`ConnectionStrings:DefaultConnection`). O
-`.env.example` na raiz e em `src/FCG.API/` definem as credenciais do
+`.env.example` na raiz e em `src/ConexaoSolidaria.API/` definem as credenciais do
 `docker-compose` — ambos usam `conexao_solidaria` como nome do banco (a
 versão copiada da Fase 1 tinha uma inconsistência entre `fcg_plataforma_jogos`
 e `fiap_cloud_games`, já corrigida).
