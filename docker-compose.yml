@@ -54,7 +54,6 @@ services:
   migrate:
     build:
       context: .
-      dockerfile: Dockerfile
       dockerfile: src/ConexaoSolidaria.API/Dockerfile
       target: migrate
     container_name: conexao-solidaria-migrate
@@ -70,7 +69,6 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
       dockerfile: src/ConexaoSolidaria.API/Dockerfile
       target: final
     container_name: conexao-solidaria-api
