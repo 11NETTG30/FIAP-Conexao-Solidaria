@@ -31,18 +31,22 @@ imagens:
 
 ## Andamento
 
-- [x] `Dockerfile` multi-stage para `ConexaoSolidaria.API` (raiz do repo) — estágios
-      `build` → `migrate` (aplica `dotnet ef database update` antes da API
-      subir) → `final` (runtime `aspnet`, porta 8080)
-- [ ] `Dockerfile` multi-stage para `ConexaoSolidaria.Worker` — bloqueado: o projeto
-      `ConexaoSolidaria.Worker` ainda não existe (depende de D2)
+- [x] `Dockerfile` multi-stage para `ConexaoSolidaria.API`
+  (`src/ConexaoSolidaria.API/Dockerfile`) — estágios `build` → `migrate`
+  (aplica `dotnet ef database update` antes da API subir) → `final`
+  (runtime `aspnet`, porta 8080)
+- [x] `Dockerfile` multi-stage para `ConexaoSolidaria.Worker`
+  (`src/ConexaoSolidaria.Worker/Dockerfile`) — estágios `build` → `final`
+  (runtime `dotnet`, sem porta exposta, só consome fila). Criado durante
+  D2, junto com o projeto `ConexaoSolidaria.Worker` — ver nota abaixo
+  sobre o Dockerfile ter deixado de ficar na raiz do repo.
 - [x] Adicionar o serviço `api` (+ `migrate`) ao `docker-compose.yml`, junto
-      com o Postgres já existente, para teste local de ponta a ponta —
-      RabbitMQ/`doacoes-worker` ficam para quando D2 entrar
+  com o Postgres já existente, para teste local de ponta a ponta —
+  RabbitMQ/`doacoes-worker` ficam para quando D2 entrar
 - [ ] Workflow `.github/workflows/docker-build.yml`: build + push das duas
-      imagens para GitHub Container Registry a cada push na branch principal
+  imagens para GitHub Container Registry a cada push na branch principal
 - [ ] Confirmar que o pipeline roda os testes (`dotnet test`) antes do build
-      da imagem
+  da imagem
 
 ## Notas de implementação
 
@@ -63,6 +67,18 @@ imagens:
 - `ASPNETCORE_ENVIRONMENT=Development` por padrão no serviço `api` só para
   manter Swagger/Scalar acessíveis nesse estágio do projeto; revisar antes
   de qualquer deploy que se pretenda "de produção" de verdade.
+- **2026-09-27 (durante D2)**: o `Dockerfile` único na raiz (com estágios
+  `final` para a API e `worker` para o Worker) foi substituído por dois
+  Dockerfiles independentes — `src/ConexaoSolidaria.API/Dockerfile`
+  (mantém também o estágio `migrate`) e `src/ConexaoSolidaria.Worker/Dockerfile`
+  — para deixar claro que cada serviço deployável é dono do seu próprio
+  Dockerfile, sem acoplar o build de um ao do outro no mesmo arquivo.
+  `docker-compose.yml` e `render.yaml` foram atualizados para os novos
+  caminhos (`dockerfile: src/ConexaoSolidaria.API/Dockerfile` /
+  `src/ConexaoSolidaria.Worker/Dockerfile`, `target: final` nos dois). Esse
+  build **não foi validado com `docker compose up`** nesta sessão (sem
+  Docker disponível no ambiente) — recomenda-se revalidar antes do próximo
+  deploy/PR de D3.
 
 ## Pendências / dúvidas
 

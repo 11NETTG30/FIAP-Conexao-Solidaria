@@ -30,6 +30,13 @@ public sealed class CampanhaRepository : ICampanhaRepository
             .ToListAsync();
     }
 
+    public async Task<Campanha?> ObterPorId(Guid id)
+    {
+        return await _dbContext.Campanhas
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
     public async Task<Campanha?> ObterPorIdTracking(Guid id)
     {
         return await _dbContext.Campanhas

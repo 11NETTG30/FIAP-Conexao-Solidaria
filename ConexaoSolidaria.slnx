@@ -5,6 +5,7 @@
     <Project Path="src/ConexaoSolidaria.Domain/ConexaoSolidaria.Domain.csproj" />
     <Project Path="src/ConexaoSolidaria.Infrastructure/ConexaoSolidaria.Infrastructure.csproj" />
     <Project Path="src/ConexaoSolidaria.IoC/ConexaoSolidaria.IoC.csproj" />
+    <Project Path="src/ConexaoSolidaria.Worker/ConexaoSolidaria.Worker.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/ConexaoSolidaria.Tests/ConexaoSolidaria.Tests.csproj" />

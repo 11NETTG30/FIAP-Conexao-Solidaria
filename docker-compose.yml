@@ -34,10 +34,27 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin
 
+  rabbitmq:
+    image: rabbitmq:4.1-management
+    container_name: conexao-solidaria-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - conexao-solidaria-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   migrate:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: src/ConexaoSolidaria.API/Dockerfile
       target: migrate
     container_name: conexao-solidaria-migrate
     environment:
@@ -52,7 +69,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: src/ConexaoSolidaria.API/Dockerfile
       target: final
     container_name: conexao-solidaria-api
     environment:
@@ -61,11 +78,36 @@ services:
       JwtSettings__Secret: ${JWT_SECRET}
       JwtSettings__Issuer: ConexaoSolidaria.API
       JwtSettings__Audience: ConexaoSolidaria.Client
+      RabbitMqSettings__Host: rabbitmq
+      RabbitMqSettings__Username: ${RABBITMQ_USER}
+      RabbitMqSettings__Password: ${RABBITMQ_PASSWORD}
     ports:
       - "8080:8080"
     depends_on:
       migrate:
         condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - conexao-solidaria-network
+
+  doacoes-worker:
+    build:
+      context: .
+      dockerfile: src/ConexaoSolidaria.Worker/Dockerfile
+      target: final
+    container_name: conexao-solidaria-doacoes-worker
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+      RabbitMqSettings__Host: rabbitmq
+      RabbitMqSettings__Username: ${RABBITMQ_USER}
+      RabbitMqSettings__Password: ${RABBITMQ_PASSWORD}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
     networks:
       - conexao-solidaria-network
 

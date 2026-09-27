@@ -1,4 +1,5 @@
 using ConexaoSolidaria.Infrastructure.Campanhas.Persistence;
+using ConexaoSolidaria.Infrastructure.Doacoes.Persistence;
 using ConexaoSolidaria.Infrastructure.Identidade.Persistence;
 using ConexaoSolidaria.Infrastructure.Shared.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ public static class DatabaseConfiguration
             services.AddSingleton<AuditoriaSaveChangesInterceptor>();
             services.AddDatabasePostgreSQL<IdentidadeDbContext>(connectionString, IdentidadeDbContext.SCHEMA);
             services.AddDatabasePostgreSQL<CampanhaDbContext>(connectionString, CampanhaDbContext.SCHEMA);
+            services.AddDatabasePostgreSQL<DoacaoDbContext>(connectionString, DoacaoDbContext.SCHEMA);
         }
 
         private void AddDatabasePostgreSQL<T>(string connectionString, string schema) where T : DbContext
@@ -38,7 +40,9 @@ public static class DatabaseConfiguration
     // seguindo a convenção padrão do libpq (PGHOST, PGPORT, PGDATABASE, PGUSER,
     // PGPASSWORD). Quando PGHOST existir, monta a connection string a partir delas;
     // senão, usa ConnectionStrings:DefaultConnection normalmente (dev local, compose).
-    private static string ResolveConnectionString(IConfiguration configuration)
+    // Público porque o doacoes-worker também precisa dela (não passa por
+    // AddDatabase, que registra só os DbContexts usados pela API).
+    public static string ResolveConnectionString(IConfiguration configuration)
     {
         string? pgHost = configuration["PGHOST"];
 
