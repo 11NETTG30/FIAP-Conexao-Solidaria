@@ -1,10 +1,12 @@
 using ConexaoSolidaria.Application.Identidade.Security;
 using ConexaoSolidaria.Application.Shared;
 using ConexaoSolidaria.Domain.Campanhas.Repositories;
+using ConexaoSolidaria.Domain.Doacoes.Repositories;
 using ConexaoSolidaria.Domain.Identidade.Repositories;
 using ConexaoSolidaria.Domain.Identidade.Security;
 using ConexaoSolidaria.Domain.Shared.Abstractions;
 using ConexaoSolidaria.Infrastructure.Campanhas.Persistence.Repositories;
+using ConexaoSolidaria.Infrastructure.Doacoes.Persistence.Repositories;
 using ConexaoSolidaria.Infrastructure.Identidade.Configurations;
 using ConexaoSolidaria.Infrastructure.Identidade.Persistence.Repositories;
 using ConexaoSolidaria.Infrastructure.Identidade.Security;
@@ -39,8 +41,7 @@ public static class DependencyInjectionInfrastructure
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<ICampanhaRepository, CampanhaRepository>();
+            services.AddScoped<IDoacaoRepository, DoacaoRepository>();
         }
-        
-        
     }
 }

@@ -1,5 +1,6 @@
 using System.Globalization;
 using ConexaoSolidaria.Application.Campanhas.UseCases;
+using ConexaoSolidaria.Application.Doacoes.UseCases;
 using ConexaoSolidaria.Application.Identidade.UseCases;
 using ConexaoSolidaria.Application.Identidade.Validators;
 using FluentValidation;
@@ -32,6 +33,9 @@ public static class DependencyInjectionApplication
             services.AddScoped<CriarCampanhaUseCase>();
             services.AddScoped<EditarCampanhaUseCase>();
             services.AddScoped<ListarCampanhasAtivasUseCase>();
+            
+            services.AddScoped<RegistrarIntencaoDoacaoUseCase>();
+            services.AddScoped<ObterDoacaoPorIdUseCase>();
         }
 
         private void AddFluentValidation()

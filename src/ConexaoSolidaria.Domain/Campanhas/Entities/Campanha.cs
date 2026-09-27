@@ -110,6 +110,9 @@ public sealed class Campanha : Entity, IAggregateRoot, IAuditavel
             throw new ValidationException("Campanha concluída ou cancelada não pode ser editada");
     }
 
+    public bool PodeReceberDoacao() =>
+        Status == StatusCampanha.Ativa && DataFim >= DateTime.UtcNow;
+
     // O Postgres (timestamp with time zone) só aceita DateTime em UTC — datas
     // que chegam sem fuso no JSON são tratadas como UTC.
     private static DateTime ParaUtc(DateTime data) =>

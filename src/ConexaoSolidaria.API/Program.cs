@@ -3,9 +3,11 @@ using ConexaoSolidaria.API.Configurations;
 using ConexaoSolidaria.API.Middlewares;
 using ConexaoSolidaria.Infrastructure.Campanhas.Persistence;
 using ConexaoSolidaria.Infrastructure.Configurations;
+using ConexaoSolidaria.Infrastructure.Doacoes.Persistence;
 using ConexaoSolidaria.Infrastructure.Identidade.Configurations;
 using ConexaoSolidaria.Infrastructure.Identidade.Persistence;
 using ConexaoSolidaria.IoC;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,13 @@ builder.Services.ConfigureModelStateInvalid();
 
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddMessaging(
+    builder.Configuration,
+    configurarOutbox: busConfigurator => busConfigurator.AddEntityFrameworkOutbox<DoacaoDbContext>(outbox =>
+    {
+        outbox.UsePostgres();
+        outbox.UseBusOutbox();
+    }));
 builder.Services.AddDependencies();
 
 WebApplication app = builder.Build();
@@ -35,6 +44,7 @@ if (builder.Configuration.GetValue<bool>("RUN_MIGRATIONS_ON_STARTUP"))
     using IServiceScope migrationScope = app.Services.CreateScope();
     migrationScope.ServiceProvider.GetRequiredService<IdentidadeDbContext>().Database.Migrate();
     migrationScope.ServiceProvider.GetRequiredService<CampanhaDbContext>().Database.Migrate();
+    migrationScope.ServiceProvider.GetRequiredService<DoacaoDbContext>().Database.Migrate();
 }
 
 if (app.Environment.IsDevelopment())

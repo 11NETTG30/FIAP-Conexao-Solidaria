@@ -201,4 +201,23 @@ public class CampanhaTests
         Assert.Throws<ValidationException>(() => campanha.SetMetaFinanceira(0));
         Assert.Equal(MetaValida, campanha.MetaFinanceira);
     }
+
+    [Fact]
+    public void AoVerificarSeCampanhaAtivaEDentroDoPrazoPodeReceberDoacaoDeveRetornarTrue()
+    {
+        Campanha campanha = CriarCampanhaValida();
+
+        Assert.True(campanha.PodeReceberDoacao());
+    }
+
+    [Theory]
+    [InlineData(StatusCampanha.Concluida)]
+    [InlineData(StatusCampanha.Cancelada)]
+    public void AoVerificarSeCampanhaNaoAtivaPodeReceberDoacaoDeveRetornarFalse(StatusCampanha status)
+    {
+        Campanha campanha = CriarCampanhaValida();
+        campanha.SetStatus(status);
+
+        Assert.False(campanha.PodeReceberDoacao());
+    }
 }
