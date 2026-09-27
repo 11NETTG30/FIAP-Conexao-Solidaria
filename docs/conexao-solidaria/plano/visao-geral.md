@@ -135,28 +135,27 @@ de qualquer demanda filha.
   `edital/HACKATHON_11NETT.pdf` item a item contra d0–d6. Achado um requisito
   funcional obrigatório sem demanda associada — **CPF do doador** (item 3 do
   edital, "validar formato"), ausente da entidade `Usuario` (herdada do
-  `fiap-cloud-games`, que nunca teve esse campo). Criada a demanda `d7`
-  (`d7-cpf-doador.md`) com o levantamento de impacto: confirmado por busca no
-  repositório que `new Usuario(...)` só é usado dentro do próprio módulo
-  Identidade — D1/D2 referenciam usuário só pelo `Guid` (`IdDoador`), nunca a
-  entidade — então d7 não conflita com o trabalho de d2–d5 e pode ficar para
-  o fim da fila; a única dependência real é fechar antes de a d6 travar o
-  README e o roteiro do vídeo (o script `e2e/smoke-test.sh` e qualquer
-  coleção Postman/prints do Swagger usados ali ficariam desatualizados se o
-  CPF entrar depois).
+  `fiap-cloud-games`, que nunca teve esse campo). Registrado como **d0.1**
+  (`d0.1-cpf-doador.md`), adendo à própria D0/Identidade (do Gabriel), não
+  como demanda nova no fim da fila — confirmado por busca no repositório que
+  `new Usuario(...)` só é usado dentro do próprio módulo Identidade; D1/D2
+  referenciam usuário só pelo `Guid` (`IdDoador`), nunca a entidade. Não
+  impacta o andamento de d1–d5; a única dependência real é fechar antes de a
+  d6 travar o README e o roteiro do vídeo (o script `e2e/smoke-test.sh` e
+  qualquer coleção Postman/prints do Swagger usados ali ficariam
+  desatualizados se o CPF entrar depois).
 
 ## Andamento
 
 - [x] d0 — Base: rename de roles, scaffolding de pastas dos módulos novos
+- [ ] d0.1 — CPF do doador (Gabriel; ver `d0.1-cpf-doador.md`) — não impacta
+      d1–d5, só precisa fechar antes de a d6 travar README/vídeo
 - [x] d1 — Módulo Campanha
 - [ ] d2 — Módulo Doação + Worker + RabbitMQ
 - [ ] d3 — Dockerfile + CI (build de imagem)
 - [ ] d4 — Manifests Kubernetes
 - [ ] d5 — Observabilidade (health/metrics + Grafana)
 - [ ] d6 — Documentação final + vídeo de entrega
-- [ ] d7 — CPF do doador (achado em auditoria, ver `d7-cpf-doador.md`) —
-      pode rodar em paralelo com d2–d5, mas precisa fechar antes de a d6
-      travar README/vídeo
 
 ## Pendências / dúvidas
 
