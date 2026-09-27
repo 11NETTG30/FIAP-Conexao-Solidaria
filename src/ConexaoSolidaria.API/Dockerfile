@@ -26,7 +26,7 @@ RUN dotnet publish src/ConexaoSolidaria.API/ConexaoSolidaria.API.csproj -c Relea
 FROM build AS migrate
 COPY .config/dotnet-tools.json .config/dotnet-tools.json
 RUN dotnet tool restore
-ENV MIGRATION_CONTEXTS="IdentidadeDbContext CampanhaDbContext"
+ENV MIGRATION_CONTEXTS="IdentidadeDbContext CampanhaDbContext DoacaoDbContext"
 ENTRYPOINT ["/bin/sh", "-c", "set -e; for context in $MIGRATION_CONTEXTS; do \
     dotnet tool run dotnet-ef database update --context $context \
     --project src/ConexaoSolidaria.Infrastructure/ConexaoSolidaria.Infrastructure.csproj \

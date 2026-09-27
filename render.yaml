@@ -9,6 +9,7 @@ services:
     name: conexao-solidaria-api
     env: docker
     dockerfilePath: ./Dockerfile
+    dockerfilePath: ./src/ConexaoSolidaria.API/Dockerfile
     dockerContext: .
     plan: free
     envVars:
