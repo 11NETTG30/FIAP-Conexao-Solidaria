@@ -144,6 +144,18 @@ de qualquer demanda filha.
   d6 travar o README e o roteiro do vídeo (o script `e2e/smoke-test.sh` e
   qualquer coleção Postman/prints do Swagger usados ali ficariam
   desatualizados se o CPF entrar depois).
+- 2026-09-28 — Sincronizado com PR #17 (`feat/observabilidade`), mergeado
+  pelo Lennon: trouxe d3 (workflow `.github/workflows/docker-publish.yml`,
+  build+test+push das duas imagens pro GHCR a cada push na `main`) e d5
+  (OpenTelemetry + Prometheus + Grafana, validados rodando de verdade num
+  cluster Kubernetes do Docker Desktop) praticamente prontas, além dos
+  manifests da d4 (`k8s/`) completos — só falta a d4 confirmar formalmente
+  o `kubectl apply -f k8s/` ponta a ponta no seu próprio checklist. D6
+  (`d6-documentacao-final.md`) detalhada em blocos por dependência, a
+  pedido do Gabriel, para dividir o trabalho entre o grupo: só o Bloco B
+  (README de doação + roteiro de vídeo de autenticação/campanha/doação)
+  segue bloqueado, esperando a mesma validação ponta a ponta da d2 que já
+  estava pendente.
 
 ## Andamento
 
@@ -151,10 +163,17 @@ de qualquer demanda filha.
 - [ ] d0.1 — CPF do doador (Gabriel; ver `d0.1-cpf-doador.md`) — não impacta
       d1–d5, só precisa fechar antes de a d6 travar README/vídeo
 - [x] d1 — Módulo Campanha
-- [ ] d2 — Módulo Doação + Worker + RabbitMQ
-- [ ] d3 — Dockerfile + CI (build de imagem)
-- [ ] d4 — Manifests Kubernetes
-- [ ] d5 — Observabilidade (health/metrics + Grafana)
+- [ ] d2 — Módulo Doação + Worker + RabbitMQ (código completo; falta validar
+      o fluxo ponta a ponta via docker-compose — ver `d2-doacao-worker.md`)
+- [x] d3 — Dockerfile + CI (build de imagem, PR #17 traz também o workflow
+      de publicação no GHCR)
+- [ ] d4 — Manifests Kubernetes (todos os `.yaml` prontos; falta só marcar
+      formalmente o `kubectl apply -f k8s/` ponta a ponta — d5 relata ter
+      validado tudo rodando junto num cluster Docker Desktop, então isso
+      pode já estar coberto na prática, só não atualizado no checklist da
+      d4)
+- [x] d5 — Observabilidade (health/metrics + Grafana) — validada rodando de
+      verdade no Kubernetes do Docker Desktop em 2026-09-27
 - [ ] d6 — Documentação final + vídeo de entrega
 
 ## Pendências / dúvidas
