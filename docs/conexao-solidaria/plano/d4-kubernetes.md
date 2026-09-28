@@ -25,16 +25,14 @@ Exigência do edital: cluster K8s com `Deployments`, `Services` e
 
 ## Andamento
 
-- [ ] `k8s/fcg-api-deployment.yaml` + `k8s/fcg-api-service.yaml`
-- [ ] `k8s/doacoes-worker-deployment.yaml`
-- [ ] `k8s/postgres-deployment.yaml` (+ PVC)
-- [ ] `k8s/rabbitmq-deployment.yaml`
-- [ ] `k8s/configmap.yaml` com as variáveis de ambiente não sensíveis
-      (mover o que hoje está em `appsettings.json`/`.env` para cá, conforme
-      já é prática registrada em
-      `/home/claude` → nota de aprendizado do projeto FCG anterior: "mover
-      configs para fora de appsettings.json para ConfigMaps/Secrets")
-- [ ] Secret para a connection string e o `JwtSettings:Secret`
+- [x] Estrutura base criada em `k8s/` no próprio monorepo, sem copiar o
+      desenho antigo com Kong e microsserviços extras
+- [x] `namespace.yaml`
+- [x] API: `k8s/conexao-solidaria-api/{configmap,secret.example,deployment,service}.yaml`
+- [x] Worker: `k8s/doacoes-worker/{configmap,secret.example,deployment}.yaml`
+- [x] `ingress.yaml` apontando para a API
+- [x] Postgres: `k8s/postgres/{secret.example,pvc,deployment,service}.yaml`
+- [x] RabbitMQ: `k8s/rabbitmq/{secret.example,pvc,deployment,service}.yaml`
 - [ ] Testar `kubectl apply -f k8s/` localmente de ponta a ponta
 
 ## Pendências / dúvidas
