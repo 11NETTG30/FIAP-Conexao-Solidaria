@@ -43,10 +43,11 @@ imagens:
 - [x] Adicionar o serviço `api` (+ `migrate`) ao `docker-compose.yml`, junto
   com o Postgres já existente, para teste local de ponta a ponta —
   RabbitMQ/`doacoes-worker` ficam para quando D2 entrar
-- [ ] Workflow `.github/workflows/docker-build.yml`: build + push das duas
-  imagens para GitHub Container Registry a cada push na branch principal
-- [ ] Confirmar que o pipeline roda os testes (`dotnet test`) antes do build
-  da imagem
+- [x] Workflow `.github/workflows/docker-publish.yml`: build + push das duas
+  imagens para GitHub Container Registry (gatilho manual `workflow_dispatch`,
+  sem etapa de deploy Azure)
+- [x] Pipeline roda os testes (`dotnet test`) antes do build/push das imagens
+  (`job build-and-push` depende de `job test` no workflow)
 
 ## Notas de implementação
 

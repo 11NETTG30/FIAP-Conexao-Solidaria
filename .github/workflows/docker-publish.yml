@@ -1,0 +1,67 @@
+name: Publicar Imagens Docker
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restaurar dependencias
+        run: dotnet restore ConexaoSolidaria.slnx
+
+      - name: Rodar testes
+        run: dotnet test ConexaoSolidaria.slnx --configuration Release --no-restore
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - image_name: conexao-solidaria-api
+            dockerfile: src/ConexaoSolidaria.API/Dockerfile
+          - image_name: doacoes-worker
+            dockerfile: src/ConexaoSolidaria.Worker/Dockerfile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login no GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build e push da imagem
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          target: final
+          push: true
+          tags: ghcr.io/11nettg30/${{ matrix.image_name }}:latest
+
+      - name: Deletar imagens antigas sem tag
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: ${{ matrix.image_name }}
+          package-type: container
+          delete-only-untagged-versions: true
