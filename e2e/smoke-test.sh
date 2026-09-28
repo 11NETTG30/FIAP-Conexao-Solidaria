@@ -75,6 +75,8 @@ POSTGRES_PASSWORD=e2e_$(openssl rand -hex 8)
 POSTGRES_DB=conexao_solidaria
 PGADMIN_DEFAULT_EMAIL=admin@conexaosolidaria.com.br
 PGADMIN_DEFAULT_PASSWORD=e2e_$(openssl rand -hex 8)
+RABBITMQ_USER=conexaosolidaria
+RABBITMQ_PASSWORD=e2e_$(openssl rand -hex 8)
 JWT_SECRET=$(openssl rand -base64 32)
 ASPNETCORE_ENVIRONMENT=Development
 EOF
