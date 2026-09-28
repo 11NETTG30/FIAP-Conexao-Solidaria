@@ -156,12 +156,25 @@ de qualquer demanda filha.
   (README de doação + roteiro de vídeo de autenticação/campanha/doação)
   segue bloqueado, esperando a mesma validação ponta a ponta da d2 que já
   estava pendente.
+- 2026-09-28 — Ao validar a d0.1 ponta a ponta, achado um bug pré-existente
+  em `e2e/smoke-test.sh`, sem relação com CPF: o `.env` temporário gerado
+  pelo próprio script nunca ganhou `RABBITMQ_USER`/`RABBITMQ_PASSWORD`
+  quando o RabbitMQ entrou no projeto (d2) — sem essas variáveis,
+  `RabbitMqSettings.Username`/`Password` ficam vazios e o container `api`
+  derruba na subida (`OptionsValidationException`), fazendo toda a bateria
+  do smoke test falhar por "conexão recusada", não só os cenários de auth.
+  Corrigido (duas linhas a mais no `.env` gerado). Registrado aqui porque
+  não é escopo da d0.1 e pode ser relevante para quem for fechar a
+  validação ponta a ponta pendente da d2/d4 — com o fix, o smoke test
+  passou 36/36 numa stack com Postgres + RabbitMQ + API reais via
+  docker-compose (só não cobre o fluxo de doação/worker em si, que não faz
+  parte do `smoke-test.sh`).
 
 ## Andamento
 
 - [x] d0 — Base: rename de roles, scaffolding de pastas dos módulos novos
-- [ ] d0.1 — CPF do doador (Gabriel; ver `d0.1-cpf-doador.md`) — não impacta
-      d1–d5, só precisa fechar antes de a d6 travar README/vídeo
+- [x] d0.1 — CPF do doador (Gabriel; ver `d0.1-cpf-doador.md`) — validado
+      ponta a ponta (`dotnet test` + `e2e/smoke-test.sh` 36/36), PR aberto
 - [x] d1 — Módulo Campanha
 - [x] d2 — Módulo Doação + Worker + RabbitMQ (fechada por decisão do
       Gabriel em 2026-09-28 sem a validação ponta a ponta via

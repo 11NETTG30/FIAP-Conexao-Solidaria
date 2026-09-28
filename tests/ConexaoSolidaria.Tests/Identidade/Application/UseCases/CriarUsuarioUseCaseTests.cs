@@ -15,6 +15,7 @@ public class CriarUsuarioUseCaseTests
 {
     private const string NomeValido = "João Silva";
     private const string EmailValido = "joao.silva@conexaosolidaria.com.br";
+    private const string CpfValido = "11144477735";
     private const string SenhaValida = "SenhaForte123!";
 
     private readonly Mock<IUsuarioRepository> _usuarioRepositoryMock = new();
@@ -44,7 +45,7 @@ public class CriarUsuarioUseCaseTests
             .Setup(r => r.VerificarExistenciaEmail(It.IsAny<string>()))
             .ReturnsAsync(true);
 
-        CriarUsuarioRequest request = new(NomeValido, EmailValido, SenhaValida, SenhaValida);
+        CriarUsuarioRequest request = new(NomeValido, EmailValido, CpfValido, SenhaValida, SenhaValida);
 
         // Act
         ConflictException ex = await Assert.ThrowsAsync<ConflictException>(() => _useCase.Executar(request));
@@ -55,10 +56,46 @@ public class CriarUsuarioUseCaseTests
     }
 
     [Fact]
+    public async Task AoCriarUsuarioComCpfJaExistenteDeveLancarConflictException()
+    {
+        // Arrange
+        _senhaHasherMock
+            .Setup(h => h.GerarHash(It.IsAny<SenhaTextoPuro>()))
+            .Returns(SenhaHashValida());
+        _usuarioRepositoryMock
+            .Setup(r => r.VerificarExistenciaEmail(It.IsAny<string>()))
+            .ReturnsAsync(false);
+        _usuarioRepositoryMock
+            .Setup(r => r.VerificarExistenciaCpf(It.IsAny<string>()))
+            .ReturnsAsync(true);
+
+        CriarUsuarioRequest request = new(NomeValido, EmailValido, CpfValido, SenhaValida, SenhaValida);
+
+        // Act
+        ConflictException ex = await Assert.ThrowsAsync<ConflictException>(() => _useCase.Executar(request));
+
+        // Assert
+        Assert.Equal("Já existe um usuário cadastrado com esse CPF", ex.Message);
+        _usuarioRepositoryMock.Verify(r => r.Adicionar(It.IsAny<Usuario>()), Times.Never);
+    }
+
+    [Fact]
     public async Task AoCriarUsuarioComEmailInvalidoDeveLancarValidationException()
     {
         // Arrange
-        CriarUsuarioRequest request = new(NomeValido, "email-invalido", SenhaValida, SenhaValida);
+        CriarUsuarioRequest request = new(NomeValido, "email-invalido", CpfValido, SenhaValida, SenhaValida);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _useCase.Executar(request));
+        _usuarioRepositoryMock.Verify(r => r.Adicionar(It.IsAny<Usuario>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task AoCriarUsuarioComCpfInvalidoDeveLancarValidationException()
+    {
+        // Arrange
+        const string cpfInvalido = "11111111111";
+        CriarUsuarioRequest request = new(NomeValido, EmailValido, cpfInvalido, SenhaValida, SenhaValida);
 
         // Act & Assert
         await Assert.ThrowsAsync<ValidationException>(() => _useCase.Executar(request));
@@ -70,7 +107,7 @@ public class CriarUsuarioUseCaseTests
     {
         // Arrange
         const string senhaFraca = "fraca";
-        CriarUsuarioRequest request = new(NomeValido, EmailValido, senhaFraca, senhaFraca);
+        CriarUsuarioRequest request = new(NomeValido, EmailValido, CpfValido, senhaFraca, senhaFraca);
 
         // Act & Assert
         await Assert.ThrowsAsync<ValidationException>(() => _useCase.Executar(request));
@@ -81,7 +118,7 @@ public class CriarUsuarioUseCaseTests
     public async Task AoCriarUsuarioComConfirmacaoSenhaDivergenteDeveLancarValidationException()
     {
         // Arrange
-        CriarUsuarioRequest request = new(NomeValido, EmailValido, SenhaValida, "OutraSenha123!");
+        CriarUsuarioRequest request = new(NomeValido, EmailValido, CpfValido, SenhaValida, "OutraSenha123!");
 
         // Act & Assert
         ValidationException ex = await Assert.ThrowsAsync<ValidationException>(() => _useCase.Executar(request));
@@ -98,8 +135,11 @@ public class CriarUsuarioUseCaseTests
         _usuarioRepositoryMock
             .Setup(r => r.VerificarExistenciaEmail(It.IsAny<string>()))
             .ReturnsAsync(false);
+        _usuarioRepositoryMock
+            .Setup(r => r.VerificarExistenciaCpf(It.IsAny<string>()))
+            .ReturnsAsync(false);
 
-        CriarUsuarioRequest request = new(NomeValido, EmailValido, SenhaValida, SenhaValida);
+        CriarUsuarioRequest request = new(NomeValido, EmailValido, CpfValido, SenhaValida, SenhaValida);
 
         // Act
         Guid id = await _useCase.Executar(request);
@@ -109,6 +149,7 @@ public class CriarUsuarioUseCaseTests
         _usuarioRepositoryMock.Verify(r => r.Adicionar(It.Is<Usuario>(u =>
             u.Nome == NomeValido &&
             u.Email.Valor == EmailValido &&
+            u.Cpf.Valor == CpfValido &&
             u.Perfil == PerfilUsuario.Doador)), Times.Once);
     }
 }

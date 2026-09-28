@@ -26,16 +26,22 @@ public sealed class CriarUsuarioUseCase
     public async Task<Guid> Executar(CriarUsuarioRequest request)
     {
         Email email = new(request.Email);
+        Cpf cpf = new(request.Cpf);
 
         SenhaTextoPuro senhaTextoPuro = new(request.Senha, request.ConfirmacaoSenha);
         SenhaHash senhaHash = _senhaHasher.GerarHash(senhaTextoPuro);
 
-        Usuario usuario = new(request.Nome, email, senhaHash, PerfilUsuario.Doador);
+        Usuario usuario = new(request.Nome, email, cpf, senhaHash, PerfilUsuario.Doador);
 
         bool emailExiste = await _usuarioRepository.VerificarExistenciaEmail(usuario.Email.Valor);
-        
+
         if (emailExiste)
             throw new ConflictException("Já existe um usuário cadastrado com esse e-mail");
+
+        bool cpfExiste = await _usuarioRepository.VerificarExistenciaCpf(usuario.Cpf.Valor);
+
+        if (cpfExiste)
+            throw new ConflictException("Já existe um usuário cadastrado com esse CPF");
 
         await _usuarioRepository.Adicionar(usuario);
         await _usuarioRepository.UnitOfWork.Commit();

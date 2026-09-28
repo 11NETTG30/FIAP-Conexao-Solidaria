@@ -9,25 +9,28 @@ public sealed class Usuario : Entity, IAggregateRoot, IAuditavel
 {
     public string Nome { get; private set; }
     public Email Email { get; private set; }
+    public Cpf Cpf { get; private set; }
     public SenhaHash SenhaHash { get; private set; }
     public PerfilUsuario Perfil { get; private set; }
     public bool Ativo { get; private set; }
     public DateTime DataCriacao { get; private set; }
     public DateTime? DataAtualizacao { get; private set; }
-    
+
     private readonly List<RefreshToken> _refreshTokens = [];
     public IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens.AsReadOnly();
-    
+
     public Usuario
     (
         string nome,
         Email email,
+        Cpf cpf,
         SenhaHash senhaHash,
         PerfilUsuario perfil
     )
     {
         SetNome(nome);
         SetEmail(email);
+        SetCpf(cpf);
         SetSenhaHash(senhaHash);
         SetPerfil(perfil);
         SetAtivo(true);
@@ -49,7 +52,10 @@ public sealed class Usuario : Entity, IAggregateRoot, IAuditavel
     
     public void SetEmail(Email email) =>
         Email = email ?? throw new ValidationException("E-mail é obrigatório");
-    
+
+    public void SetCpf(Cpf cpf) =>
+        Cpf = cpf ?? throw new ValidationException("CPF é obrigatório");
+
     public void SetSenhaHash(SenhaHash senhaHash) =>
         SenhaHash = senhaHash ?? throw new ValidationException("Senha é obrigatória");
 

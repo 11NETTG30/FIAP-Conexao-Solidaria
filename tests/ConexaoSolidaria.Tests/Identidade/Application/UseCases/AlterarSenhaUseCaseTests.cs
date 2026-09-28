@@ -38,6 +38,7 @@ public class AlterarSenhaUseCaseTests
     private static Usuario CriarUsuario() => new(
         NomeValido,
         new Email(EmailValido),
+        new Cpf("11144477735"),
         new SenhaHash(new string('a', SenhaHash.TAMANHO_ESPERADO_SENHA_HASH)),
         PerfilUsuario.Doador);
 

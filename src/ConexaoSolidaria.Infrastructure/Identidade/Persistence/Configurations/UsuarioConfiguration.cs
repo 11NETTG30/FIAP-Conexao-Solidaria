@@ -39,6 +39,21 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
     
         builder.Navigation(u => u.Email).IsRequired();
 
+        // Cpf (Value Object)
+        builder.OwnsOne(u => u.Cpf, cpf =>
+        {
+            cpf.Property(c => c.Valor)
+                .HasColumnName("cpf")
+                .HasColumnType("char(11)")
+                .IsRequired();
+
+            cpf.HasIndex(c => c.Valor)
+                .IsUnique()
+                .HasDatabaseName("ix_usuarios_cpf");
+        });
+
+        builder.Navigation(u => u.Cpf).IsRequired();
+
         // SenhaHash (Value Object)
         builder.OwnsOne(u => u.SenhaHash, senha =>
         {
