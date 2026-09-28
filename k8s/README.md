@@ -8,6 +8,8 @@ Estrutura de manifests da solução Conexão Solidária no mesmo monorepo da apl
 - `doacoes-worker`: Deployment sem Service
 - `postgres`: Deployment com PVC
 - `rabbitmq`: Deployment com PVC
+- `prometheus`: Deployment + Service, fazendo scrape do `/metrics` da API
+- `grafana`: Deployment + Service + Ingress, com datasource e dashboard provisionados
 - `configmap` e `secret` por ambiente/serviço
 
 ## Pré-requisitos
@@ -45,6 +47,7 @@ Adicione no sistema:
 ```text
 127.0.0.1 api.conexaosolidaria.local
 127.0.0.1 rabbitmq.conexaosolidaria.local
+127.0.0.1 grafana.conexaosolidaria.local
 ```
 
 ## Secrets locais
@@ -56,6 +59,7 @@ cp k8s/conexao-solidaria-api/secret.example.yaml k8s/conexao-solidaria-api/secre
 cp k8s/doacoes-worker/secret.example.yaml k8s/doacoes-worker/secret.yaml
 cp k8s/postgres/secret.example.yaml k8s/postgres/secret.yaml
 cp k8s/rabbitmq/secret.example.yaml k8s/rabbitmq/secret.yaml
+cp k8s/grafana/secret.example.yaml k8s/grafana/secret.yaml
 ```
 
 Observação: o `JwtSettings__Secret` da API precisa ter no mínimo 32 caracteres,
@@ -93,11 +97,20 @@ kubectl apply -f k8s/rabbitmq/deployment.yaml
 kubectl apply -f k8s/conexao-solidaria-api/configmap.yaml
 kubectl apply -f k8s/conexao-solidaria-api/secret.yaml
 kubectl apply -f k8s/conexao-solidaria-api/service.yaml
+kubectl apply -f k8s/conexao-solidaria-api/service-metrics.yaml
 kubectl apply -f k8s/conexao-solidaria-api/deployment.yaml
 
 kubectl apply -f k8s/doacoes-worker/configmap.yaml
 kubectl apply -f k8s/doacoes-worker/secret.yaml
 kubectl apply -f k8s/doacoes-worker/deployment.yaml
+
+kubectl apply -f k8s/prometheus
+
+kubectl apply -f k8s/grafana/secret.yaml
+kubectl apply -f k8s/grafana/configmap-provisioning.yaml
+kubectl apply -f k8s/grafana/configmap-dashboards.yaml
+kubectl apply -f k8s/grafana/service.yaml
+kubectl apply -f k8s/grafana/deployment.yaml
 
 kubectl apply -f k8s/ingress.yaml
 ```
@@ -122,12 +135,44 @@ Para acessar o RabbitMQ Management sem Ingress, use:
 kubectl port-forward svc/rabbitmq-management 15672:15672 -n conexao-solidaria
 ```
 
+## Observabilidade
+
+A API expõe:
+
+- `/metrics` — métricas no formato Prometheus (OpenTelemetry): requisições
+  HTTP, latência, CPU/memória do processo, GC, thread pool, MassTransit
+- `/health` — readiness: Postgres + RabbitMQ (usado pela `readinessProbe`)
+- `/health/live` — liveness: só confirma que o processo responde
+
+O Prometheus descobre cada pod da API pelo Service headless
+`conexao-solidaria-api-metrics` e o Grafana já sobe com o datasource e o
+dashboard **Conexão Solidária — API** (pasta "Conexão Solidária").
+
+Acesso ao Grafana: `http://grafana.conexaosolidaria.local` (login do
+`grafana/secret.yaml`), ou sem Ingress:
+
+```bash
+kubectl port-forward svc/grafana 3000:3000 -n conexao-solidaria
+```
+
+Para conferir os targets do Prometheus (`Status → Targets`):
+
+```bash
+kubectl port-forward svc/prometheus 9090:9090 -n conexao-solidaria
+```
+
+Traces e logs via OTLP ficam desligados por padrão; para ligar, descomente
+`OTEL_EXPORTER_OTLP_ENDPOINT` nos configmaps da API/Worker apontando para um
+coletor OpenTelemetry.
+
 ## Derrubar o ambiente
 
 Para remover todos os recursos aplicados no namespace:
 
 ```bash
 kubectl delete -f k8s/ingress.yaml --ignore-not-found
+kubectl delete -f k8s/grafana --ignore-not-found
+kubectl delete -f k8s/prometheus --ignore-not-found
 kubectl delete -f k8s/doacoes-worker --ignore-not-found
 kubectl delete -f k8s/conexao-solidaria-api --ignore-not-found
 kubectl delete -f k8s/rabbitmq --ignore-not-found

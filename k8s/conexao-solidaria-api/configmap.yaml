@@ -14,3 +14,6 @@ data:
   RabbitMqSettings__Host: rabbitmq
   RabbitMqSettings__VirtualHost: /
   RabbitMqSettings__Username: conexao-solidaria
+  OTEL_SERVICE_NAME: conexao-solidaria-api
+  # Traces e logs via OTLP ficam desligados até existir um coletor no cluster:
+  # OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317

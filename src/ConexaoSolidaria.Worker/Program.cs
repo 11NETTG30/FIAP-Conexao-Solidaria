@@ -13,6 +13,8 @@ HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 Env.Load();
 builder.Configuration.AddEnvironmentVariables();
 
+builder.AddObservabilidade();
+
 string connectionString = DatabaseConfiguration.ResolveConnectionString(builder.Configuration);
 
 builder.Services.AddSingleton<AuditoriaSaveChangesInterceptor>();

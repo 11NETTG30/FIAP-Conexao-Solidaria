@@ -16,6 +16,7 @@ Env.Load();
 builder.Configuration.AddEnvironmentVariables();
 
 builder.AddLoggingConfiguration();
+builder.AddObservabilidadeApi();
 builder.Services.AddControllersConfiguration();
 builder.Services.AddDocumentation();
 builder.Services.AddProblemDetailsConfiguration();
@@ -63,5 +64,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapObservabilidade();
 
 app.Run();
