@@ -153,23 +153,28 @@ CI) antes de encerrar.
 ## Andamento
 
 - [ ] Diagrama de arquitetura — ajustar (incluir Prometheus/Grafana) e
-      exportar
-- [ ] PDF de justificativa de banco de dados
-- [ ] README completo
+      exportar (**Gabriel**)
+- [ ] PDF de justificativa de banco de dados (**Gabriel**)
+- [ ] README completo (**Gabriel**)
 - [ ] Relatório de entrega — campos fixos (grupo, participantes, Discord,
-      link do repositório)
-- [ ] Roteiro de texto do vídeo
+      link do repositório) (**Gabriel**)
+- [ ] Roteiro de texto do vídeo — segmento 1 (**Gabriel**); segmentos 2, 3
+      e 4 seguem sem dono
 - [ ] Vídeo — segmento 1: diagrama de arquitetura
 - [ ] Vídeo — segmento 2: pipeline de CI
 - [ ] Vídeo — segmento 3: `kubectl get pods` + Grafana
 - [ ] Vídeo — segmento 4: fluxo funcional completo (testar antes de gravar)
 - [ ] Montagem final do vídeo
-- [ ] Relatório de entrega — fechar com o link do vídeo
+- [ ] Relatório de entrega — fechar com o link do vídeo (**Gabriel**)
 
 ## Pendências / dúvidas
 
-- Definir quem fica com cada item — tudo listado acima já está destravado,
-  não tem mais dependência entre demandas segurando nada.
+- 2026-09-28 — Gabriel assumiu diagrama, PDF de banco, README completo,
+  relatório de entrega e o roteiro de texto do segmento 1. **Falta
+  definir quem fica com**: roteiro de texto dos segmentos 2/3/4, e a
+  gravação dos 4 segmentos do vídeo (lembrando que 3 e 4 precisam ser
+  gravados juntos, pelo mesmo grupo/pessoa — ver "Gravação do vídeo"
+  acima) + a montagem final.
 
 ## Arquivos de apoio
 
