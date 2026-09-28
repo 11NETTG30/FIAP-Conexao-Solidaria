@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: conexao-solidaria-api-metrics
+  namespace: conexao-solidaria
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  selector:
+    app: conexao-solidaria-api
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
