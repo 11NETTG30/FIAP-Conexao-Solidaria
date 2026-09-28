@@ -92,6 +92,59 @@ Postgres/RabbitMQ reais nunca rodou de fato (ver `d2-doacao-worker.md`).
 Esse segmento do vídeo só sai bem se o fluxo realmente funcionar na
 prática — **testar antes de agendar a gravação**, não durante.
 
+### Roteiro detalhado por segmento
+
+Separado em duas colunas por segmento: **Obrigatório** é texto do edital,
+literal (o que o vídeo *precisa* mostrar); **Sugestão de execução** é
+elaboração desta sessão sobre como executar bem — não é exigência, é só
+para não gravar do zero sem plano nenhum.
+
+**Segmento 1 — Diagrama de arquitetura**
+- Obrigatório (edital): "Explicação do Diagrama de Arquitetura." A
+  instrução geral do vídeo também vale aqui: "não deve focar em ler código
+  linha a linha, mas sim em comprovar a arquitetura e o funcionamento."
+- Sugestão de execução: apontar no diagrama os 2 serviços deployáveis (API
+  e Worker), 1 Postgres com 3 schemas (não 3 bancos), RabbitMQ como broker
+  entre API e Worker, Prometheus fazendo scrape da API e Grafana lendo do
+  Prometheus.
+
+**Segmento 2 — Pipeline de CI**
+- Obrigatório (edital): "Demonstração do Pipeline de CI executando e
+  gerando a imagem Docker com sucesso."
+- Sugestão de execução: abrir a aba Actions do GitHub, mostrar o workflow
+  `docker-publish.yml` rodando ou uma execução recente com sucesso; mostrar
+  os 2 jobs (`test` → `build-and-push`); opcional mostrar o pacote
+  publicado no GHCR.
+
+**Segmento 3 — Kubernetes + Grafana**
+- Obrigatório (edital): "Terminal mostrando os pods rodando no Kubernetes
+  (`kubectl get pods`) e o dashboard do Grafana exibindo os dados em tempo
+  real."
+- Sugestão de execução: mostrar os painéis do dashboard "Conexão
+  Solidária — API" (requisições por rota/status, latência p50/p95/p99,
+  CPU/memória por pod, GC, threads); gerar algum tráfego real na API antes
+  de gravar para o dashboard não aparecer zerado.
+
+**Segmento 4 — Funcionamento**
+- Obrigatório (edital):
+  i. "Autenticação via Postman/Swagger e obtenção do token JWT."
+  ii. "Criação de uma campanha."
+  iii. "Simulação de uma Doação: mostrar o payload sendo enviado; em
+       seguida abrir a interface do RabbitMQ/Kafka mostrando a mensagem
+       passando pela fila e, por fim, consultar a API pública para provar
+       que o valor da campanha foi atualizado pelo Worker."
+- Sugestão de execução: login com o admin de seed para (i); `POST
+  /api/campanhas` mostrando payload e resposta `201` com `id` para (ii);
+  `POST /api/doacoes` mostrando o payload, abrir a interface de management
+  do RabbitMQ (`localhost:15672`) mostrando a mensagem na fila
+  `doacao-recebida`, depois `GET /api/campanhas` mostrando o
+  `ValorArrecadado` atualizado para (iii).
+
+**Fechamento** — isto **não está no edital**, é sugestão livre: voltar no
+diagrama por alguns segundos e recapitular verbalmente os requisitos
+técnicos batidos (microsserviços, mensageria assíncrona, observabilidade,
+CI) antes de encerrar.
+
 ### Bloco final — sequencial, depende de tudo acima
 
 - Montagem do vídeo completo (máx. 15 min), juntando os 4 segmentos
