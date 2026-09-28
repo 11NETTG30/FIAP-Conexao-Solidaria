@@ -39,6 +39,7 @@ public class ObterUsuarioPorIdUseCaseTests
         Usuario usuario = new(
             "João Silva",
             new Email("joao.silva@conexaosolidaria.com.br"),
+            new Cpf("11144477735"),
             new SenhaHash(new string('a', SenhaHash.TAMANHO_ESPERADO_SENHA_HASH)),
             PerfilUsuario.Doador);
 

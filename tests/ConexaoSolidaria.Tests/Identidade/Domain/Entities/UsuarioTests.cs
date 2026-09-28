@@ -1,4 +1,4 @@
-﻿using ConexaoSolidaria.Domain.Identidade.Entities;
+using ConexaoSolidaria.Domain.Identidade.Entities;
 using ConexaoSolidaria.Domain.Identidade.Enums;
 using ConexaoSolidaria.Domain.Identidade.ValueObjects;
 using ConexaoSolidaria.Domain.Shared.Exceptions;
@@ -9,6 +9,7 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
     {
         private const string NomeValido = "João Silva";
         private const string EmailValido = "joao.silva@conexaosolidaria.com.br";
+        private const string CpfValido = "11144477735";
         private const string SenhaHashValida = "qicmeEIFx8xP5qg0bDWjSw==.3FN7adyhH5S4RwAjj1RfM3Kzt4m2YNeuscD6QTxxSN8=";
 
         [Fact]
@@ -16,15 +17,17 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
             var perfil = PerfilUsuario.Doador;
 
             // Act
-            var usuario = new Usuario(NomeValido, email, senhaHash, perfil);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, perfil);
 
             // Assert
             Assert.Equal(NomeValido, usuario.Nome);
             Assert.Equal(email, usuario.Email);
+            Assert.Equal(cpf, usuario.Cpf);
             Assert.Equal(senhaHash, usuario.SenhaHash);
             Assert.Equal(perfil, usuario.Perfil);
             Assert.True(usuario.Ativo);
@@ -41,11 +44,12 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
             var perfil = PerfilUsuario.Doador;
 
             // Act
-            var acao = () => new Usuario(nomeInvalido, email, senhaHash, perfil);
+            var acao = () => new Usuario(nomeInvalido, email, cpf, senhaHash, perfil);
 
             // Assert
             ValidationException ex = Assert.Throws<ValidationException>(acao);
@@ -59,13 +63,14 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
             var perfil = PerfilUsuario.Doador;
 
             if (nome.Length < 2)
             {
                 // Act
-                var acao = () => new Usuario(nome, email, senhaHash, perfil);
+                var acao = () => new Usuario(nome, email, cpf, senhaHash, perfil);
 
                 // Assert
                 ValidationException ex = Assert.Throws<ValidationException>(acao);
@@ -74,7 +79,7 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
             else
             {
                 // Act & Assert - não deve lançar exceção
-                var usuario = new Usuario(nome, email, senhaHash, perfil);
+                var usuario = new Usuario(nome, email, cpf, senhaHash, perfil);
                 Assert.Equal(nome, usuario.Nome);
             }
         }
@@ -85,11 +90,12 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
             // Arrange
             var nomeGrande = new string('A', 101);
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
             var perfil = PerfilUsuario.Doador;
 
             // Act
-            var acao = () => new Usuario(nomeGrande, email, senhaHash, perfil);
+            var acao = () => new Usuario(nomeGrande, email, cpf, senhaHash, perfil);
 
             // Assert
             ValidationException ex = Assert.Throws<ValidationException>(acao);
@@ -103,11 +109,12 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
             var perfil = PerfilUsuario.Doador;
 
             // Act
-            var usuario = new Usuario(nomeComEspacos, email, senhaHash, perfil);
+            var usuario = new Usuario(nomeComEspacos, email, cpf, senhaHash, perfil);
 
             // Assert
             Assert.Equal(nomeEsperado, usuario.Nome);
@@ -118,8 +125,9 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, PerfilUsuario.Doador);
             var novoNome = "Maria Santos";
 
             // Act
@@ -137,11 +145,12 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         public void SetEmail_DeveLancarException_QuandoEmailNulo()
         {
             // Arrange
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
             var perfil = PerfilUsuario.Doador;
 
             // Act
-            var acao = () => new Usuario(NomeValido, null!, senhaHash, perfil);
+            var acao = () => new Usuario(NomeValido, null!, cpf, senhaHash, perfil);
 
             // Assert
             ValidationException ex = Assert.Throws<ValidationException>(acao);
@@ -153,8 +162,9 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, PerfilUsuario.Doador);
             var novoEmail = new Email("novo.email@conexaosolidaria.com.br");
 
             // Act
@@ -166,6 +176,43 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
 
         #endregion
 
+        #region SetCpf Tests
+
+        [Fact]
+        public void AoCriarUsuarioComCpfNuloDeveLancarValidationException()
+        {
+            // Arrange
+            var email = new Email(EmailValido);
+            var senhaHash = new SenhaHash(SenhaHashValida);
+            var perfil = PerfilUsuario.Doador;
+
+            // Act
+            var acao = () => new Usuario(NomeValido, email, null!, senhaHash, perfil);
+
+            // Assert
+            ValidationException ex = Assert.Throws<ValidationException>(acao);
+            Assert.Equal("CPF é obrigatório", ex.Message);
+        }
+
+        [Fact]
+        public void AoChamarSetCpfAposInstanciacaoDeveAtualizarCpf()
+        {
+            // Arrange
+            var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
+            var senhaHash = new SenhaHash(SenhaHashValida);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, PerfilUsuario.Doador);
+            var novoCpf = new Cpf("52998224725");
+
+            // Act
+            usuario.SetCpf(novoCpf);
+
+            // Assert
+            Assert.Equal(novoCpf, usuario.Cpf);
+        }
+
+        #endregion
+
         #region SetSenhaHash Tests
 
         [Fact]
@@ -173,10 +220,11 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var perfil = PerfilUsuario.Doador;
 
             // Act
-            var acao = () => new Usuario(NomeValido, email, null!, perfil);
+            var acao = () => new Usuario(NomeValido, email, cpf, null!, perfil);
 
             // Assert
             ValidationException ex = Assert.Throws<ValidationException>(acao);
@@ -188,8 +236,9 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, PerfilUsuario.Doador);
             var novaSenhaHash = new SenhaHash("NovaSenhaHash123==./abc1231231231231231231231231231231231231231234567");
 
             // Act
@@ -208,11 +257,12 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
             var perfilInvalido = 999;
 
             // Act
-            var acao = () => new Usuario(NomeValido, email, senhaHash, (PerfilUsuario)perfilInvalido);
+            var acao = () => new Usuario(NomeValido, email, cpf, senhaHash, (PerfilUsuario)perfilInvalido);
 
             // Assert
             ValidationException ex = Assert.Throws<ValidationException>(acao);
@@ -226,10 +276,11 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
 
             // Act
-            var usuario = new Usuario(NomeValido, email, senhaHash, perfil);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, perfil);
 
             // Assert
             Assert.Equal(perfil, usuario.Perfil);
@@ -240,8 +291,9 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, PerfilUsuario.Doador);
 
             // Act
             usuario.SetPerfil(PerfilUsuario.GestorONG);
@@ -259,8 +311,9 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, PerfilUsuario.Doador);
 
             // Act
             usuario.SetAtivo(true);
@@ -274,8 +327,9 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, PerfilUsuario.Doador);
 
             // Act
             usuario.SetAtivo(false);
@@ -293,8 +347,9 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, PerfilUsuario.Doador);
 
             // Act
             var resultado = usuario.ToString();
@@ -315,10 +370,11 @@ namespace ConexaoSolidaria.Tests.Identidade.Domain.Entities
         {
             // Arrange
             var email = new Email(EmailValido);
+            var cpf = new Cpf(CpfValido);
             var senhaHash = new SenhaHash(SenhaHashValida);
 
             // Act
-            var usuario = new Usuario(NomeValido, email, senhaHash, PerfilUsuario.Doador);
+            var usuario = new Usuario(NomeValido, email, cpf, senhaHash, PerfilUsuario.Doador);
 
             // Assert
             Assert.Empty(usuario.RefreshTokens);

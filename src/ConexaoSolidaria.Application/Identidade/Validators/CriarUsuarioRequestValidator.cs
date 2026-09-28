@@ -17,7 +17,12 @@ public sealed class CriarUsuarioRequestValidator : AbstractValidator<CriarUsuari
             .MaximumLength(256)
             .Matches(Email.emailRegex)
             .WithMessage("'{PropertyName}' é um endereço de email inválido.");
-        
+
+        RuleFor(request => request.Cpf)
+            .NotEmpty()
+            .Must(Cpf.EhValido)
+            .WithMessage("'{PropertyName}' é um CPF inválido.");
+
         RuleFor(request => request.Senha)
             .SenhaValida();
         

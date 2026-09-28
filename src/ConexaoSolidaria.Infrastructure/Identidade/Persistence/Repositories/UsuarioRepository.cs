@@ -57,7 +57,14 @@ public sealed class UsuarioRepository : IUsuarioRepository
             .AsNoTracking()
             .AnyAsync(u => u.Email.Valor == email);
     }
-    
+
+    public async Task<bool> VerificarExistenciaCpf(string cpf)
+    {
+        return await _dbContext.Usuarios
+            .AsNoTracking()
+            .AnyAsync(u => u.Cpf.Valor == cpf);
+    }
+
     public void Dispose()
     {
         _dbContext?.Dispose();

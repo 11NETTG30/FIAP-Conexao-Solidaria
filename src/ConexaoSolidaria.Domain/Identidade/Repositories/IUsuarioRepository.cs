@@ -11,4 +11,5 @@ public interface IUsuarioRepository : IRepository<Usuario>
     Task<Usuario?> ObterPorEmail(string email);
     Task Adicionar(Usuario usuario);
     Task<bool> VerificarExistenciaEmail(string email);
+    Task<bool> VerificarExistenciaCpf(string cpf);
 }

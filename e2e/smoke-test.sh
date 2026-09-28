@@ -111,7 +111,7 @@ sleep 4
 
 echo "== A. Registrar doador1 ($EMAIL) =="
 CODE=$(curl -s -o /tmp/r_a.json -w "%{http_code}" -X POST "$BASE/api/auth/registrar" -H "Content-Type: application/json" \
-  -d "{\"nome\":\"Doadora E2E\",\"email\":\"$EMAIL\",\"senha\":\"Teste@123\",\"confirmacaoSenha\":\"Teste@123\"}")
+  -d "{\"nome\":\"Doadora E2E\",\"email\":\"$EMAIL\",\"cpf\":\"104.332.181-00\",\"senha\":\"Teste@123\",\"confirmacaoSenha\":\"Teste@123\"}")
 check "A registrar doador1" "201" "$CODE"
 
 DOADOR1_ID=$(db "select id from identidade.usuarios where email='$EMAIL';")
@@ -122,7 +122,7 @@ check "A DB: ativo=t" "t" "$DOADOR1_ATIVO"
 
 echo "== B. Registrar mesmo email de novo (deve rejeitar) =="
 CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE/api/auth/registrar" -H "Content-Type: application/json" \
-  -d "{\"nome\":\"Doadora E2E\",\"email\":\"$EMAIL\",\"senha\":\"Teste@123\",\"confirmacaoSenha\":\"Teste@123\"}")
+  -d "{\"nome\":\"Doadora E2E\",\"email\":\"$EMAIL\",\"cpf\":\"104.332.181-00\",\"senha\":\"Teste@123\",\"confirmacaoSenha\":\"Teste@123\"}")
 check "B email duplicado" "409" "$CODE"
 
 echo "== C. Login com senha errada =="
@@ -216,17 +216,17 @@ check "Q DB: ativo=t novamente" "t" "$(db "select ativo from identidade.usuarios
 
 echo "== R. Registrar com senha fraca (sem maiúscula) =="
 CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE/api/auth/registrar" -H "Content-Type: application/json" \
-  -d '{"nome":"X","email":"senhafraca.e2e@teste.com","senha":"minuscula123!","confirmacaoSenha":"minuscula123!"}')
+  -d '{"nome":"X","email":"senhafraca.e2e@teste.com","cpf":"960.013.389-14","senha":"minuscula123!","confirmacaoSenha":"minuscula123!"}')
 check "R senha sem maiuscula rejeitada" "400" "$CODE"
 
 echo "== S. Registrar com confirmação de senha diferente =="
 CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE/api/auth/registrar" -H "Content-Type: application/json" \
-  -d '{"nome":"X","email":"confdiff.e2e@teste.com","senha":"Teste@123","confirmacaoSenha":"Outra@123"}')
+  -d '{"nome":"X","email":"confdiff.e2e@teste.com","cpf":"083.863.794-99","senha":"Teste@123","confirmacaoSenha":"Outra@123"}')
 check "S confirmacao diferente rejeitada" "400" "$CODE"
 
 echo "== T. Registrar com email inválido =="
 CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE/api/auth/registrar" -H "Content-Type: application/json" \
-  -d '{"nome":"X","email":"nao-e-email","senha":"Teste@123","confirmacaoSenha":"Teste@123"}')
+  -d '{"nome":"X","email":"nao-e-email","cpf":"026.542.351-14","senha":"Teste@123","confirmacaoSenha":"Teste@123"}')
 check "T email invalido rejeitado" "400" "$CODE"
 
 echo "== U. Refresh com token inexistente =="
