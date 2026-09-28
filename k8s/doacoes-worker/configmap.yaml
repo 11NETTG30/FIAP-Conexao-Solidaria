@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: doacoes-worker-config
+  namespace: conexao-solidaria
+data:
+  ASPNETCORE_ENVIRONMENT: Production
+  RabbitMqSettings__Host: rabbitmq
+  RabbitMqSettings__VirtualHost: /
+  RabbitMqSettings__Username: conexao-solidaria

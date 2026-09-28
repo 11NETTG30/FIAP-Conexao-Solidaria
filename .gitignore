@@ -423,3 +423,5 @@ FodyWeavers.xsd
 # Certificados extras injetados no build da imagem Docker (ver docker/certs/README.md);
 # nunca commitar um certificado real aqui.
 docker/certs/*.crt
+
+secret.yaml

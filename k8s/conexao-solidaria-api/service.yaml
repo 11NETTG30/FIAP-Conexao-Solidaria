@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: conexao-solidaria-api
+  namespace: conexao-solidaria
+spec:
+  selector:
+    app: conexao-solidaria-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
