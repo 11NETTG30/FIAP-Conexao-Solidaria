@@ -1,8 +1,20 @@
 # D6 — Documentação final e vídeo
 
-Depende de tudo (d0–d5). É a última demanda antes da entrega. Detalhado
-abaixo em blocos, para dividir entre o grupo — desde 2026-09-28 todos os
-blocos A/B/C/D já estão destravados (ver "Divisão por blocos").
+Depende de tudo (d0–d5). É a última demanda antes da entrega.
+
+**2026-09-28 — revisão da divisão**: a primeira versão desta doc dividia o
+trabalho em blocos por dependência (A/B/C/D), inclusive fatiando o README
+em 4 seções incrementais — uma por bloco, cada uma escrita conforme a
+demanda correspondente destravava. Isso fazia sentido enquanto d2/d3/d4/d5
+iam ficando prontas em momentos diferentes. Agora que **todas já estão
+marcadas como concluídas ao mesmo tempo**, fatiar o README deixou de ter
+propósito — é só risco de ficar inconsistente sem ganho nenhum, já que
+qualquer pessoa pode escrever o README inteiro numa passada só, com tudo
+já pronto pra referenciar. Reestruturado abaixo: tarefas de documentação
+como itens independentes (sem fragmentar entre si), e só a **gravação do
+vídeo** continua dividida — ali sim faz sentido, porque cada segmento
+mostra uma parte diferente do sistema e quem implementou aquela parte é
+quem demonstra melhor.
 
 ## Objetivo
 
@@ -34,101 +46,77 @@ Exigências do edital:
    usernames Discord, link da documentação, link do(s) repositório(s), link
    do vídeo
 
-## Divisão por blocos (o que depende de quê)
+## Divisão do trabalho
 
-### Bloco A — pode começar agora, não depende de d2/d3/d4/d5
+### Documentação — tarefas independentes, cada uma por 1 pessoa, sem
+depender umas das outras
 
-- Diagrama de arquitetura exportado (item 2) — o mermaid já existe em
-  `../ARQUITETURA.md`, é só virar imagem/anexo no formato de entrega
-- PDF de justificativa de banco (item 3) — o conteúdo técnico já está
-  escrito em `../ARQUITETURA.md`, seção "Banco de dados" (1 Postgres, 3
-  schemas, por que não bancos separados); é reescrever em prosa e exportar
-- Campos fixos do relatório de entrega (item 5, parcial): nome do grupo,
-  participantes, usernames no Discord, link do repositório — nenhum depende
-  de código rodando
-- Esqueleto do README (item 1, parcial): pré-requisitos, estrutura de
-  pastas, seção de Identidade + Campanha (d0/d1, já funcionando e validado)
+- **Diagrama de arquitetura** (item 2) — exportar o mermaid de
+  `../ARQUITETURA.md` para o formato de entrega. **Precisa de um ajuste
+  antes de exportar**: o diagrama atual só mostra Doador/GestorONG/Público
+  → API → RabbitMQ → Worker → Postgres — **não tem Prometheus nem Grafana
+  desenhados**, e o edital exige explicitamente que o diagrama mostre "os
+  microsserviços, os bancos de dados, o broker de mensageria **e as
+  ferramentas de observabilidade**". Adicionar os nós de Prometheus/Grafana
+  (scraping da API, conforme `k8s/prometheus/` e `k8s/grafana/`) antes de
+  exportar.
+- **PDF de justificativa de banco** (item 3) — conteúdo técnico já escrito
+  em `../ARQUITETURA.md`, seção "Banco de dados" (1 Postgres, 3 schemas,
+  por que não bancos separados); é reescrever em prosa e exportar
+- **README completo** (item 1) — pré-requisitos, estrutura de pastas, e
+  como subir tudo localmente: Identidade + Campanha (docker-compose básico),
+  Doação/Worker/RabbitMQ, pipeline de CI (se fizer sentido documentar) e
+  deploy em Kubernetes + acesso ao Grafana. Uma pessoa só escreve isso
+  inteiro, numa passada — todo o conteúdo técnico já existe implementado e
+  documentado nos respectivos `d*.md`, é consolidar
+- **Relatório de entrega — campos fixos** (item 5, parcial): nome do grupo,
+  participantes, usernames no Discord, link do repositório — só o grupo tem
+  essa informação, não depende de nada técnico
+- **Roteiro de texto do vídeo** — escrever o passo a passo/narração de cada
+  trecho do roteiro obrigatório (pode ser feito por quem vai gravar cada
+  segmento, ver abaixo, ou por uma pessoa só revisando tudo)
 
-### Bloco B — **destravado** (d2 marcada como fechada em 2026-09-28, por
-decisão, sem a validação ponta a ponta ter rodado de fato — ver
-`d2-doacao-worker.md`)
+### Gravação do vídeo — dividida por segmento (aqui sim faz sentido
+paralelizar, por pessoa/conhecimento de cada parte)
 
-- Seção do README sobre RabbitMQ/Worker/fluxo de doação via
-  `docker-compose` (item 1)
-- Roteiro de texto (não a gravação) dos trechos "Autenticação via
-  Postman/Swagger", "Criação de campanha" e "Simulação de doação" do vídeo
-  (item 4, sub-itens d/e/f do roteiro) — pode ser escrito já
+1. Explicação do diagrama de arquitetura
+2. Pipeline de CI executando e gerando a imagem Docker
+3. Terminal com `kubectl get pods` + dashboard Grafana com dados reais
+4. Fluxo funcional: autenticação (Postman/Swagger + JWT) → criação de
+   campanha → simulação de doação (payload → RabbitMQ → valor atualizado
+   na API pública)
 
-⚠️ **Risco que continua real, mesmo com a d2 marcada como feita**: o
-roteiro obrigatório do vídeo (item 4, sub-item f) exige mostrar o payload
-da doação, a mensagem passando pelo RabbitMQ e o valor da campanha
-atualizado de verdade — isso só é possível se o fluxo funcionar na prática.
-Como ninguém rodou essa validação ainda, existe a chance real de encontrar
-um problema só na hora de gravar. Recomendado: reservar tempo para rodar
-`docker-compose up` (Postgres + RabbitMQ + API + Worker) e testar o fluxo
-completo **antes** de agendar a gravação do Bloco E, não durante.
+⚠️ **Risco no segmento 4**: a d2 (Doação/Worker) foi marcada como concluída
+por decisão do grupo, mas a validação ponta a ponta contra
+Postgres/RabbitMQ reais nunca rodou de fato (ver `d2-doacao-worker.md`).
+Esse segmento do vídeo só sai bem se o fluxo realmente funcionar na
+prática — **testar antes de agendar a gravação**, não durante.
 
-### Bloco C — depende de d3 (pipeline CI) — **já destravado, d3 está pronta**
+### Bloco final — sequencial, depende de tudo acima
 
-- Seção do README sobre o pipeline, se fizer sentido documentar
-- Gravação do trecho "Pipeline de CI executando e gerando a imagem Docker"
-  do vídeo (item 4)
-
-### Bloco D — depende de d4 + d5 (Kubernetes + observabilidade) — **d5 está
-pronta e validada; d4 tem os manifests prontos, só falta confirmar
-formalmente o `kubectl apply -f k8s/` ponta a ponta (ver `d4-kubernetes.md`)
-— na prática pode já estar coberto, já que a d5 relata ter validado tudo
-rodando junto num cluster Docker Desktop**
-
-- Seção do README sobre deploy em Kubernetes e acesso ao Grafana
-- Gravação do trecho "Terminal com `kubectl get pods` + dashboard Grafana
-  com dados reais" do vídeo (item 4)
-
-### Bloco E — final, depende de TUDO (a, b, c, d fechados)
-
-- Gravação e montagem final do vídeo completo (máx. 15 min), juntando os
-  trechos gravados nos blocos B/C/D com a explicação do diagrama (bloco A)
-- Fechar o relatório de entrega (item 5) com o link do vídeo publicado
-
-**Ordem prática** (atualizado em 2026-09-28): **todos os blocos A/B/C/D estão
-destravados** — d2, d3 e d5 estão marcadas como fechadas, d4 tem os
-manifests prontos. Dá para dividir os quatro em paralelo agora. O único
-cuidado real é o risco descrito no Bloco B: como a d2 nunca rodou de fato
-contra Postgres/RabbitMQ reais, vale testar esse fluxo antes de marcar o
-Bloco B como pronto de verdade, e principalmente antes de agendar a
-gravação do Bloco E — que é sempre o último passo, só depois que os outros
-quatro estiverem prontos.
+- Montagem do vídeo completo (máx. 15 min), juntando os 4 segmentos
+- Fechar o relatório de entrega com o link do vídeo publicado
 
 ## Andamento
 
-- [ ] **Bloco A**
-  - [ ] Diagrama de arquitetura exportado para o formato de entrega
-  - [ ] PDF de justificativa de banco de dados
-  - [ ] Relatório de entrega — campos fixos (grupo, participantes, Discord,
-        link do repositório)
-  - [ ] README — esqueleto + seção Identidade/Campanha
-- [ ] **Bloco B** (destravado — ver aviso de risco acima)
-  - [ ] README — seção Doação/Worker/RabbitMQ via docker-compose
-  - [ ] Roteiro de texto do vídeo: autenticação, criação de campanha,
-        simulação de doação
-  - [ ] Testar o fluxo de doação de ponta a ponta pelo menos uma vez antes
-        de agendar a gravação (recomendado, não bloqueante para o resto do
-        bloco)
-- [ ] **Bloco C** (depende de d3)
-  - [ ] README — seção do pipeline (se aplicável)
-  - [ ] Vídeo — trecho do pipeline de CI
-- [ ] **Bloco D** (depende de d4 + d5)
-  - [ ] README — seção de deploy Kubernetes + Grafana
-  - [ ] Vídeo — trecho `kubectl get pods` + dashboard Grafana
-- [ ] **Bloco E** (depende de A+B+C+D)
-  - [ ] Gravação/montagem final do vídeo (máx. 15 min)
-  - [ ] Relatório de entrega — fechar com o link do vídeo
+- [ ] Diagrama de arquitetura — ajustar (incluir Prometheus/Grafana) e
+      exportar
+- [ ] PDF de justificativa de banco de dados
+- [ ] README completo
+- [ ] Relatório de entrega — campos fixos (grupo, participantes, Discord,
+      link do repositório)
+- [ ] Roteiro de texto do vídeo
+- [ ] Vídeo — segmento 1: diagrama de arquitetura
+- [ ] Vídeo — segmento 2: pipeline de CI
+- [ ] Vídeo — segmento 3: `kubectl get pods` + Grafana
+- [ ] Vídeo — segmento 4: fluxo funcional completo (testar antes de gravar)
+- [ ] Montagem final do vídeo
+- [ ] Relatório de entrega — fechar com o link do vídeo
 
 ## Pendências / dúvidas
 
-- Definir quem fica com cada bloco — ver seção "Divisão por blocos" acima.
-  Bloco A não tem dependência nenhuma, então é o melhor ponto de partida
-  para quem estiver livre primeiro.
+- Definir quem fica com cada item — tudo listado acima já está destravado,
+  não tem mais dependência entre demandas segurando nada.
 
 ## Arquivos de apoio
 
