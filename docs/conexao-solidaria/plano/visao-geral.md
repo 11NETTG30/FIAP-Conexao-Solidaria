@@ -163,8 +163,9 @@ de qualquer demanda filha.
 - [ ] d0.1 — CPF do doador (Gabriel; ver `d0.1-cpf-doador.md`) — não impacta
       d1–d5, só precisa fechar antes de a d6 travar README/vídeo
 - [x] d1 — Módulo Campanha
-- [ ] d2 — Módulo Doação + Worker + RabbitMQ (código completo; falta validar
-      o fluxo ponta a ponta via docker-compose — ver `d2-doacao-worker.md`)
+- [x] d2 — Módulo Doação + Worker + RabbitMQ (fechada por decisão do
+      Gabriel em 2026-09-28 sem a validação ponta a ponta via
+      docker-compose ter rodado de fato — ver `d2-doacao-worker.md`)
 - [x] d3 — Dockerfile + CI (build de imagem, PR #17 traz também o workflow
       de publicação no GHCR)
 - [ ] d4 — Manifests Kubernetes (todos os `.yaml` prontos; falta só marcar

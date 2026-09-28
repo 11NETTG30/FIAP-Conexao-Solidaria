@@ -1,8 +1,8 @@
 # D6 — Documentação final e vídeo
 
 Depende de tudo (d0–d5). É a última demanda antes da entrega. Detalhado
-abaixo em blocos, porque **nem tudo aqui depende de d2–d5 estarem prontas**
-— dá pra dividir entre o grupo e começar boa parte em paralelo.
+abaixo em blocos, para dividir entre o grupo — desde 2026-09-28 todos os
+blocos A/B/C/D já estão destravados (ver "Divisão por blocos").
 
 ## Objetivo
 
@@ -49,15 +49,24 @@ Exigências do edital:
 - Esqueleto do README (item 1, parcial): pré-requisitos, estrutura de
   pastas, seção de Identidade + Campanha (d0/d1, já funcionando e validado)
 
-### Bloco B — depende só de d2 fechada (não de d3/d4/d5)
+### Bloco B — **destravado** (d2 marcada como fechada em 2026-09-28, por
+decisão, sem a validação ponta a ponta ter rodado de fato — ver
+`d2-doacao-worker.md`)
 
 - Seção do README sobre RabbitMQ/Worker/fluxo de doação via
   `docker-compose` (item 1)
 - Roteiro de texto (não a gravação) dos trechos "Autenticação via
   Postman/Swagger", "Criação de campanha" e "Simulação de doação" do vídeo
-  (item 4, sub-itens d/e/f do roteiro) — dá pra escrever o texto/passo a
-  passo antes de gravar, mas a gravação de verdade da doação só depois que
-  a validação ponta a ponta da d2 existir (ver `d2-doacao-worker.md`)
+  (item 4, sub-itens d/e/f do roteiro) — pode ser escrito já
+
+⚠️ **Risco que continua real, mesmo com a d2 marcada como feita**: o
+roteiro obrigatório do vídeo (item 4, sub-item f) exige mostrar o payload
+da doação, a mensagem passando pelo RabbitMQ e o valor da campanha
+atualizado de verdade — isso só é possível se o fluxo funcionar na prática.
+Como ninguém rodou essa validação ainda, existe a chance real de encontrar
+um problema só na hora de gravar. Recomendado: reservar tempo para rodar
+`docker-compose up` (Postgres + RabbitMQ + API + Worker) e testar o fluxo
+completo **antes** de agendar a gravação do Bloco E, não durante.
 
 ### Bloco C — depende de d3 (pipeline CI) — **já destravado, d3 está pronta**
 
@@ -81,14 +90,14 @@ rodando junto num cluster Docker Desktop**
   trechos gravados nos blocos B/C/D com a explicação do diagrama (bloco A)
 - Fechar o relatório de entrega (item 5) com o link do vídeo publicado
 
-**Ordem prática** (atualizado em 2026-09-28, depois do PR #17 mergear d3+d5):
-Bloco A pode ser feito por qualquer pessoa a qualquer momento. **Blocos C e
-D já estão destravados** — d3 está pronta e d5 está pronta e validada num
-cluster real (d4 só falta o `kubectl apply` formal, mas na prática já rodou
-junto com a validação da d5). **Só o Bloco B segue bloqueado**, esperando a
-validação ponta a ponta da d2 (ver `d2-doacao-worker.md`) — é o único gargalo
-real que resta antes do Bloco E. Bloco E é sempre o último passo, só depois
-que os outros quatro estiverem prontos.
+**Ordem prática** (atualizado em 2026-09-28): **todos os blocos A/B/C/D estão
+destravados** — d2, d3 e d5 estão marcadas como fechadas, d4 tem os
+manifests prontos. Dá para dividir os quatro em paralelo agora. O único
+cuidado real é o risco descrito no Bloco B: como a d2 nunca rodou de fato
+contra Postgres/RabbitMQ reais, vale testar esse fluxo antes de marcar o
+Bloco B como pronto de verdade, e principalmente antes de agendar a
+gravação do Bloco E — que é sempre o último passo, só depois que os outros
+quatro estiverem prontos.
 
 ## Andamento
 
@@ -98,10 +107,13 @@ que os outros quatro estiverem prontos.
   - [ ] Relatório de entrega — campos fixos (grupo, participantes, Discord,
         link do repositório)
   - [ ] README — esqueleto + seção Identidade/Campanha
-- [ ] **Bloco B** (depende de d2 fechada)
+- [ ] **Bloco B** (destravado — ver aviso de risco acima)
   - [ ] README — seção Doação/Worker/RabbitMQ via docker-compose
   - [ ] Roteiro de texto do vídeo: autenticação, criação de campanha,
         simulação de doação
+  - [ ] Testar o fluxo de doação de ponta a ponta pelo menos uma vez antes
+        de agendar a gravação (recomendado, não bloqueante para o resto do
+        bloco)
 - [ ] **Bloco C** (depende de d3)
   - [ ] README — seção do pipeline (se aplicável)
   - [ ] Vídeo — trecho do pipeline de CI

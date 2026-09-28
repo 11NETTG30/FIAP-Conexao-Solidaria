@@ -166,21 +166,19 @@ que Campanha não tem uma lista de Doações dentro dela.
 ## Pendências / dúvidas
 
 - ~~Rodada 2 da revisão~~ — resolvida, ver Decisões de 2026-09-25.
-- **Alinhar com o Gabriel (D2)** — decisões desta demanda que tocam o
-  worker/módulo Doação:
-  - Worker precisa filtrar `data_fim >= now()` além de `status = 'Ativa'`
-    (SQL de referência já atualizado em `ARQUITETURA.md`). **Não** precisa
-    filtrar `data_inicio` (decidido fora do escopo, apesar de o painel
-    filtrar)
-  - `ValorDoacao` com o mesmo tipo do `valor_arrecadado`: `numeric(18,2)`,
-    rejeitando mais de 2 casas decimais
-  - `NotFoundException` (→ 404) disponível no Shared para o
-    `GET /doacoes/{id}`
-  - Enums trafegam pelo nome no JSON (o `Status` da Doação vai sair como
-    `"Pendente"`)
-  - Mensagens do FluentValidation agora saem em pt-BR para todos os módulos
-  - Formato de resposta de criação: `{ "id": "..." }` — sugestão de usar o
-    mesmo no `POST /doacoes`
+- ~~**Alinhar com o Gabriel (D2)**~~ — resolvida em 2026-09-28: conferido
+  direto no código do módulo Doação, item a item, os 6 pontos foram
+  seguidos: Worker filtra `DataFim >= agora`
+  (`Worker/Consumers/DoacaoRecebidaEventConsumer.cs:64`); `ValorDoacao`
+  mapeado como `numeric(18,2)`
+  (`Infrastructure/Doacoes/Persistence/Configurations/DoacaoConfiguration.cs:38`);
+  `NotFoundException` usada em `RegistrarIntencaoDoacaoUseCase` (campanha
+  inapta) e `ObterDoacaoPorIdUseCase` (doação inexistente/não é do
+  chamador, → 404); enum por nome e mensagens do FluentValidation em pt-BR
+  vêm da configuração global (se aplicam a qualquer módulo novo sem
+  precisar de código específico); `POST /doacoes` responde
+  `CriarDoacaoResponse(id)`, mesmo formato `{ "id": "..." }` do
+  `POST /campanhas`.
 
 - ~~Confirmar se o `GET /campanhas` deve paginar~~ — não pagina (fora do
   obrigatório, ver Decisões)

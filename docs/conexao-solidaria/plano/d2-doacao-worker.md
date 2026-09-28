@@ -208,9 +208,17 @@ entradas de 2026-09-20 sobre banco único e fila)
 
 - ~~Confirmar nome exato da fila/exchange no RabbitMQ~~ — resolvido, ver
   "Decisões" (`doacao-recebida`).
-- Validação ponta a ponta via `docker-compose` ainda não foi executada
-  (ver "Decisões") — recomenda-se rodar antes do merge, num ambiente com
-  Docker disponível.
+- ~~Validação ponta a ponta via `docker-compose` ainda não foi executada~~
+  — 2026-09-28: decisão explícita do Gabriel de considerar a demanda
+  fechada sem essa validação formal. **Registro importante**: isso é uma
+  decisão de prosseguir, não um teste que rodou — ninguém confirmou de
+  fato, batendo em Postgres/RabbitMQ reais, que a API publica o evento, o
+  Worker consome e a transação cross-schema funciona. Continua valendo a
+  recomendação original: se der para rodar isso em algum momento antes da
+  entrega (localmente ou via CI), é o tipo de coisa que só aparece com a
+  infra de verdade rodando — e o roteiro do vídeo (D6) exige mostrar
+  exatamente esse fluxo (payload → fila → valor atualizado), então a prova
+  vai precisar existir de qualquer jeito na hora de gravar.
 
 ## Arquivos de apoio
 
