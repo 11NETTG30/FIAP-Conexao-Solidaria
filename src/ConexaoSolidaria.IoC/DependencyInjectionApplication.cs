@@ -36,6 +36,8 @@ public static class DependencyInjectionApplication
             
             services.AddScoped<RegistrarIntencaoDoacaoUseCase>();
             services.AddScoped<ObterDoacaoPorIdUseCase>();
+            services.AddScoped<ListarDoacoesUseCase>();
+            services.AddScoped<ListarDoacoesAdminUseCase>();
         }
 
         private void AddFluentValidation()

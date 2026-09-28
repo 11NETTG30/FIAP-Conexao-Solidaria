@@ -28,6 +28,36 @@ public sealed class DoacaoRepository : IDoacaoRepository
             .FirstOrDefaultAsync(d => d.Id == id);
     }
 
+    public async Task<ResultadoPaginado<Doacao>> Listar(FiltroListagemDoacao filtro)
+    {
+        IQueryable<Doacao> query = _dbContext.Doacoes.AsNoTracking();
+
+        if (filtro.Status is not null)
+            query = query.Where(d => d.Status == filtro.Status);
+
+        if (filtro.IdCampanha is not null)
+            query = query.Where(d => d.IdCampanha == filtro.IdCampanha);
+
+        if (filtro.IdDoador is not null)
+            query = query.Where(d => d.IdDoador == filtro.IdDoador);
+
+        if (filtro.DataInicio is not null)
+            query = query.Where(d => d.DataCriacao >= filtro.DataInicio);
+
+        if (filtro.DataFim is not null)
+            query = query.Where(d => d.DataCriacao <= filtro.DataFim);
+
+        int totalItens = await query.CountAsync();
+
+        List<Doacao> itens = await query
+            .OrderByDescending(d => d.DataCriacao)
+            .Skip((filtro.Pagina - 1) * filtro.TamanhoPagina)
+            .Take(filtro.TamanhoPagina)
+            .ToListAsync();
+
+        return new ResultadoPaginado<Doacao>(itens, totalItens);
+    }
+    
     public void Dispose()
     {
         _dbContext?.Dispose();

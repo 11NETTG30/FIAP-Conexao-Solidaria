@@ -1,5 +1,6 @@
 using ConexaoSolidaria.Application.Doacoes.DTOs;
 using ConexaoSolidaria.Application.Doacoes.UseCases;
+using ConexaoSolidaria.Application.Shared;
 using ConexaoSolidaria.Infrastructure.Identidade.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +13,21 @@ public sealed class DoacaoController : ControllerBase
 {
     private readonly RegistrarIntencaoDoacaoUseCase _registrarIntencaoDoacaoUseCase;
     private readonly ObterDoacaoPorIdUseCase _obterDoacaoPorIdUseCase;
+    private readonly ListarDoacoesUseCase _listarDoacoesUseCase;
+    private readonly ListarDoacoesAdminUseCase _listarDoacoesAdminUseCase;
 
     public DoacaoController
     (
         RegistrarIntencaoDoacaoUseCase registrarIntencaoDoacaoUseCase,
-        ObterDoacaoPorIdUseCase obterDoacaoPorIdUseCase
+        ObterDoacaoPorIdUseCase obterDoacaoPorIdUseCase,
+        ListarDoacoesUseCase listarDoacoesUseCase,
+        ListarDoacoesAdminUseCase listarDoacoesAdminUseCase
     )
     {
         _registrarIntencaoDoacaoUseCase = registrarIntencaoDoacaoUseCase;
         _obterDoacaoPorIdUseCase = obterDoacaoPorIdUseCase;
+        _listarDoacoesUseCase = listarDoacoesUseCase;
+        _listarDoacoesAdminUseCase = listarDoacoesAdminUseCase;
     }
 
     [HttpPost]
@@ -43,5 +50,27 @@ public sealed class DoacaoController : ControllerBase
         DoacaoDto doacao = await _obterDoacaoPorIdUseCase.Executar(id);
 
         return Ok(doacao);
+    }
+
+    [HttpGet]
+    [Authorize(Roles = RoleNames.Doador)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginaDto<DoacaoDto>>> Listar([FromQuery] FiltroListagemDoacaoRequest request)
+    {
+        PaginaDto<DoacaoDto> pagina = await _listarDoacoesUseCase.Executar(request);
+
+        return Ok(pagina);
+    }
+
+    [HttpGet("admin")]
+    [Authorize(Roles = RoleNames.GestorONG)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PaginaDto<DoacaoDto>>> ListarAdmin([FromQuery] FiltroListagemDoacaoAdminRequest request)
+    {
+        PaginaDto<DoacaoDto> pagina = await _listarDoacoesAdminUseCase.Executar(request);
+
+        return Ok(pagina);
     }
 }
