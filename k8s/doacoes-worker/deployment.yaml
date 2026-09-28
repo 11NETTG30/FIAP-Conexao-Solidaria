@@ -36,8 +36,8 @@ spec:
               done
       containers:
         - name: doacoes-worker
-          image: doacoes-worker:local
-          imagePullPolicy: IfNotPresent
+          image: ghcr.io/11nettg30/doacoes-worker:latest
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: doacoes-worker-config

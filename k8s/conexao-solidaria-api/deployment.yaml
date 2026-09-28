@@ -36,8 +36,8 @@ spec:
               done
       containers:
         - name: conexao-solidaria-api
-          image: conexao-solidaria-api:local
-          imagePullPolicy: IfNotPresent
+          image: ghcr.io/11nettg30/conexao-solidaria-api:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           envFrom:
