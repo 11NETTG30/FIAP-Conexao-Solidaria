@@ -1,10 +1,6 @@
 # Justificativa da escolha de banco de dados — Conexão Solidária
 
-**Hackathon Fase 5 — POSTECH .NET, Turma 11NETT, Grupo 30**
-
-> Versão resumida, focada na escolha de banco de dados em si. Para o
-> raciocínio completo (incluindo o papel da fila de mensageria e a garantia
-> de idempotência), ver `justificativa-banco-dados-completa.pdf`.
+**Hackathon Fase 5 — POSTECH .NET, Turma 11NETT, Grupo 28**
 
 ## Por que um banco relacional (PostgreSQL)
 
@@ -15,12 +11,10 @@ confiável dessas doações. Esse tipo de dado exige as garantias clássicas de
 um banco relacional com suporte a transações ACID — não há espaço para
 "quase certeza": o valor arrecadado de uma campanha precisa corresponder
 exatamente à soma das doações confirmadas. Um banco não relacional,
-otimizado para escala e disponibilidade em detrimento de consistência
-forte, resolveria um problema que o Conexão Solidária não tem, e abriria
-mão exatamente da garantia mais importante para o domínio. Por isso o
-grupo optou pelo PostgreSQL, um banco relacional maduro, com suporte
-transacional completo e amplamente compatível com o ecossistema .NET/EF
-Core usado no projeto.
+otimizado para escala em detrimento de consistência forte, abriria mão
+exatamente da garantia mais importante para o domínio. Por isso o
+grupo optou pelo PostgreSQL, um banco relacional maduro e amplamente
+compatível com o ecossistema .NET/EF Core usado no projeto.
 
 ## Por que uma única instância com três schemas, em vez de três bancos separados
 
@@ -36,13 +30,11 @@ arrecadado da campanha precisa ser incrementado e a doação precisa ser
 marcada como confirmada — os dois juntos, sem exceção. Se esses dados
 morassem em bancos fisicamente diferentes, garantir isso exigiria
 coordenar duas transações independentes (transações distribuídas, outbox
-pattern ou saga), técnicas que resolvem um problema real mas adicionam uma
-camada de complexidade de implementação, teste e operação incompatível com
+pattern ou saga), técnicas que adicionam uma complexidade incompatível com
 o prazo do hackathon. Com os schemas na mesma instância, o Worker
 responsável por processar a doação abre **uma única transação real do
-banco**, que atualiza a campanha e confirma a doação ao mesmo tempo: ou as
-duas mudanças são gravadas com sucesso, ou nenhuma delas é — sem risco de
-o sistema ficar num estado intermediário.
+banco**, que atualiza a campanha e confirma a doação ao mesmo tempo, sem
+risco de o sistema ficar num estado intermediário.
 
 ## Conclusão
 

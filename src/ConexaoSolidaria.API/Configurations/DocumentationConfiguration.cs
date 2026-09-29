@@ -57,7 +57,7 @@ public static class DocumentationConfiguration
                 Description = """
                     API Backend da plataforma Conexão Solidária — gestão de doadores e campanhas
                     de arrecadação para ONGs, desenvolvida como Hackathon da Pós-Graduação em
-                    Arquitetura de Sistemas .NET (FIAP, Turma 11NETT — Grupo 30).
+                    Arquitetura de Sistemas .NET (FIAP, Turma 11NETT — Grupo 28).
 
                     **Contextos:**
                     - Identidade

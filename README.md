@@ -2,7 +2,7 @@
 
 MVP da plataforma **Conexão Solidária**, desenvolvido para o Hackathon da
 Pós-Graduação em Arquitetura de Sistemas .NET da FIAP (**Turma 11NETT —
-Grupo 30**). A plataforma conecta doadores a campanhas de arrecadação de
+Grupo 28**). A plataforma conecta doadores a campanhas de arrecadação de
 uma ONG: um `GestorONG` cria e administra campanhas, qualquer pessoa pode
 se cadastrar como `Doador` e contribuir, e um painel público mostra o
 andamento das campanhas ativas com transparência sobre os valores

@@ -1,7 +1,7 @@
 # Conexão Solidária — contexto para Claude Code
 
 Este repositório implementa o MVP da plataforma "Conexão Solidária"
-(Hackathon Fase 5, POSTECH .NET — Turma 11NETT, Grupo 30): gestão de
+(Hackathon Fase 5, POSTECH .NET — Turma 11NETT, Grupo 28): gestão de
 doadores e campanhas de arrecadação para uma ONG.
 
 Monolito modular em Clean Architecture, .NET 10. **Antes de qualquer

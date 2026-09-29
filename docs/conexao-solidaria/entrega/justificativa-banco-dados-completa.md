@@ -1,6 +1,6 @@
 # Justificativa da escolha de banco de dados — Conexão Solidária
 
-**Hackathon Fase 5 — POSTECH .NET, Turma 11NETT, Grupo 30**
+**Hackathon Fase 5 — POSTECH .NET, Turma 11NETT, Grupo 28**
 
 ## Contexto
 
