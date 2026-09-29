@@ -207,6 +207,22 @@ CI) antes de encerrar.
       roteiro do segmento 1 continua explicando os detalhes em voz (ex.:
       `GET /campanhas`, `POST /doacoes`) mesmo não estando mais escritos no
       diagrama.
+- [x] Diagrama de arquitetura — redução de setas (**Gabriel**, 2026-09-29):
+      dono do projeto achou que a simplificação anterior (só nos rótulos)
+      não resolveu — o problema era a quantidade de setas em si, não só o
+      texto delas. Dois ajustes em `../ARQUITETURA.md`: (1) as 5 setas
+      ator→módulo (`Doador`/`GestorONG` duplicados mirando em `Identidade`,
+      etc.) viraram 3 setas saindo do subgraph `Atores` como um todo, uma
+      por módulo — isso é diagrama de arquitetura, não fluxo de negócio,
+      então não importa *qual* ator aciona qual módulo; (2) as 2 setas do
+      `doacoes-worker` pra schemas específicos (`campanha`/`doacao`, cada
+      uma narrando uma ação de negócio diferente) viraram 1 seta só, do
+      Worker pro grupo `DB` como um todo. Texto de legenda abaixo do
+      diagrama e o roteiro do segmento 1 ajustados pra não afirmarem mais
+      ligações específicas que o diagrama não mostra (a explicação de quem
+      fala com quem continua na narração falada, só não está mais desenhada
+      seta a seta). Reexportado, conferido visualmente. Duração do roteiro
+      recontada (833 palavras → ainda 5 a 6 minutos).
 - [x] PDF de justificativa de banco de dados (**Gabriel**) — feito em
       2026-09-29, revisado no mesmo dia para caber em 1 página (a primeira
       versão, com 3 páginas, incluía "papel da fila" e "idempotência" —

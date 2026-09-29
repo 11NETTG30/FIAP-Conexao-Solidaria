@@ -5,7 +5,7 @@
 > para parafrasear em voz alta, olhando para o diagrama em
 > `docs/conexao-solidaria/entrega/diagrama-arquitetura.png` (ou direto no
 > mermaid de `../ARQUITETURA.md`) enquanto fala. Duração estimada: 5 a 6
-> minutos (abertura + segmento 1) — 766 palavras no texto, ~140
+> minutos (abertura + segmento 1) — 833 palavras no texto, ~140
 > palavras/minuto numa fala natural com pausas pra apontar o diagrama.
 > Se quiser um vídeo mais enxuto, considere cortar/resumir antes de gravar
 > (o edital não exige tempo mínimo, só o teto de 15 min pro vídeo inteiro).
@@ -52,11 +52,13 @@ repositório — não são projetos nem repositórios separados, não têm porta
 própria, não escalam de forma independente. O segundo processo deployável é
 o `doacoes-worker`, que eu mostro já já, do lado de fora dessa caixa verde.
 
-Reparem como cada ator conversa com um módulo específico, não com "a API"
-de forma genérica: Doador e GestorONG batem no módulo Identidade pra
-autenticação; o GestorONG cria e edita campanha no módulo Campanha; o
-Público faz `GET /campanhas` também no módulo Campanha, sem token; e o
-Doador registra uma doação no módulo Doacao, via `POST /doacoes`.
+No diagrama, as setas saem do grupo "Atores" direto pra cada um dos três
+módulos — não desenhei uma seta por ator porque isso vira mapa de fluxo de
+negócio, não diagrama de arquitetura. Mas vale explicar de cabeça quem fala
+com quem: Doador e GestorONG se autenticam no módulo Identidade; o
+GestorONG cria e edita campanha, e o Público consulta o painel de
+transparência via `GET /campanhas`, sem token, ambos no módulo Campanha; e
+o Doador registra uma doação no módulo Doacao, via `POST /doacoes`.
 
 Agora o ponto mais importante do diagrama: só o módulo **Doacao** fala com
 o RabbitMQ. Quando uma doação é registrada, esse módulo não atualiza o
@@ -73,7 +75,10 @@ O `doacoes-worker` consome essa fila e faz duas coisas dentro de uma única
 transação: confirma a doação, que estava pendente, e soma o valor no
 `valor_arrecadado` da campanha correspondente. Ele acessa o banco
 diretamente, sem precisar chamar a API de volta por HTTP — no diagrama, a
-seta dele mira direto nos schemas, não na caixa da API.
+seta dele mira direto no grupo do Postgres, não na caixa da API. Não separei
+uma seta pra cada schema que ele toca porque, de novo, isso já é regra de
+negócio — o que importa pra arquitetura é só "o Worker acessa o banco
+direto", o resto eu explico agora, em voz.
 
 E por falar em banco: aqui do lado direito temos o Postgres, e eu separei
 ele em três cilindros pra ficar claro que cada módulo tem o schema dele —
