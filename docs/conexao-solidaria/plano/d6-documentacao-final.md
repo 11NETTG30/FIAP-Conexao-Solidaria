@@ -188,6 +188,19 @@ CI) antes de encerrar.
       Gerado com reportlab (pandoc/wkhtmltopdf/LaTeX não estavam
       disponíveis no ambiente; reportlab via pip funcionou de primeira e
       não deixa dependência pesada no repositório).
+      **Ajuste de 2026-09-29 (a pedido do Gabriel)**: a versão de entrega
+      (`justificativa-banco-dados.pdf`) estava ocupando 2 páginas e com
+      pouco respiro visual entre título, subtítulo e o primeiro parágrafo
+      de cada seção. Reequilibrado layout para caber em 1 página com bem
+      mais respiro entre título/subtítulo/texto — margens superior/inferior
+      reduzidas para 1cm (abaixo do padrão ABNT de 3cm/2cm, decisão
+      explícita do Gabriel, que topou abrir mão do padrão estrito nesse
+      ponto) e `spaceAfter`/`spaceBefore` do título, subtítulo e títulos de
+      seção aumentados. Não foi preciso cortar nenhuma frase do `.md`. Os
+      mesmos ajustes de espaçamento (mantendo margens ABNT completas, já
+      que essa versão não precisa caber em 1 página) foram aplicados em
+      `justificativa-banco-dados-completa.pdf` para manter consistência
+      visual entre os dois PDFs.
 - [x] README completo (**Gabriel**) — reescrito do zero, cobrindo visão
       geral, arquitetura, pré-requisitos, subida via docker-compose,
       credenciais de teste, endpoints/fluxos principais, testes (unitários
