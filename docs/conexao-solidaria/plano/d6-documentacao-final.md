@@ -174,6 +174,25 @@ CI) antes de encerrar.
       por rodar como root), conferido visualmente após cada iteração.
       Roteiro do segmento 1 (`../entrega/roteiro-segmento-1-diagrama.md`)
       ajustado com uma frase sobre o agrupamento visual dos atores.
+- [x] Diagrama de arquitetura — detalhamento interno (**Gabriel**,
+      2026-09-29): dono do projeto apontou que o diagrama ainda estava raso
+      — a `conexao-solidaria-api` aparecia como uma caixa única, sem mostrar
+      os três módulos internos (Identidade/Campanha/Doacao), e o Postgres
+      aparecia como um cilindro só, sem os três schemas separados. Refeito
+      em `../ARQUITETURA.md`: `conexao-solidaria-api` virou um `subgraph`
+      com os três módulos como nós internos, cada ator ligado ao módulo
+      específico que ele acessa (não mais "ator → API" genérico); só o
+      módulo `Doacao` liga na fila RabbitMQ (Identidade e Campanha acessam
+      o próprio schema direto); Postgres virou um `subgraph` com três
+      cilindros (`schema identidade`/`campanha`/`doacao`); o
+      `doacoes-worker` liga direto nos schemas `campanha` e `doacao` (não na
+      caixa da API); Prometheus/Grafana passaram a usar seta tracejada
+      (scrape/leitura, não fluxo de negócio). Reexportado para
+      `../entrega/diagrama-arquitetura.png`, conferido visualmente. Roteiro
+      do segmento 1 (`../entrega/roteiro-segmento-1-diagrama.md`) reescrito
+      para narrar o novo nível de detalhe (ator→módulo específico, só
+      Doacao publica evento, Worker mira nos schemas); duração estimada
+      recontada (766 palavras, ~140 palavras/min → 5 a 6 minutos).
 - [x] PDF de justificativa de banco de dados (**Gabriel**) — feito em
       2026-09-29, revisado no mesmo dia para caber em 1 página (a primeira
       versão, com 3 páginas, incluía "papel da fila" e "idempotência" —

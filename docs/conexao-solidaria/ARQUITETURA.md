@@ -48,7 +48,7 @@ Sem API Gateway (Kong ficou de fora — era opcional no edital).
 Autenticação/autorização acontecem dentro da própria API.
 
 ```mermaid
-%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 40, "rankSpacing": 60}, "themeVariables": {"fontFamily": "Helvetica, Arial, sans-serif", "fontSize": "16px"}} }%%
+%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 30, "rankSpacing": 70}, "themeVariables": {"fontFamily": "Helvetica, Arial, sans-serif", "fontSize": "15px"}} }%%
 flowchart LR
   subgraph Atores["Atores (HTTP)"]
     direction TB
@@ -57,40 +57,75 @@ flowchart LR
     Publico[Publico]
   end
 
-  Doador -->|HTTP| API[["conexao-solidaria-api"]]
-  GestorONG -->|HTTP| API
-  Publico -->|HTTP GET| API
+  subgraph API["conexao-solidaria-api (1 processo, 3 módulos)"]
+    direction TB
+    Identidade[Identidade]
+    Campanha[Campanha]
+    Doacao[Doacao]
+  end
 
-  API -->|DoacaoRecebidaEvent| Fila{{RabbitMQ}}
+  subgraph DB["Postgres — 1 instância, 3 schemas"]
+    direction TB
+    SchemaIdentidade[("schema<br/>identidade")]
+    SchemaCampanha[("schema<br/>campanha")]
+    SchemaDoacao[("schema<br/>doacao")]
+  end
+
+  Doador -->|"login/auth"| Identidade
+  GestorONG -->|"login/auth"| Identidade
+  GestorONG -->|"cria/edita campanha"| Campanha
+  Publico -->|"GET /campanhas"| Campanha
+  Doador -->|"POST /doacoes"| Doacao
+
+  Identidade -->|"acesso direto"| SchemaIdentidade
+  Campanha -->|"acesso direto"| SchemaCampanha
+  Doacao -->|"grava doação<br/>Pendente"| SchemaDoacao
+
+  Doacao -->|"publica<br/>DoacaoRecebidaEvent"| Fila{{RabbitMQ}}
   Fila --> Worker[["doacoes-worker"]]
-  Worker -->|acesso direto| DB[("Postgres:<br/>schemas identidade +<br/>campanha + doacao")]
+  Worker -->|"confirma doação"| SchemaDoacao
+  Worker -->|"soma valor_arrecadado"| SchemaCampanha
 
-  Prometheus((Prometheus)) -->|"scrape /metrics"| API
-  Grafana((Grafana)) -->|"lê métricas"| Prometheus
+  Prometheus((Prometheus)) -.->|"scrape /metrics"| API
+  Grafana((Grafana)) -.->|"lê métricas"| Prometheus
 
   classDef ator fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a
-  classDef app fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+  classDef modulo fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+  classDef worker fill:#bbf7d0,stroke:#15803d,stroke-width:1.5px,color:#14532d
   classDef fila fill:#ffedd5,stroke:#ea580c,stroke-width:1.5px,color:#7c2d12
   classDef dados fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
   classDef obs fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87
 
   class Doador,GestorONG,Publico ator
-  class API,Worker app
+  class Identidade,Campanha,Doacao modulo
+  class Worker worker
   class Fila fila
-  class DB dados
+  class SchemaIdentidade,SchemaCampanha,SchemaDoacao dados
   class Prometheus,Grafana obs
 
   style Atores fill:#eff6ff,stroke:#93c5fd,stroke-width:1px,stroke-dasharray: 4 3,rx:10,ry:10
+  style API fill:#f0fdf4,stroke:#86efac,stroke-width:1px,stroke-dasharray: 4 3,rx:10,ry:10
+  style DB fill:#fffbeb,stroke:#fde68a,stroke-width:1px,stroke-dasharray: 4 3,rx:10,ry:10
 ```
 
 Grupos visuais (cor por camada): azul = atores (client-side, batem na API via
-HTTP), verde = aplicação (`conexao-solidaria-api` e `doacoes-worker`, os dois processos
-deployáveis), laranja = mensageria (RabbitMQ, em hexágono — forma distinta
-para destacar a fila), amarelo/dourado = dados (Postgres, em cilindro), roxo
-= observabilidade (Prometheus e Grafana). Os três atores (`Doador`,
-`GestorONG`, `Publico`) ficam agrupados num subgraph "Atores" só para deixar
-visualmente explícito que são a mesma categoria de coisa — client-side, sem
-implicar em nenhuma mudança de comportamento ou fronteira de serviço.
+HTTP), verde-claro = os três módulos internos da `conexao-solidaria-api`
+(Identidade, Campanha, Doacao — pastas dentro do mesmo processo, não serviços
+separados), verde-escuro = `doacoes-worker` (o segundo e único outro processo
+deployável), laranja = mensageria (RabbitMQ, em hexágono — forma distinta
+para destacar a fila), amarelo/dourado = dados (os três schemas do Postgres,
+cada um em seu próprio cilindro), roxo = observabilidade (Prometheus e
+Grafana, com seta tracejada porque é scrape/leitura, não fluxo de negócio).
+Os três atores ficam agrupados num subgraph "Atores" e os três módulos da API
+num subgraph "conexao-solidaria-api" só para deixar visualmente explícito que
+são, respectivamente, a mesma categoria de cliente e o mesmo processo
+deployável — sem implicar nenhuma fronteira de rede entre eles.
+
+Reparem que só o módulo **Doacao** publica evento na fila — Identidade e
+Campanha acessam o próprio schema direto, sem passar pelo RabbitMQ. E o
+`doacoes-worker`, mesmo sendo outro processo, ainda acessa os schemas
+`campanha` e `doacao` diretamente (não chama a API de volta por HTTP) — por
+isso a seta dele mira nos cilindros, não na caixa da API.
 
 ## Banco de dados
 
