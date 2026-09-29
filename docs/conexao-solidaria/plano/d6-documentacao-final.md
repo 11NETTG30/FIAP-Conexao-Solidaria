@@ -223,6 +223,28 @@ CI) antes de encerrar.
       fala com quem continua na narração falada, só não está mais desenhada
       seta a seta). Reexportado, conferido visualmente. Duração do roteiro
       recontada (833 palavras → ainda 5 a 6 minutos).
+- [x] Diagrama de arquitetura — correção do roteamento das setas
+      (**Gabriel**, 2026-09-29): a redução de setas acima (subgraph `Atores`
+      → cada módulo, `Worker` → subgraph `DB` como um todo) reduziu a
+      contagem lógica de setas, mas o dono do projeto reportou (com
+      print do GitHub) que visualmente continuava parecendo ter uma seta por
+      ator e duas do Worker — o mermaid/dagre roteia setas que saem ou
+      chegam num **subgraph** (não num nó real) por um ponto de entrada que
+      coincide, por acaso de alinhamento vertical, com um nó interno
+      específico, dando a falsa impressão de que a seta é daquele nó. Uma
+      seta subgraph→subgraph (`API --> DB`) chegou a rotear para dentro de
+      um schema específico, cruzando por cima do Worker. Corrigido evitando
+      setas de/para subgraph nos dois pontos problemáticos: atores agora
+      miram a caixa real `conexao-solidaria-api` (não o subgraph `Atores`,
+      3 setas limpas convergindo num só ponto); Worker agora mira os nós
+      reais `SchemaDoacao`/`SchemaCampanha` diretamente (2 setas sem
+      rótulo, não o subgraph `DB`) — mantidas as ligações módulo→schema
+      (`Identidade`/`Campanha`/`Doacao` → schema correspondente), que já
+      renderizavam limpo por serem nó-a-nó. Texto de legenda e roteiro do
+      segmento 1 corrigidos de novo pra bater com o desenho final. Lição
+      registrada: setas envolvendo subgraph como origem/destino em mermaid
+      não são confiáveis para "uma seta representando o grupo todo" — usar
+      sempre nós reais nas pontas.
 - [x] PDF de justificativa de banco de dados (**Gabriel**) — feito em
       2026-09-29, revisado no mesmo dia para caber em 1 página (a primeira
       versão, com 3 páginas, incluía "papel da fila" e "idempotência" —

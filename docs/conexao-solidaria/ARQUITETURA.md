@@ -71,9 +71,9 @@ flowchart LR
     SchemaDoacao[("schema<br/>doacao")]
   end
 
-  Atores --> Identidade
-  Atores --> Campanha
-  Atores --> Doacao
+  Doador --> API
+  GestorONG --> API
+  Publico --> API
 
   Identidade --> SchemaIdentidade
   Campanha --> SchemaCampanha
@@ -81,7 +81,8 @@ flowchart LR
 
   Doacao -->|evento| Fila{{RabbitMQ}}
   Fila --> Worker[["doacoes-worker"]]
-  Worker --> DB
+  Worker --> SchemaDoacao
+  Worker --> SchemaCampanha
 
   Prometheus((Prometheus)) -.->|scrape| API
   Grafana((Grafana)) -.->|lê| Prometheus
@@ -116,21 +117,21 @@ Grafana, com seta tracejada porque é scrape/leitura, não fluxo de negócio).
 Os três atores ficam agrupados num subgraph "Atores" e os três módulos da API
 num subgraph "conexao-solidaria-api" só para deixar visualmente explícito que
 são, respectivamente, a mesma categoria de cliente e o mesmo processo
-deployável — sem implicar nenhuma fronteira de rede entre eles. As setas
-saem do grupo "Atores" como um todo para cada módulo (não de cada ator
-individual) — este é um diagrama de arquitetura, não de fluxo de negócio:
-não importa aqui *qual* ator especificamente aciona qual módulo (isso está
-detalhado nos `d*.md` de cada demanda), só que os três módulos são
-acessíveis via HTTP.
+deployável — sem implicar nenhuma fronteira de rede entre eles. As três
+setas dos atores miram na caixa da `conexao-solidaria-api` como um todo, não
+em módulos específicos — este é um diagrama de arquitetura, não de fluxo de
+negócio: não importa aqui *qual* ator aciona qual módulo (isso está
+detalhado nos `d*.md` de cada demanda), só que os atores acessam a API via
+HTTP.
 
 Reparem que só o módulo **Doacao** publica evento na fila — Identidade e
 Campanha acessam o próprio schema direto, sem passar pelo RabbitMQ. E o
-`doacoes-worker`, mesmo sendo outro processo, ainda acessa o banco
-diretamente (não chama a API de volta por HTTP) — por isso a seta dele mira
-no grupo do Postgres, não na caixa da API. O diagrama não detalha que o
-Worker toca dois schemas em duas operações diferentes (confirma a doação,
-soma o valor arrecadado) — isso é regra de negócio, explicada em texto na
-seção "Banco de dados" abaixo, não desenhada seta a seta.
+`doacoes-worker`, mesmo sendo outro processo, ainda acessa os schemas
+`doacao` e `campanha` diretamente (não chama a API de volta por HTTP) — por
+isso as setas dele miram nos cilindros, não na caixa da API. O diagrama não
+detalha *o que* o Worker faz em cada schema (confirma a doação, soma o valor
+arrecadado) — isso é regra de negócio, explicada em texto na seção "Banco de
+dados" abaixo, não escrita em cima da seta.
 
 ## Banco de dados
 
