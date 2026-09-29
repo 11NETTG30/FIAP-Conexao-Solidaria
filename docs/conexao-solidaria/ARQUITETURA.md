@@ -71,23 +71,23 @@ flowchart LR
     SchemaDoacao[("schema<br/>doacao")]
   end
 
-  Doador -->|"login/auth"| Identidade
-  GestorONG -->|"login/auth"| Identidade
-  GestorONG -->|"cria/edita campanha"| Campanha
-  Publico -->|"GET /campanhas"| Campanha
-  Doador -->|"POST /doacoes"| Doacao
+  Doador --> Identidade
+  GestorONG --> Identidade
+  GestorONG --> Campanha
+  Publico --> Campanha
+  Doador --> Doacao
 
-  Identidade -->|"acesso direto"| SchemaIdentidade
-  Campanha -->|"acesso direto"| SchemaCampanha
-  Doacao -->|"grava doação<br/>Pendente"| SchemaDoacao
+  Identidade --> SchemaIdentidade
+  Campanha --> SchemaCampanha
+  Doacao --> SchemaDoacao
 
-  Doacao -->|"publica<br/>DoacaoRecebidaEvent"| Fila{{RabbitMQ}}
+  Doacao -->|evento| Fila{{RabbitMQ}}
   Fila --> Worker[["doacoes-worker"]]
-  Worker -->|"confirma doação"| SchemaDoacao
-  Worker -->|"soma valor_arrecadado"| SchemaCampanha
+  Worker --> SchemaDoacao
+  Worker --> SchemaCampanha
 
-  Prometheus((Prometheus)) -.->|"scrape /metrics"| API
-  Grafana((Grafana)) -.->|"lê métricas"| Prometheus
+  Prometheus((Prometheus)) -.->|scrape| API
+  Grafana((Grafana)) -.->|lê| Prometheus
 
   classDef ator fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a
   classDef modulo fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d

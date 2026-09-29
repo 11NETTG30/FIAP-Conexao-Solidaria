@@ -193,6 +193,20 @@ CI) antes de encerrar.
       para narrar o novo nível de detalhe (ator→módulo específico, só
       Doacao publica evento, Worker mira nos schemas); duração estimada
       recontada (766 palavras, ~140 palavras/min → 5 a 6 minutos).
+- [x] Diagrama de arquitetura — simplificação dos rótulos das setas
+      (**Gabriel**, 2026-09-29): dono do projeto achou as ligações
+      detalhadas demais depois do detalhamento acima (`login/auth`,
+      `GET /campanhas`, `POST /doacoes`, `grava doação Pendente`,
+      `confirma doação`, `soma valor_arrecadado`, etc. em cada seta).
+      Removidos os rótulos onde a relação já é óbvia pelo nome das caixas
+      (ator → módulo, módulo → schema); mantido só o essencial pra entender
+      o fluxo que não é óbvio (`evento` na seta Doacao → RabbitMQ, `scrape`
+      e `lê` nas setas de observabilidade). Nenhuma caixa, seta ou
+      agrupamento foi removido — só os textos das setas. Reexportado para
+      `../entrega/diagrama-arquitetura.png`, conferido visualmente. O
+      roteiro do segmento 1 continua explicando os detalhes em voz (ex.:
+      `GET /campanhas`, `POST /doacoes`) mesmo não estando mais escritos no
+      diagrama.
 - [x] PDF de justificativa de banco de dados (**Gabriel**) — feito em
       2026-09-29, revisado no mesmo dia para caber em 1 página (a primeira
       versão, com 3 páginas, incluía "papel da fila" e "idempotência" —
