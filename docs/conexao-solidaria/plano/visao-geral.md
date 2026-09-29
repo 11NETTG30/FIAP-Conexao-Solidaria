@@ -174,7 +174,8 @@ de qualquer demanda filha.
 
 - [x] d0 — Base: rename de roles, scaffolding de pastas dos módulos novos
 - [x] d0.1 — CPF do doador (Gabriel; ver `d0.1-cpf-doador.md`) — validado
-      ponta a ponta (`dotnet test` + `e2e/smoke-test.sh` 36/36), PR aberto
+      ponta a ponta (`dotnet test` + `e2e/smoke-test.sh` 36/36), PR #18
+      mergeado
 - [x] d1 — Módulo Campanha
 - [x] d2 — Módulo Doação + Worker + RabbitMQ (fechada por decisão do
       Gabriel em 2026-09-28 sem a validação ponta a ponta via

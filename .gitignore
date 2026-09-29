@@ -425,3 +425,7 @@ FodyWeavers.xsd
 docker/certs/*.crt
 
 secret.yaml
+
+# Worktrees isolados criados pelo Claude Code para agentes em background —
+# checkouts de trabalho temporários, não fazem parte do projeto.
+.claude/worktrees/
