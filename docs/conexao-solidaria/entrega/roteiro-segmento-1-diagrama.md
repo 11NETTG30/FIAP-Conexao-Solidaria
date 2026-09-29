@@ -1,14 +1,31 @@
-# Roteiro — Segmento 1: Diagrama de Arquitetura
+# Roteiro — Abertura e Segmento 1: Diagrama de Arquitetura
 
-> Uso: texto de apoio para quem for gravar este segmento do vídeo de
-> demonstração (D6). Não precisa ser lido palavra por palavra — é para
-> parafrasear em voz alta, olhando para o diagrama em
+> Uso: texto de apoio para quem for gravar a abertura e este segmento do
+> vídeo de demonstração (D6). Não precisa ser lido palavra por palavra — é
+> para parafrasear em voz alta, olhando para o diagrama em
 > `docs/conexao-solidaria/entrega/diagrama-arquitetura.png` (ou direto no
-> mermaid de `../ARQUITETURA.md`) enquanto fala. Duração estimada: 1 a 2
-> minutos. Este é o único segmento do vídeo que é só apresentação — sem
-> código, sem terminal.
+> mermaid de `../ARQUITETURA.md`) enquanto fala. Duração estimada: 2 a 3
+> minutos (abertura + segmento 1). O segmento 1 é o único do vídeo que é só
+> apresentação — sem código, sem terminal.
 
 ---
+
+## Abertura (apresentação do vídeo)
+
+Oi, pessoal! Eu sou o Gabriel, e esse é o vídeo de demonstração do nosso
+projeto pro Hackathon Fase 5 da Pós-Graduação em Arquitetura de Sistemas
+.NET da FIAP, Turma 11NETT: a **Conexão Solidária**.
+
+É uma plataforma de gestão de doadores e campanhas de arrecadação pra uma
+ONG — um MVP focado em escalabilidade, observabilidade e automação, como
+pede o edital. Nos próximos minutos eu vou mostrar a arquitetura da
+solução, o pipeline de CI, o cluster Kubernetes rodando com observabilidade
+de verdade, e o sistema funcionando de ponta a ponta: autenticação, criação
+de campanha e uma doação sendo processada de forma assíncrona.
+
+Vamos começar pela arquitetura.
+
+## Segmento 1 — Diagrama de arquitetura
 
 Nesta parte eu vou explicar a arquitetura da Conexão Solidária, a
 plataforma que a gente construiu para conectar doadores a campanhas de
