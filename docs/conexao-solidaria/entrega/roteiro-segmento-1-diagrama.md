@@ -41,12 +41,12 @@ Do lado esquerdo temos quem acessa o sistema, agrupado numa caixa só de
 batendo na API via HTTP. Dentro dela, o Doador e o GestorONG se autenticam e
 fazem requisições HTTP autenticadas, e o Público em geral acessa só o painel
 de transparência, sem precisar de login. Todo esse tráfego chega num único
-ponto de entrada, a `fcg-api`.
+ponto de entrada, a `conexao-solidaria-api`.
 
 Aqui já vale destacar uma decisão importante: apesar do nome sugerir
 "microsserviços" no plural, a nossa arquitetura é um monolito modular com
 apenas dois processos que de fato são implantados de forma independente.
-O primeiro é essa `fcg-api`, que concentra os módulos de Identidade,
+O primeiro é essa `conexao-solidaria-api`, que concentra os módulos de Identidade,
 Campanha e Doação — cada um organizado em pastas dentro do mesmo
 repositório, não em projetos ou repositórios separados. O segundo processo
 deployável é o `doacoes-worker`, que eu mostro já já.
@@ -74,7 +74,7 @@ mais complexidade do que o prazo do hackathon permitia.
 
 Por fim, a parte de observabilidade, que também é uma exigência do
 edital e que a gente adicionou nesta versão do diagrama: o Prometheus faz
-scrape periódico do endpoint de métricas da `fcg-api`, coletando dados
+scrape periódico do endpoint de métricas da `conexao-solidaria-api`, coletando dados
 como número de requisições por rota, latência e uso de CPU e memória dos
 pods. E o Grafana lê esses dados direto do Prometheus e exibe tudo num
 dashboard, que a gente mostra com números reais mais adiante no vídeo, no

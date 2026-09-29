@@ -18,7 +18,7 @@ Exigência do edital: cluster K8s com `Deployments`, `Services` e
 `ConfigMaps` entregues. Processos a orquestrar (ver
 `../ARQUITETURA.md`):
 
-- `fcg-api` — Deployment + Service (exposto)
+- `conexao-solidaria-api` — Deployment + Service (exposto)
 - `doacoes-worker` — Deployment (sem Service, não recebe tráfego HTTP)
 - Postgres — pode ser Deployment simples com PVC, ou StatefulSet
 - RabbitMQ — idem

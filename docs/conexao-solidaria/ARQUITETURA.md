@@ -41,7 +41,7 @@ deployáveis:
 
 | Serviço (pod) | O que contém | Entrada |
 | --- | --- | --- |
-| `fcg-api` | Módulos Identidade + Campanha + Doacao, organizados em pastas (não em projetos/repos separados) | HTTP |
+| `conexao-solidaria-api` | Módulos Identidade + Campanha + Doacao, organizados em pastas (não em projetos/repos separados) | HTTP |
 | `doacoes-worker` | Processa `DoacaoRecebidaEvent`, atualiza Campanha e confirma/rejeita a Doação | Fila (RabbitMQ) |
 
 Sem API Gateway (Kong ficou de fora — era opcional no edital).
@@ -57,7 +57,7 @@ flowchart LR
     Publico[Publico]
   end
 
-  Doador -->|HTTP| API[["fcg-api"]]
+  Doador -->|HTTP| API[["conexao-solidaria-api"]]
   GestorONG -->|HTTP| API
   Publico -->|HTTP GET| API
 
@@ -84,7 +84,7 @@ flowchart LR
 ```
 
 Grupos visuais (cor por camada): azul = atores (client-side, batem na API via
-HTTP), verde = aplicação (`fcg-api` e `doacoes-worker`, os dois processos
+HTTP), verde = aplicação (`conexao-solidaria-api` e `doacoes-worker`, os dois processos
 deployáveis), laranja = mensageria (RabbitMQ, em hexágono — forma distinta
 para destacar a fila), amarelo/dourado = dados (Postgres, em cilindro), roxo
 = observabilidade (Prometheus e Grafana). Os três atores (`Doador`,

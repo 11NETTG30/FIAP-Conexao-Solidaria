@@ -162,7 +162,7 @@ CI) antes de encerrar.
       `../ARQUITETURA.md` (Opção A — sem precisar de SVG customizado):
       `Doador`/`GestorONG`/`Publico` agrupados num `subgraph "Atores (HTTP)"`
       com borda tracejada arredondada; cor por camada via `classDef`/`class`
-      (azul = atores, verde = aplicação `fcg-api`/`doacoes-worker`, laranja =
+      (azul = atores, verde = aplicação `conexao-solidaria-api`/`doacoes-worker`, laranja =
       mensageria, amarelo = dados, roxo = observabilidade); formas por tipo
       de nó (hexágono para o RabbitMQ, cilindro para o Postgres, círculo para
       Prometheus/Grafana, retângulo de sub-rotina para os dois serviços
