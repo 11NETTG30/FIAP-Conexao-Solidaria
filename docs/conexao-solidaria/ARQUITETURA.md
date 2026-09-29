@@ -55,6 +55,8 @@ flowchart LR
   fcg-api -->|DoacaoRecebidaEvent| Fila[(RabbitMQ)]
   Fila --> doacoes-worker
   doacoes-worker -->|acesso direto| DB[(Postgres: schemas campanha + doacao)]
+  Prometheus -->|scrape /metrics| fcg-api
+  Grafana -->|lê métricas| Prometheus
 ```
 
 ## Banco de dados

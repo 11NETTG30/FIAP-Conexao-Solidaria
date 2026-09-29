@@ -152,14 +152,17 @@ CI) antes de encerrar.
 
 ## Andamento
 
-- [ ] Diagrama de arquitetura — ajustar (incluir Prometheus/Grafana) e
-      exportar (**Gabriel**)
+- [x] Diagrama de arquitetura — ajustar (incluir Prometheus/Grafana) e
+      exportar (**Gabriel**): mermaid atualizado em `../ARQUITETURA.md`
+      (nós `Prometheus` e `Grafana` adicionados) e exportado para
+      `../entrega/diagrama-arquitetura.png` via `@mermaid-js/mermaid-cli`
 - [ ] PDF de justificativa de banco de dados (**Gabriel**)
 - [ ] README completo (**Gabriel**)
 - [ ] Relatório de entrega — campos fixos (grupo, participantes, Discord,
       link do repositório) (**Gabriel**)
-- [ ] Roteiro de texto do vídeo — segmento 1 (**Gabriel**); segmentos 2, 3
-      e 4 seguem sem dono
+- [x] Roteiro de texto do vídeo — segmento 1 (**Gabriel**):
+      `../entrega/roteiro-segmento-1-diagrama.md`. **Segmentos 2, 3 e 4
+      seguem sem dono** (roteiro de texto e gravação)
 - [ ] Vídeo — segmento 1: diagrama de arquitetura
 - [ ] Vídeo — segmento 2: pipeline de CI
 - [ ] Vídeo — segmento 3: `kubectl get pods` + Grafana
@@ -175,6 +178,10 @@ CI) antes de encerrar.
   gravação dos 4 segmentos do vídeo (lembrando que 3 e 4 precisam ser
   gravados juntos, pelo mesmo grupo/pessoa — ver "Gravação do vídeo"
   acima) + a montagem final.
+- 2026-09-29 — Diagrama de arquitetura (com Prometheus/Grafana) e roteiro
+  de texto do segmento 1 concluídos, ver `../entrega/`. **Continua em
+  aberto**: quem escreve o roteiro de texto dos segmentos 2, 3 e 4, e quem
+  grava cada segmento do vídeo.
 
 ## Arquivos de apoio
 
