@@ -4,9 +4,13 @@
 > vídeo de demonstração (D6). Não precisa ser lido palavra por palavra — é
 > para parafrasear em voz alta, olhando para o diagrama em
 > `docs/conexao-solidaria/entrega/diagrama-arquitetura.png` (ou direto no
-> mermaid de `../ARQUITETURA.md`) enquanto fala. Duração estimada: 2 a 3
-> minutos (abertura + segmento 1). O segmento 1 é o único do vídeo que é só
-> apresentação — sem código, sem terminal.
+> mermaid de `../ARQUITETURA.md`) enquanto fala. Duração estimada: 4 a 5
+> minutos (abertura + segmento 1) — 619 palavras no texto, ~140
+> palavras/minuto numa fala natural com pausas pra apontar o diagrama.
+> Se quiser um vídeo mais enxuto, considere cortar/resumir antes de gravar
+> (o edital não exige tempo mínimo, só o teto de 15 min pro vídeo inteiro).
+> O segmento 1 é o único do vídeo que é só apresentação — sem código, sem
+> terminal.
 
 ---
 
