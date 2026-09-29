@@ -138,15 +138,15 @@ Para testar como **Doador**, registre um usuário novo em
 {
   "nome": "Doador de Teste",
   "email": "doador@teste.com",
+  "cpf": "111.444.777-35",
   "senha": "Senha@123",
   "confirmacaoSenha": "Senha@123"
 }
 ```
 
-> O campo CPF do cadastro de doador, exigido pelo edital, ainda está em
-> implementação (demanda `d0.1`, ver
-> [`docs/conexao-solidaria/plano/d0.1-cpf-doador.md`](docs/conexao-solidaria/plano/d0.1-cpf-doador.md))
-> — o payload acima reflete o estado atual do endpoint.
+O CPF é validado de verdade (dígitos verificadores, não só "11 dígitos") e
+precisa ser único por doador — ver `docs/conexao-solidaria/plano/d0.1-cpf-doador.md`
+para o histórico da implementação.
 
 ## Endpoints principais
 
