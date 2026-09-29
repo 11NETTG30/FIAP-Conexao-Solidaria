@@ -156,6 +156,24 @@ CI) antes de encerrar.
       exportar (**Gabriel**): mermaid atualizado em `../ARQUITETURA.md`
       (nós `Prometheus` e `Grafana` adicionados) e exportado para
       `../entrega/diagrama-arquitetura.png` via `@mermaid-js/mermaid-cli`
+- [x] Diagrama de arquitetura — revisão visual (**Gabriel**, 2026-09-29):
+      dono do projeto achou o diagrama anterior visualmente pobre (caixas
+      brancas uniformes, atores soltos). Refeito no próprio mermaid de
+      `../ARQUITETURA.md` (Opção A — sem precisar de SVG customizado):
+      `Doador`/`GestorONG`/`Publico` agrupados num `subgraph "Atores (HTTP)"`
+      com borda tracejada arredondada; cor por camada via `classDef`/`class`
+      (azul = atores, verde = aplicação `fcg-api`/`doacoes-worker`, laranja =
+      mensageria, amarelo = dados, roxo = observabilidade); formas por tipo
+      de nó (hexágono para o RabbitMQ, cilindro para o Postgres, círculo para
+      Prometheus/Grafana, retângulo de sub-rotina para os dois serviços
+      deployáveis); rótulo do Postgres corrigido para citar os 3 schemas
+      (`identidade`/`campanha`/`doacao` — antes só citava campanha+doacao).
+      Nenhum componente, seta ou rótulo de seta existente foi removido.
+      Reexportado para `../entrega/diagrama-arquitetura.png` com
+      `@mermaid-js/mermaid-cli` (`-s 3 -b white`, puppeteer `--no-sandbox`
+      por rodar como root), conferido visualmente após cada iteração.
+      Roteiro do segmento 1 (`../entrega/roteiro-segmento-1-diagrama.md`)
+      ajustado com uma frase sobre o agrupamento visual dos atores.
 - [x] PDF de justificativa de banco de dados (**Gabriel**) — feito em
       2026-09-29, revisado no mesmo dia para caber em 1 página (a primeira
       versão, com 3 páginas, incluía "papel da fila" e "idempotência" —

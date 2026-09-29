@@ -48,16 +48,49 @@ Sem API Gateway (Kong ficou de fora — era opcional no edital).
 Autenticação/autorização acontecem dentro da própria API.
 
 ```mermaid
+%%{init: {"flowchart": {"htmlLabels": true, "curve": "basis", "nodeSpacing": 40, "rankSpacing": 60}, "themeVariables": {"fontFamily": "Helvetica, Arial, sans-serif", "fontSize": "16px"}} }%%
 flowchart LR
-  Doador -->|HTTP| fcg-api
-  GestorONG -->|HTTP| fcg-api
-  Publico -->|HTTP GET| fcg-api
-  fcg-api -->|DoacaoRecebidaEvent| Fila[(RabbitMQ)]
-  Fila --> doacoes-worker
-  doacoes-worker -->|acesso direto| DB[(Postgres: schemas campanha + doacao)]
-  Prometheus -->|scrape /metrics| fcg-api
-  Grafana -->|lê métricas| Prometheus
+  subgraph Atores["Atores (HTTP)"]
+    direction TB
+    Doador
+    GestorONG[GestorONG]
+    Publico[Publico]
+  end
+
+  Doador -->|HTTP| API[["fcg-api"]]
+  GestorONG -->|HTTP| API
+  Publico -->|HTTP GET| API
+
+  API -->|DoacaoRecebidaEvent| Fila{{RabbitMQ}}
+  Fila --> Worker[["doacoes-worker"]]
+  Worker -->|acesso direto| DB[("Postgres:<br/>schemas identidade +<br/>campanha + doacao")]
+
+  Prometheus((Prometheus)) -->|"scrape /metrics"| API
+  Grafana((Grafana)) -->|"lê métricas"| Prometheus
+
+  classDef ator fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a
+  classDef app fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+  classDef fila fill:#ffedd5,stroke:#ea580c,stroke-width:1.5px,color:#7c2d12
+  classDef dados fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+  classDef obs fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87
+
+  class Doador,GestorONG,Publico ator
+  class API,Worker app
+  class Fila fila
+  class DB dados
+  class Prometheus,Grafana obs
+
+  style Atores fill:#eff6ff,stroke:#93c5fd,stroke-width:1px,stroke-dasharray: 4 3,rx:10,ry:10
 ```
+
+Grupos visuais (cor por camada): azul = atores (client-side, batem na API via
+HTTP), verde = aplicação (`fcg-api` e `doacoes-worker`, os dois processos
+deployáveis), laranja = mensageria (RabbitMQ, em hexágono — forma distinta
+para destacar a fila), amarelo/dourado = dados (Postgres, em cilindro), roxo
+= observabilidade (Prometheus e Grafana). Os três atores (`Doador`,
+`GestorONG`, `Publico`) ficam agrupados num subgraph "Atores" só para deixar
+visualmente explícito que são a mesma categoria de coisa — client-side, sem
+implicar em nenhuma mudança de comportamento ou fronteira de serviço.
 
 ## Banco de dados
 
