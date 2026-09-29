@@ -1,0 +1,64 @@
+# Roteiro — Segmento 1: Diagrama de Arquitetura
+
+> Uso: texto de apoio para quem for gravar este segmento do vídeo de
+> demonstração (D6). Não precisa ser lido palavra por palavra — é para
+> parafrasear em voz alta, olhando para o diagrama em
+> `docs/conexao-solidaria/entrega/diagrama-arquitetura.png` (ou direto no
+> mermaid de `../ARQUITETURA.md`) enquanto fala. Duração estimada: 1 a 2
+> minutos. Este é o único segmento do vídeo que é só apresentação — sem
+> código, sem terminal.
+
+---
+
+Nesta parte eu vou explicar a arquitetura da Conexão Solidária, a
+plataforma que a gente construiu para conectar doadores a campanhas de
+arrecadação de uma ONG. Vou usar esse diagrama aqui como guia, sem entrar
+em código — a ideia é mostrar como as peças se encaixam.
+
+Do lado esquerdo temos quem acessa o sistema: o Doador e o GestorONG, que
+se autenticam e fazem requisições HTTP autenticadas, e o Público em geral,
+que acessa só o painel de transparência, sem precisar de login. Todo esse
+tráfego chega num único ponto de entrada, a `fcg-api`.
+
+Aqui já vale destacar uma decisão importante: apesar do nome sugerir
+"microsserviços" no plural, a nossa arquitetura é um monolito modular com
+apenas dois processos que de fato são implantados de forma independente.
+O primeiro é essa `fcg-api`, que concentra os módulos de Identidade,
+Campanha e Doação — cada um organizado em pastas dentro do mesmo
+repositório, não em projetos ou repositórios separados. O segundo processo
+deployável é o `doacoes-worker`, que eu mostro já já.
+
+Quando uma doação é registrada, a API não atualiza o valor arrecadado da
+campanha na hora, dentro da mesma requisição. Em vez disso, ela publica um
+evento — o `DoacaoRecebidaEvent` — numa fila do RabbitMQ, que é o broker de
+mensageria do projeto. Isso é uma exigência do edital, mas também faz
+sentido pela arquitetura em si: a API responde rápido pro usuário, e quem
+processa a doação de fato é o Worker, no ritmo dele, com reprocessamento
+automático se alguma coisa falhar no meio do caminho.
+
+O `doacoes-worker` consome essa fila e faz duas coisas dentro de uma única
+transação: confirma a doação e atualiza o valor arrecadado da campanha
+correspondente. Ele acessa o banco diretamente, sem precisar chamar a API
+de volta por HTTP.
+
+E por falar em banco: aqui do lado direito temos o Postgres. É importante
+frisar que isso é **uma instância só, com três schemas** — identidade,
+campanha e doação — e não três bancos de dados separados. Foi uma escolha
+deliberada: como os schemas de campanha e doação estão no mesmo banco
+físico, o Worker consegue rodar uma transação real, atômica, cobrindo os
+dois ao mesmo tempo, sem precisar de outbox pattern ou saga, que seria bem
+mais complexidade do que o prazo do hackathon permitia.
+
+Por fim, a parte de observabilidade, que também é uma exigência do
+edital e que a gente adicionou nesta versão do diagrama: o Prometheus faz
+scrape periódico do endpoint de métricas da `fcg-api`, coletando dados
+como número de requisições por rota, latência e uso de CPU e memória dos
+pods. E o Grafana lê esses dados direto do Prometheus e exibe tudo num
+dashboard, que a gente mostra com números reais mais adiante no vídeo, no
+segmento do Kubernetes.
+
+Resumindo os pontos-chave: dois serviços deployáveis — API e Worker — um
+banco Postgres único com três schemas, RabbitMQ desacoplando a escrita da
+doação do processamento assíncrono dela, e Prometheus mais Grafana
+cobrindo a observabilidade de ponta a ponta. Essa é a arquitetura que
+vamos ver funcionando na prática no resto do vídeo.
