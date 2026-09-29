@@ -155,7 +155,13 @@ CI) antes de encerrar.
 - [ ] Diagrama de arquitetura — ajustar (incluir Prometheus/Grafana) e
       exportar (**Gabriel**)
 - [ ] PDF de justificativa de banco de dados (**Gabriel**)
-- [ ] README completo (**Gabriel**)
+- [x] README completo (**Gabriel**) — reescrito do zero, cobrindo visão
+      geral, arquitetura, pré-requisitos, subida via docker-compose,
+      credenciais de teste, endpoints/fluxos principais, testes (unitários
+      + smoke E2E), CI/CD e deploy em Kubernetes; sinaliza explicitamente
+      onde falta validação ponta a ponta (fluxo doação → worker, `kubectl
+      apply -f k8s/` completo) e que o CPF do doador (d0.1) ainda não está
+      implementado
 - [ ] Relatório de entrega — campos fixos (grupo, participantes, Discord,
       link do repositório) (**Gabriel**)
 - [ ] Roteiro de texto do vídeo — segmento 1 (**Gabriel**); segmentos 2, 3
