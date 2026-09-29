@@ -15,10 +15,12 @@ plataforma que a gente construiu para conectar doadores a campanhas de
 arrecadação de uma ONG. Vou usar esse diagrama aqui como guia, sem entrar
 em código — a ideia é mostrar como as peças se encaixam.
 
-Do lado esquerdo temos quem acessa o sistema: o Doador e o GestorONG, que
-se autenticam e fazem requisições HTTP autenticadas, e o Público em geral,
-que acessa só o painel de transparência, sem precisar de login. Todo esse
-tráfego chega num único ponto de entrada, a `fcg-api`.
+Do lado esquerdo temos quem acessa o sistema, agrupado numa caixa só de
+"Atores" pra deixar claro que é a mesma categoria de coisa: client-side,
+batendo na API via HTTP. Dentro dela, o Doador e o GestorONG se autenticam e
+fazem requisições HTTP autenticadas, e o Público em geral acessa só o painel
+de transparência, sem precisar de login. Todo esse tráfego chega num único
+ponto de entrada, a `fcg-api`.
 
 Aqui já vale destacar uma decisão importante: apesar do nome sugerir
 "microsserviços" no plural, a nossa arquitetura é um monolito modular com
