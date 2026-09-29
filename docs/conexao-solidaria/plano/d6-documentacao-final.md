@@ -154,7 +154,17 @@ CI) antes de encerrar.
 
 - [ ] Diagrama de arquitetura — ajustar (incluir Prometheus/Grafana) e
       exportar (**Gabriel**)
-- [ ] PDF de justificativa de banco de dados (**Gabriel**)
+- [x] PDF de justificativa de banco de dados (**Gabriel**) — feito em
+      2026-09-29: texto em prosa (não cópia literal do `ARQUITETURA.md`)
+      cobrindo por que PostgreSQL, por que 1 instância com 3 schemas (vs.
+      3 bancos), o que isso evita (outbox/saga), por que a fila continua
+      necessária e como a idempotência é garantida. Arquivos em
+      `../entrega/`: `justificativa-banco-dados.md` (fonte) e
+      `justificativa-banco-dados.pdf` (entrega, gerado com reportlab —
+      pandoc/wkhtmltopdf/LaTeX não estavam disponíveis no ambiente e a
+      instalação de wkhtmltopdf via apt falhou por dependências de pacote
+      404; reportlab via pip funcionou de primeira e não deixa nenhuma
+      dependência pesada no repositório).
 - [ ] README completo (**Gabriel**)
 - [ ] Relatório de entrega — campos fixos (grupo, participantes, Discord,
       link do repositório) (**Gabriel**)
