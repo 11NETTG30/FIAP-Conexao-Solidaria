@@ -157,16 +157,19 @@ CI) antes de encerrar.
       (nós `Prometheus` e `Grafana` adicionados) e exportado para
       `../entrega/diagrama-arquitetura.png` via `@mermaid-js/mermaid-cli`
 - [x] PDF de justificativa de banco de dados (**Gabriel**) — feito em
-      2026-09-29: texto em prosa (não cópia literal do `ARQUITETURA.md`)
-      cobrindo por que PostgreSQL, por que 1 instância com 3 schemas (vs.
-      3 bancos), o que isso evita (outbox/saga), por que a fila continua
-      necessária e como a idempotência é garantida. Arquivos em
-      `../entrega/`: `justificativa-banco-dados.md` (fonte) e
-      `justificativa-banco-dados.pdf` (entrega, gerado com reportlab —
-      pandoc/wkhtmltopdf/LaTeX não estavam disponíveis no ambiente e a
-      instalação de wkhtmltopdf via apt falhou por dependências de pacote
-      404; reportlab via pip funcionou de primeira e não deixa nenhuma
-      dependência pesada no repositório).
+      2026-09-29, revisado no mesmo dia para caber em 1 página (a primeira
+      versão, com 3 páginas, incluía "papel da fila" e "idempotência" —
+      conteúdo de mensageria, não de banco de dados, fora do que o edital
+      pediu literalmente). Dois arquivos em `../entrega/`:
+      - `justificativa-banco-dados.md`/`.pdf` — **versão de entrega**, 1
+        página, só os 2 pontos centrais: por que PostgreSQL, por que 1
+        instância com 3 schemas em vez de 3 bancos separados
+      - `justificativa-banco-dados-completa.md`/`.pdf` — versão original
+        de 3 páginas, mantida como material de apoio para quem quiser o
+        raciocínio completo (inclui fila e idempotência)
+      Gerado com reportlab (pandoc/wkhtmltopdf/LaTeX não estavam
+      disponíveis no ambiente; reportlab via pip funcionou de primeira e
+      não deixa dependência pesada no repositório).
 - [x] README completo (**Gabriel**) — reescrito do zero, cobrindo visão
       geral, arquitetura, pré-requisitos, subida via docker-compose,
       credenciais de teste, endpoints/fluxos principais, testes (unitários
