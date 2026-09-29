@@ -156,14 +156,27 @@ CI) antes de encerrar.
       exportar (**Gabriel**): mermaid atualizado em `../ARQUITETURA.md`
       (nós `Prometheus` e `Grafana` adicionados) e exportado para
       `../entrega/diagrama-arquitetura.png` via `@mermaid-js/mermaid-cli`
-- [ ] PDF de justificativa de banco de dados (**Gabriel**)
+- [x] PDF de justificativa de banco de dados (**Gabriel**) — feito em
+      2026-09-29: texto em prosa (não cópia literal do `ARQUITETURA.md`)
+      cobrindo por que PostgreSQL, por que 1 instância com 3 schemas (vs.
+      3 bancos), o que isso evita (outbox/saga), por que a fila continua
+      necessária e como a idempotência é garantida. Arquivos em
+      `../entrega/`: `justificativa-banco-dados.md` (fonte) e
+      `justificativa-banco-dados.pdf` (entrega, gerado com reportlab —
+      pandoc/wkhtmltopdf/LaTeX não estavam disponíveis no ambiente e a
+      instalação de wkhtmltopdf via apt falhou por dependências de pacote
+      404; reportlab via pip funcionou de primeira e não deixa nenhuma
+      dependência pesada no repositório).
 - [x] README completo (**Gabriel**) — reescrito do zero, cobrindo visão
       geral, arquitetura, pré-requisitos, subida via docker-compose,
       credenciais de teste, endpoints/fluxos principais, testes (unitários
       + smoke E2E), CI/CD e deploy em Kubernetes; sinaliza explicitamente
       onde falta validação ponta a ponta (fluxo doação → worker, `kubectl
-      apply -f k8s/` completo) e que o CPF do doador (d0.1) ainda não está
-      implementado
+      apply -f k8s/` completo). **Nota da sessão orquestradora**: o README
+      foi escrito com base num estado do repositório anterior ao merge da
+      d0.1 (PR #18), então a menção original de que "o CPF do doador ainda
+      não está implementado" estava desatualizada — corrigida no commit
+      seguinte a este merge, já que a d0.1 foi mergeada nesse meio tempo.
 - [ ] Relatório de entrega — campos fixos (grupo, participantes, Discord,
       link do repositório) (**Gabriel**)
 - [x] Roteiro de texto do vídeo — segmento 1 (**Gabriel**):
